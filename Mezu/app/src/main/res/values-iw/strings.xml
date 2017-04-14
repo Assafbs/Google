@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mezu</string>
+    <string name="welcome_message">ברוכים הבאים לMezu!!</string>
+    <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות</string>
+    <string name="start">התחלה</string>
+</resources>

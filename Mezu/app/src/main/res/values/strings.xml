@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Mezu</string>
+    <string name="welcome_message">Welcome to Mezu!!</string>
+    <string name="second_welcome_message">Your Money Management App</string>
+    <string name="start">Start</string>
 </resources>
