@@ -4,4 +4,13 @@
     <string name="welcome_message">ברוכים הבאים לMezu!!</string>
     <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות</string>
     <string name="start">התחלה</string>
+    <string name="action_sign_in_short">כניסה</string>
+    <string name="action_sign_in">כניסה או הרשמה</string>
+    <string name="error_field_required">שדה זה הינו הכרחי</string>
+    <string name="error_incorrect_password">הסיסמה אינה נכונה</string>
+    <string name="error_invalid_email">כתובת האימייל אינה נכונה</string>
+    <string name="error_invalid_password">הסיסמה קצרה מדי</string>
+    <string name="prompt_email">אימייל</string>
+    <string name="prompt_password">סיסמה</string>
+    <string name="title_activity_login">כניסה</string>
 </resources>
