@@ -19,8 +19,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //TODO: check if user is logged in already
-                Intent budgetsIntent = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(budgetsIntent);
+                Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(loginIntent);
             }
         });
     }
