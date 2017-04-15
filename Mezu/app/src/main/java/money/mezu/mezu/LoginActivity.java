@@ -40,6 +40,10 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+    // TODO: check if reading contacts is actually needed for our use case.
+    // TODO: separate sign in and registration
+    // TODO: add Google+ sign in: https://developers.google.com/identity/sign-in/android/
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */

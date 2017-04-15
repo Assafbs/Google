@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Mezu</string>
+    <string name="app_name" translatable="false">Mezu</string>
     <string name="welcome_message">Welcome to Mezu!!</string>
     <string name="second_welcome_message">Your Money Management App</string>
     <string name="start">Start</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -17,5 +19,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_budgets">BudgetsActivity</string>
+    <string name="title_activity_budgets">My Budgets</string>
 </resources>
