@@ -8,7 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class BudgetsActivity extends AppCompatActivity {
 
@@ -27,6 +31,19 @@ public class BudgetsActivity extends AppCompatActivity {
                 Toast.makeText(BudgetsActivity.this, "TODO: add new budget",Toast.LENGTH_SHORT).show();
             }
         });
+
+        ArrayList<String> budgets = new ArrayList<>();
+        // TODO: Replace with real budgets
+        budgets.add("Budget 1");
+        budgets.add("Budget 2");
+        budgets.add("Budget 3");
+        budgets.add("Budget 4");
+        budgets.add("Budget 5");
+        budgets.add("Budget 6");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        adapter.addAll(budgets);
+        ListView budgetsList = (ListView)findViewById(R.id.budgets_list);
+        budgetsList.setAdapter(adapter);
     }
 
     @Override
