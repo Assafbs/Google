@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:paddingTop="100dp"
+        android:paddingTop="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -39,6 +39,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/icons"
+        android:backgroundTint="@color/accent"
+        android:clickable="true"
+        app:borderWidth="0dp"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <include layout="@layout/content_budgets" />
