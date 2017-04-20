@@ -14,39 +14,43 @@
     tools:context="money.mezu.mezu.MainActivity">
 
     <ImageView
-    android:id="@+id/logo"
-    android:src="@drawable/mezu_logo"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAlignment="center"
-    android:adjustViewBounds="true"
-    android:scaleType="fitCenter"
-    android:padding="10dp" />
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="70"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mezu_logo"
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/welcome_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:textAlignment="center"
         android:padding="10dp"
         android:textSize="22sp"
-        android:text="@string/welcome_message" />
+        android:text="@string/welcome_message"
+        android:layout_weight="12" />
 
     <TextView
         android:id="@+id/second_welcome_message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:textAlignment="center"
         android:padding="10dp"
         android:textSize="18sp"
+        android:layout_weight="10"
         android:text="@string/second_welcome_message" />
 
     <Button
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:text="@string/start"
+        android:layout_weight="10"
         android:layout_marginTop="30dp"/>
 
 
