@@ -29,6 +29,11 @@
             android:name=".BudgetsActivity"
             android:label="@string/title_activity_budgets"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".BudgetViewActivity"
+            android:label="@string/title_activity_budget_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

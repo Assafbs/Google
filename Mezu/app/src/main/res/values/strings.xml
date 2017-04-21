@@ -20,4 +20,6 @@
         completions."
     </string>
     <string name="title_activity_budgets">My Budgets</string>
+    <string name = "title_activity_budget_view">Budget View</string>
+    <string name="active_budget">Active</string>
 </resources>

@@ -28,22 +28,33 @@ public class BudgetsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: add new budget
-                Toast.makeText(BudgetsActivity.this, "TODO: add new budget",Toast.LENGTH_SHORT).show();
+                Toast.makeText(BudgetsActivity.this, "TODO: add new budget", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ArrayList<String> budgets = new ArrayList<>();
-        // TODO: Replace with real budgets
-        budgets.add("Budget 1");
-        budgets.add("Budget 2");
-        budgets.add("Budget 3");
-        budgets.add("Budget 4");
-        budgets.add("Budget 5");
-        budgets.add("Budget 6");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        adapter.addAll(budgets);
-        ListView budgetsList = (ListView)findViewById(R.id.budgets_list);
-        budgetsList.setAdapter(adapter);
+
+        // Construct the data source
+        ArrayList<Budget> arrayOfBudgets = new ArrayList<Budget>();
+//// Create the adapter to convert the array to views
+        BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
+//// Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.budgets_list);
+        listView.setAdapter(adapter);
+
+
+        Budget b1 = new Budget(new BudgetIdentifier(1111), "Budget 1");
+        adapter.add(b1);
+        Budget b2 = new Budget(new BudgetIdentifier(2222), "Budget 2");
+        adapter.add(b2);
+        Budget b3 = new Budget(new BudgetIdentifier(3333), "Budget 3");
+        adapter.add(b3);
+        Budget b4 = new Budget(new BudgetIdentifier(4444), "Budget 4");
+        adapter.add(b4);
+        Budget b5 = new Budget(new BudgetIdentifier(5555), "Budget 5");
+        adapter.add(b5);
+        Budget b6 = new Budget(new BudgetIdentifier(6666), "Budget 6");
+        adapter.add(b6);
+
     }
 
     @Override
@@ -55,13 +66,12 @@ public class BudgetsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings){
-            Toast.makeText(this,"Open Settings ", Toast.LENGTH_SHORT).show();
-        }
-        else if (id == R.id.action_log_out){
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.action_log_out) {
             // TODO: log user out
             finish(); // will return to sign in activity;
-                      // maybe will need to be changed later
+            // maybe will need to be changed later
         }
         return super.onOptionsItemSelected(item);
     }

@@ -11,10 +11,12 @@ public class Budget {
 
     private BudgetIdentifier id;
     private List<Expense> expenses;
+    private String name;
 
-    public Budget(BudgetIdentifier id) {
+    public Budget(BudgetIdentifier id, String name) {
         super();
         this.id = id;
+        this.name = name;
         expenses = new ArrayList<>();
         //TODO: backend to fill
     }
@@ -26,4 +28,6 @@ public class Budget {
     public List<Expense> getExpenses() {
         return expenses;
     }
+
+    public String toString(){ return name; }
 }
