@@ -16,9 +16,14 @@ import java.util.ArrayList;
 
 public class BudgetsActivity extends AppCompatActivity {
 
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this code will make the app go to the login screen if the user is not connected
+        sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
+
         setContentView(R.layout.activity_budgets);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -35,9 +40,9 @@ public class BudgetsActivity extends AppCompatActivity {
 
         // Construct the data source
         ArrayList<Budget> arrayOfBudgets = new ArrayList<Budget>();
-//// Create the adapter to convert the array to views
+        //// Create the adapter to convert the array to views
         BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
-//// Attach the adapter to a ListView
+        //// Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.budgets_list);
         listView.setAdapter(adapter);
 
@@ -69,9 +74,7 @@ public class BudgetsActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.action_log_out) {
-            // TODO: log user out
-            finish(); // will return to sign in activity;
-            // maybe will need to be changed later
+            sessionManager.logoutUser();
         }
         return super.onOptionsItemSelected(item);
     }
