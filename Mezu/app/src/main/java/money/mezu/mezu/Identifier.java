@@ -21,4 +21,8 @@ public abstract class Identifier {
         return false;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
 }
