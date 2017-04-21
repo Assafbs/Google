@@ -6,27 +6,45 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 public class SessionManager {
     SharedPreferences pref;
     Editor editor;
     Context _context;
 
+    GoogleApiClient mGoogleApiClient;
+
     private static final String PREF_NAME = "MezuPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     public static final String KEY_NAME = "name";
     public static final String KEY_ID = "id";
+    public static final String KEY_LOGIN_TYPE = "loginType";
 
     public SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, 0);
         editor = pref.edit();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
-    public void createLoginSession(String name, UserIdentifier id){
+    public void createLoginSession(String name, UserIdentifier id, String logInType){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
         editor.putLong(KEY_ID, id.getId());
+        editor.putString(KEY_LOGIN_TYPE, logInType);
         editor.commit();
     }
 
@@ -45,6 +63,10 @@ public class SessionManager {
         if (id == 0)
             return null;
         return new UserIdentifier(id);
+    }
+
+    public String getLoginType() {
+        return pref.getString(KEY_LOGIN_TYPE, null);
     }
 
     public String getUserName(){
