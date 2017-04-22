@@ -1,11 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="1"
     android:id="@+id/budgetRow"
     android:background="@drawable/my_background"
-    android:orientation="horizontal">
-    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:clickable="true">
+
     <TextView
         android:id="@+id/budgetName"
         android:layout_width="0dp"
