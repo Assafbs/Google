@@ -1,6 +1,5 @@
 package money.mezu.mezu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -78,6 +77,7 @@ public class LoginActivity extends FragmentActivity {
             //TODO: send details to the backend (do not send name)
             sessionManager.createLoginSession(personName, new UserIdentifier(0), "Google");
             Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
+            budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);
         } else {
             Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
