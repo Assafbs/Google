@@ -8,101 +8,56 @@
     android:fitsSystemWindows="true"
     tools:context="money.mezu.mezu.BudgetViewActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
     <LinearLayout
+        android:paddingTop="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff781"
+
         android:orientation="vertical"
-        android:weightSum="15"
-        android:padding="10dp">
+        android:weightSum="15">
+
 
         <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
+            android:id="@+id/budgetViewName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name" />
-        <TextView
-            android:id="@+id/tvName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name" />
+            android:gravity="center"
+            android:textSize="30sp"/>/>
 
-        <LinearLayout
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="baa"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:id="@+id/details_product_name"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="blaaa"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:id="@+id/details_provider_name"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="abefbasdf"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textSize="20sp"
-                android:id="@+id/details_price"/>
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
+            android:layout_height="match_parent"
+            android:id="@+id/expenses_list" />
 
 
-
-        </FrameLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_weight="3"
-                android:textSize="20sp"
-                android:id="@+id/details_in_stock"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="bababaregdrg"
-                android:id="@+id/share_btn"/>
-        </LinearLayout>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/icons"
+        android:backgroundTint="@color/primary_light"
+        android:clickable="true"
+        app:borderWidth="0dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <include layout="@layout/content_budgets" />
+
 </android.support.design.widget.CoordinatorLayout>

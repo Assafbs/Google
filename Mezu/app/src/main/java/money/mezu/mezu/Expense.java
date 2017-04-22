@@ -13,6 +13,8 @@ public class Expense {
     private String description;
     private Category category;
     private Time time;
+    private UserIdentifier userID;
+    private String userName;
 
     public Expense(ExpenseIdentifier id, double amount, String description, Category category, Time time) {
         super();
@@ -21,6 +23,18 @@ public class Expense {
         this.description = description;
         this.category = category;
         this.time = time;
+        this.userID = new UserIdentifier(1234);
+        this.userName = "Assafim";
+    }
+
+    public Expense(ExpenseIdentifier id, double amount, Category category) {
+        super();
+        this.id = id;
+        this.amount = amount;
+        this.category = category;
+        //TODO: use SessionManager to get info on user
+        this.userID = new UserIdentifier(1234);
+        this.userName = "Assafim";
     }
 
     public ExpenseIdentifier getId() {
@@ -41,6 +55,14 @@ public class Expense {
 
     public Time getTime() {
         return time;
+    }
+
+    public UserIdentifier getUserID() {
+        return userID;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }
 

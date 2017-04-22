@@ -23,6 +23,9 @@ public class BudgetsActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
 
     private SessionManager sessionManager;
+
+    private ArrayList<Budget> arrayOfBudgets = new ArrayList<Budget>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,8 @@ public class BudgetsActivity extends AppCompatActivity {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
-                    public void onConnectionFailed(ConnectionResult connectionResult) { }
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                    }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -55,7 +59,7 @@ public class BudgetsActivity extends AppCompatActivity {
 
 
         // Construct the data source
-        ArrayList<Budget> arrayOfBudgets = new ArrayList<Budget>();
+
         //// Create the adapter to convert the array to views
         BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
         //// Attach the adapter to a ListView
@@ -106,5 +110,15 @@ public class BudgetsActivity extends AppCompatActivity {
                     });
         }
         sessionManager.logoutUser();
+    }
+
+    public Budget getBudgetByID(BudgetIdentifier id) {
+        for (Budget budget : arrayOfBudgets) {
+            if (budget.getId().equals(id)) {
+                return budget;
+            }
+        }
+        //ERROR MESSAGE
+        return null;
     }
 }

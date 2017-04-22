@@ -33,21 +33,18 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
         }
         // Lookup view for data population
         TextView budgetName = (TextView) convertView.findViewById(R.id.budgetName);
+        LinearLayout budgetRow = (LinearLayout) convertView.findViewById(R.id.budgetRow);
+        budgetRow.setTag(budget);
 
         // Populate the data into the template view using the data object
         budgetName.setText(budget.toString());
 
-//        Button btButton = (Button) convertView.findViewById(R.id.budgetRow);
-//        LinearLayout ll = new LinearLayout(context);
-// Cache user object inside the button using `setTag`
-//        btButton.setTag(user);
-// Attach the click event handler
-        budgetName.setOnClickListener(new View.OnClickListener() {
+        budgetRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Access user from within the tag
                 Budget budget = (Budget) view.getTag();
-
+                BudgetViewActivity.setCurrentBudget(budget);
                 Intent budgetViewIntent = new Intent(getContext(), BudgetViewActivity.class);
                 getContext().startActivity(budgetViewIntent);
 
