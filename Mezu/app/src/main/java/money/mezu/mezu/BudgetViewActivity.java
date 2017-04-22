@@ -24,15 +24,12 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
 
-import static money.mezu.mezu.BudgetsActivity.mGoogleApiClient;
-
 /**
  * Created by davidled on 21/04/2017.
  */
 
 public class BudgetViewActivity extends AppCompatActivity {
     //    protected static BudgetIdentifier currentID;
-    private SessionManager sessionManager;
     protected static Budget currentBudget;
     boolean isClicked = true;
     PopupWindow popUpWindow;
@@ -53,9 +50,6 @@ public class BudgetViewActivity extends AppCompatActivity {
         containerLayout = new LinearLayout(this);
         mainLayout = new LinearLayout(this);
         popUpWindow = new PopupWindow(this);
-
-        sessionManager = new SessionManager(this);
-        sessionManager.checkLogin();
 
         TextView budgetName = (TextView) findViewById(R.id.budgetViewName);
         budgetName.setText(currentBudget.toString());
@@ -124,22 +118,9 @@ public class BudgetViewActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.action_log_out) {
-            logout();
+//            logout();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void logout() {
-        if (sessionManager.getLoginType().equals("Google")) {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            // ...
-                        }
-                    });
-        }
-        sessionManager.logoutUser();
     }
 
 

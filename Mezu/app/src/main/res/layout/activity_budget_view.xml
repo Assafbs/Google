@@ -67,6 +67,6 @@
         app:borderWidth="0dp"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <include layout="@layout/content_budgets" />
+    <!--<include layout="@layout/content_budgets" />-->
 
 </android.support.design.widget.CoordinatorLayout>
