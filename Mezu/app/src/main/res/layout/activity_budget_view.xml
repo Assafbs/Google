@@ -36,7 +36,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="30sp"/>/>
+            android:textSize="30sp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:paddingBottom="10dp"
+            android:text="@string/recent_expenses"/>
 
         <ListView
             android:layout_width="match_parent"

@@ -20,7 +20,7 @@ import com.google.android.gms.common.api.Status;
 import java.util.ArrayList;
 
 public class BudgetsActivity extends AppCompatActivity {
-    GoogleApiClient mGoogleApiClient;
+    static GoogleApiClient mGoogleApiClient;
 
     private SessionManager sessionManager;
 

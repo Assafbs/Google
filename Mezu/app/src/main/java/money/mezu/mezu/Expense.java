@@ -37,6 +37,16 @@ public class Expense {
         this.userName = "Assafim";
     }
 
+    public Expense(ExpenseIdentifier id, double amount, Category category, String userName) {
+        super();
+        this.id = id;
+        this.amount = amount;
+        this.category = category;
+        //TODO: use SessionManager to get info on user
+        this.userID = new UserIdentifier(1234);
+        this.userName = userName;
+    }
+
     public ExpenseIdentifier getId() {
         return id;
     }
