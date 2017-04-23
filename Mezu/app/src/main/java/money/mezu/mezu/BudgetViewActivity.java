@@ -86,7 +86,7 @@ public class BudgetViewActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.expenses_list);
         listView.setAdapter(adapter);
 
-
+        adapter.clear();
         Expense e1 = new Expense(new ExpenseIdentifier(11111), 100, Category.FOOD, "ASSAFIM");
         adapter.add(e1);
         Expense e2 = new Expense(new ExpenseIdentifier(11112), 1000, Category.DEBT_REDUCTION, "LIORIM");
