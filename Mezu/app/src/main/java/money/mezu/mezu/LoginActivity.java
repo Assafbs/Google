@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 public class LoginActivity extends FragmentActivity {
 
+    private static final int RC_SIGN_IN = 9001;
+
     SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
     @Override
@@ -49,7 +51,7 @@ public class LoginActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, 0 /*RC_SIGN_IN*/);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
     }
@@ -59,7 +61,7 @@ public class LoginActivity extends FragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == 0 /*RC_SIGN_IN*/) {
+        if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
