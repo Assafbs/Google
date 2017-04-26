@@ -23,5 +23,7 @@
     <string name = "title_activity_budget_view">Budget View</string>
     <string name="active_budget">Active</string>
     <string name="recent_expenses">Recent Expenses</string>
+    <string name="add_expense">Add Expense</string>
     <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
+
 </resources>

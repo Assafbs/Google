@@ -1,17 +1,16 @@
 package money.mezu.mezu;
 
+import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -32,15 +31,9 @@ import java.util.ArrayList;
  */
 
 public class BudgetViewActivity extends AppCompatActivity {
-    //    protected static BudgetIdentifier currentID;
     protected static Budget currentBudget;
     boolean isClicked = true;
-    PopupWindow popUpWindow;
-    ViewGroup.LayoutParams layoutParams;
-    LinearLayout mainLayout;
-    Button btnClickHere;
-    LinearLayout containerLayout;
-    TextView tvMsg;
+
 
     private SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
@@ -51,13 +44,9 @@ public class BudgetViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_budget_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        containerLayout = new LinearLayout(this);
-        mainLayout = new LinearLayout(this);
-        popUpWindow = new PopupWindow(this);
-
         TextView budgetName = (TextView) findViewById(R.id.budgetViewName);
         budgetName.setText(currentBudget.toString());
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,16 +54,13 @@ public class BudgetViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isClicked) {
                     isClicked = false;
-                    popUpWindow.showAtLocation(mainLayout, Gravity.BOTTOM, 10, 10);
-                    popUpWindow.update(50, 50, 320, 90);
+                    showSortPopup(BudgetViewActivity.this, new Point(100, 100));
                 } else {
                     isClicked = true;
-                    popUpWindow.dismiss();
                 }
             }
         });
 
-        popUpWindow.setContentView(containerLayout);
 
         // Create the adapter to convert the array to views
         ExpenseAdapter adapter = new ExpenseAdapter(this, currentBudget.getExpenses());
@@ -129,6 +115,33 @@ public class BudgetViewActivity extends AppCompatActivity {
             logout();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSortPopup(final Activity context, Point p) {
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.activity_add_expense, viewGroup);
+
+        // Creating the PopupWindow
+        PopupWindow popUp = new PopupWindow(context);
+        popUp.setContentView(layout);
+        popUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+        popUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = -20;
+        int OFFSET_Y = 95;
+
+        // Clear the default translucent background
+//        popUp.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        popUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+
     }
 
     private void logout() {
