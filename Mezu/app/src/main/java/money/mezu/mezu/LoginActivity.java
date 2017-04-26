@@ -13,10 +13,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+
+import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.getStatusCodeString;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -123,7 +126,11 @@ public class LoginActivity extends AppCompatActivity implements
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);
         } else {
-            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+            if (result.getStatus().getStatusCode() == GoogleSignInStatusCodes.SIGN_IN_REQUIRED) {
+                //skip
+            } else {
+                Toast.makeText(LoginActivity.this, getStatusCodeString(result.getStatus().getStatusCode()), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

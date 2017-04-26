@@ -29,7 +29,7 @@ public class BudgetsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this code will make the app go to the login screen if the user is not connected
+        // This code will make the app go to the login screen if the user is not connected
         sessionManager = new SessionManager(this);
         sessionManager.checkLogin();
 
@@ -60,9 +60,9 @@ public class BudgetsActivity extends AppCompatActivity {
 
         // Construct the data source
 
-        //// Create the adapter to convert the array to views
+        // Create the adapter to convert the array to views
         BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
-        //// Attach the adapter to a ListView
+        // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.budgets_list);
         listView.setAdapter(adapter);
 

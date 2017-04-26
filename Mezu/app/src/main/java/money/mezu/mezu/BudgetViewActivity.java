@@ -19,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
@@ -39,6 +42,8 @@ public class BudgetViewActivity extends AppCompatActivity {
     LinearLayout containerLayout;
     TextView tvMsg;
 
+    private SessionManager sessionManager;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +74,11 @@ public class BudgetViewActivity extends AppCompatActivity {
             }
         });
 
-//        tvMsg = new TextView(this);
-//        tvMsg.setText("Hi this is pop up window...");
-//
-//        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-//        containerLayout.setOrientation(LinearLayout.VERTICAL);
-//        containerLayout.addView(tvMsg, layoutParams);
         popUpWindow.setContentView(containerLayout);
-//        mainLayout.addView(btnClickHere, layoutParams);
-//        setContentView(mainLayout);
 
-        //// Create the adapter to convert the array to views
+        // Create the adapter to convert the array to views
         ExpenseAdapter adapter = new ExpenseAdapter(this, currentBudget.getExpenses());
-        //// Attach the adapter to a ListView
+        // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.expenses_list);
         listView.setAdapter(adapter);
 
@@ -99,6 +95,18 @@ public class BudgetViewActivity extends AppCompatActivity {
         adapter.add(e5);
         Expense e6 = new Expense(new ExpenseIdentifier(11116), 6969.6969, Category.ENTERTAINMENT, "DAVIDIM");
         adapter.add(e6);
+
+        sessionManager = new SessionManager(this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                    }
+                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
     }
 
@@ -118,10 +126,21 @@ public class BudgetViewActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.action_log_out) {
-//            logout();
+            logout();
         }
         return super.onOptionsItemSelected(item);
     }
 
-
+    private void logout() {
+        if (sessionManager.getLoginType().equals("Google")) {
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // ...
+                        }
+                    });
+        }
+        sessionManager.logoutUser();
+    }
 }
