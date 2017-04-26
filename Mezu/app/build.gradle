@@ -20,6 +20,12 @@ android {
             debuggable true
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("external/debug.keystore")
+        }
+    }
 }
 
 dependencies {
