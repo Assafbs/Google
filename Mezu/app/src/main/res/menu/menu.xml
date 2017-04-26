@@ -6,6 +6,7 @@
 
     <item
         android:id="@+id/action_settings"
+        android:title="@string/settings"
         android:icon="@mipmap/settings_icon"
         app:showAsAction="ifRoom"
         android:orderInCategory="2"
