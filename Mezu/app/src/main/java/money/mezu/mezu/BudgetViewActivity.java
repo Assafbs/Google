@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +56,12 @@ public class BudgetViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (isClicked) {
                     isClicked = false;
-                    showSortPopup(BudgetViewActivity.this, new Point(100, 100));
+                    showPopup(BudgetViewActivity.this, new Point(100, 100));
+//                    getFragmentManager().beginTransaction()
+//                            .add(R.id.activity_add_expense, new AddExpenseDialogFragment())
+//                            .addToBackStack(null).commit();
+
+
                 } else {
                     isClicked = true;
                 }
@@ -117,7 +124,7 @@ public class BudgetViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showSortPopup(final Activity context, Point p) {
+    private void showPopup(final Activity context, Point p) {
         // Inflate the popup_layout.xml
         LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -139,8 +146,21 @@ public class BudgetViewActivity extends AppCompatActivity {
         // Clear the default translucent background
 //        popUp.setBackgroundDrawable(new BitmapDrawable());
 
+/**
+        Spinner spinner = (Spinner) findViewById(R.id.SpinnerCategoriesType);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.categories_list, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+**/
+
         // Displaying the popup at the specified location, + offsets.
         popUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+
+
 
     }
 

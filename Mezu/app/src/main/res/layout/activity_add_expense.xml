@@ -12,16 +12,49 @@
     android:layoutDirection="rtl"
     android:background="@color/icons">
 
-    <ImageView
-        android:id="@+id/hackerman"
+    <TextView
+        android:id="@+id/add_expense_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="70"
-        android:adjustViewBounds="true"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/hackerman"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:padding="30dp"
+        android:textSize="22sp"
+        android:text="@string/add_expense"
+        android:layout_weight="5" />
+
+    <EditText
+        android:id="@+id/EditTextAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:hint="@string/zero_amount"
+        android:textSize="48sp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/SpinnerCategoriesType"
+        android:layout_height="wrap_content"
+
+        android:prompt="@string/category"
+        android:layout_width="fill_parent"
+        android:entries="@array/categories_list"/>
+
+
+    <EditText
+        android:id="@+id/EditTextTitle"
+        android:layout_height="wrap_content"
+        android:hint="@string/title_optional"
+        android:inputType="textPersonName"
+        android:layout_width="fill_parent">
+    </EditText>
+
+    <EditText
+        android:id="@+id/EditTextNote"
+        android:layout_height="wrap_content"
+        android:hint="@string/something_extra_optional"
+        android:inputType="textPersonName"
+        android:layout_width="fill_parent">
+    </EditText>
 
     <ImageView
         android:id="@+id/set_width_hack"
@@ -32,15 +65,7 @@
         android:scaleType="fitCenter"
         android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/welcome_message"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textAlignment="center"
-        android:padding="10dp"
-        android:textSize="22sp"
-        android:text="BULBUL?"
-        android:layout_weight="12" />
+
 
 
     <Button
@@ -48,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:text="@string/add_expense"
+        android:text="@string/add"
         android:layout_weight="10"
         android:layout_marginTop="30dp"/>
 
