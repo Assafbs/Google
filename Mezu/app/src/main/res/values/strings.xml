@@ -47,10 +47,8 @@
     <string name="category_paycheck">Paycheck</string>
     <string name="category">Category</string>
 
-
-
-
-
+    <string name="openDrawer">Open navigation drawer</string>
+    <string name="closeDrawer">Close navigation drawer</string>
 
     <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
     <string name="add_a_budget">Add a budget</string>
