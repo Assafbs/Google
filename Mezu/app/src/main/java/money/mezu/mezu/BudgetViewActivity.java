@@ -34,8 +34,6 @@ import java.util.ArrayList;
 
 public class BudgetViewActivity extends AppCompatActivity {
     protected static Budget currentBudget;
-    boolean isClicked = true;
-
 
     private SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
@@ -54,12 +52,7 @@ public class BudgetViewActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isClicked) {
-                    isClicked = false;
-                    showPopup(BudgetViewActivity.this);
-                } else {
-                    isClicked = true;
-                }
+                showPopup(BudgetViewActivity.this);
             }
         });
 
