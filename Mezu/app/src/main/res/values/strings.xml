@@ -56,7 +56,7 @@
     <string name="add_a_budget">Add a budget</string>
     <string name="budget_name">Budget name:</string>
     <string name="shared_with">Shared with:</string>
-    <string name="shares_list_initizal_text">nobody. This is currently a personal budget. To add a pratner, enter his mail below and click \'Add partner\'</string>
+    <string name="partners_list_initizal_text">Nobody. This is currently a personal budget. To add a partner, enter the email below and click \'Add partner\'</string>
     <string name="add_partner">Add partner</string>
     <string name="starting_balance">Starting balance:</string>
     <string name="optional">(Optional)</string>

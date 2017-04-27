@@ -43,5 +43,5 @@
     <string name="something_extra_optional">משהו נוסף (אופציונאלי)</string>
     <string name="starting_balance">מאזן התחלתי:</string>
     <string name="title_optional">כותרת (אופציונאלי)</string>
-    <string name="shares_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
+    <string name="partners_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
 </resources>
