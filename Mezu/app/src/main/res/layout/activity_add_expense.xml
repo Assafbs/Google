@@ -34,7 +34,7 @@
     <Spinner
         android:id="@+id/SpinnerCategoriesType"
         android:layout_height="wrap_content"
-
+        android:spinnerMode="dialog"
         android:prompt="@string/category"
         android:layout_width="fill_parent"
         android:entries="@array/categories_list"/>
