@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -52,8 +53,8 @@ public class BudgetsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: add new budget
-                Toast.makeText(BudgetsActivity.this, "TODO: add new budget", Toast.LENGTH_SHORT).show();
+                Intent addBudgetIntent = new Intent(BudgetsActivity.this, AddBudgetActivity.class);
+                startActivity(addBudgetIntent);
             }
         });
 
