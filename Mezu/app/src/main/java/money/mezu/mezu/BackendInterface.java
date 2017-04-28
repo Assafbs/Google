@@ -15,8 +15,7 @@ public interface BackendInterface {
     List<Budget> getUsersBudgets(UserIdentifier uid);
     List<Expense> getExpensesOfBudget(BudgetIdentifier bid);
     void deleteBudget(BudgetIdentifier bid);
-    void addBudgetToUser(UserIdentifier uid, BudgetIdentifier bid);
-    void addUserToBudget(BudgetIdentifier bid, UserIdentifier uid);
-    void addExpenseToBudget(BudgetIdentifier bid, ExpenseIdentifier eid);
-
+    void addBudgetToUser(UserIdentifier uid, Budget budget);
+    void addUserToBudget(Budget budget, UserIdentifier uid);
+    void addExpenseToBudget(Budget budget, Expense expense);
 }
