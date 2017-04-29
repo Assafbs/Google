@@ -56,9 +56,8 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 //TODO: check if user is logged in already
-                Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
                 sessionManager.createLoginSession("dummy", new UserIdentifier(new BigInteger("0")), "dummy");
-                Intent budgetsIntent = new Intent(LoginActivity.this,MainNavDrawerActivity.class);
+                Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
                 startActivity(budgetsIntent);
             }
         });
