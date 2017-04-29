@@ -32,7 +32,8 @@ public class FirebaseBackend implements BackendInterface {
 
     public ArrayList<Budget> getUsersBudgets(UserIdentifier uid) {
         final String[][] bids = new String[1][];
-        DatabaseReference ref = mDatabase.child("users").child(uid.getId().toString()).child("budgets");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("users/" + uid.getId().toString() + "/budgets");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -46,7 +47,9 @@ public class FirebaseBackend implements BackendInterface {
 
         final ArrayList<Budget> budgets = new ArrayList<Budget>();
         for (String bid : bids[0]) {
-            DatabaseReference ref2 = mDatabase.child("expenses").child(bid);
+            final FirebaseDatabase database2 = FirebaseDatabase.getInstance();
+            //DatabaseReference ref2 = mDatabase.child("budgets").child(bid);
+            DatabaseReference ref2 = database2.getReference("budgets/" + bid);
             ref2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -63,7 +66,8 @@ public class FirebaseBackend implements BackendInterface {
 
     public List<Expense> getExpensesOfBudget(BudgetIdentifier bid) {
         final String[][] eids = new String[1][];
-        DatabaseReference ref = mDatabase.child("budgets").child(bid.getId().toString()).child("expenses");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("budgets/" + bid.getId().toString() + "/expenses");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
