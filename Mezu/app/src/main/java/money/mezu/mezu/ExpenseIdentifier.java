@@ -1,11 +1,13 @@
 package money.mezu.mezu;
 
+import java.math.BigInteger;
+
 /**
  * Created by asafb on 4/15/2017.
  */
 
 public class ExpenseIdentifier extends Identifier {
-    public ExpenseIdentifier(long id) {
+    public ExpenseIdentifier(BigInteger id) {
         super(id);
     }
 

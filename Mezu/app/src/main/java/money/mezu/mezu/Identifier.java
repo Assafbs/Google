@@ -1,5 +1,7 @@
 package money.mezu.mezu;
 
+import java.math.BigInteger;
+
 /**
  * Created by asafb on 4/15/2017.
  */
@@ -7,9 +9,9 @@ package money.mezu.mezu;
 // an abstract class for all identifiers
 public abstract class Identifier {
 
-    private long id; // for now; can be replaced with something else.
+    private BigInteger id; // for now; can be replaced with something else.
 
-    public Identifier(long id) {
+    public Identifier(BigInteger id) {
         super();
         this.id =id;
     }
@@ -21,7 +23,7 @@ public abstract class Identifier {
         return false;
     }
 
-    public long getId() {
+    public BigInteger getId() {
         return this.id;
     }
 

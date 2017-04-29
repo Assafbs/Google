@@ -9,6 +9,8 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.math.BigInteger;
+
 public class SessionManager {
     SharedPreferences pref;
     Editor editor;
@@ -38,7 +40,7 @@ public class SessionManager {
     public void createLoginSession(String name, UserIdentifier id, String logInType){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
-        editor.putLong(KEY_ID, id.getId());
+        editor.putString(KEY_ID, id.getId().toString());
         editor.putString(KEY_LOGIN_TYPE, logInType);
         editor.commit();
     }
@@ -53,10 +55,10 @@ public class SessionManager {
     }
 
     public UserIdentifier getUserId(){
-        long id = pref.getLong(KEY_ID, 0);
-        if (id == 0)
+        String id = pref.getString(KEY_ID, null);
+        if (id == null)
             return null;
-        return new UserIdentifier(id);
+        return new UserIdentifier(new BigInteger(id));
     }
 
     public String getLoginType() {

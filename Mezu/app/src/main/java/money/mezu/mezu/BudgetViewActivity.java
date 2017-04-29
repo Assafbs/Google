@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -64,17 +65,17 @@ public class BudgetViewActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         adapter.clear();
-        Expense e1 = new Expense(new ExpenseIdentifier(11111), 100, Category.FOOD, "ASSAFIM");
+        Expense e1 = new Expense(new ExpenseIdentifier(new BigInteger("11111")), 100, Category.FOOD, "ASSAFIM");
         adapter.add(e1);
-        Expense e2 = new Expense(new ExpenseIdentifier(11112), 1000, Category.DEBT_REDUCTION, "LIORIM");
+        Expense e2 = new Expense(new ExpenseIdentifier(new BigInteger("11112")), 1000, Category.DEBT_REDUCTION, "LIORIM");
         adapter.add(e2);
-        Expense e3 = new Expense(new ExpenseIdentifier(11113), 600, Category.CLOTHING, "ME");
+        Expense e3 = new Expense(new ExpenseIdentifier(new BigInteger("11113")), 600, Category.CLOTHING, "ME");
         adapter.add(e3);
-        Expense e4 = new Expense(new ExpenseIdentifier(11114), 750, Category.HOUSEHOLD_SUPPLIES, "SNIRIM");
+        Expense e4 = new Expense(new ExpenseIdentifier(new BigInteger("11114")), 750, Category.HOUSEHOLD_SUPPLIES, "SNIRIM");
         adapter.add(e4);
-        Expense e5 = new Expense(new ExpenseIdentifier(11115), 69.69, Category.PERSONAL, "ME");
+        Expense e5 = new Expense(new ExpenseIdentifier(new BigInteger("11115")), 69.69, Category.PERSONAL, "ME");
         adapter.add(e5);
-        Expense e6 = new Expense(new ExpenseIdentifier(11116), 6969.6969, Category.ENTERTAINMENT, "DAVIDIM");
+        Expense e6 = new Expense(new ExpenseIdentifier(new BigInteger("11116")), 6969.6969, Category.ENTERTAINMENT, "DAVIDIM");
         adapter.add(e6);
 
         sessionManager = new SessionManager(this);

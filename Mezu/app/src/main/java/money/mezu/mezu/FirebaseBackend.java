@@ -30,7 +30,7 @@ public class FirebaseBackend implements BackendInterface {
         return mInstance;
     }
 
-    public List<Budget> getUsersBudgets(UserIdentifier uid) {
+    public ArrayList<Budget> getUsersBudgets(UserIdentifier uid) {
         final String[][] bids = new String[1][];
         DatabaseReference ref = mDatabase.child("users").child(uid.toString()).child("budgets");
         ref.addValueEventListener(new ValueEventListener() {
@@ -44,7 +44,7 @@ public class FirebaseBackend implements BackendInterface {
             }
         });
 
-        final List<Budget> budgets = new ArrayList<Budget>();
+        final ArrayList<Budget> budgets = new ArrayList<Budget>();
         for (String bid : bids[0]) {
             DatabaseReference ref2 = mDatabase.child("expenses").child(bid);
             ref2.addValueEventListener(new ValueEventListener() {

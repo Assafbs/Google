@@ -19,6 +19,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import java.math.BigInteger;
+
 import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.getStatusCodeString;
 
 public class LoginActivity extends AppCompatActivity implements
@@ -54,8 +56,9 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 //TODO: check if user is logged in already
-                sessionManager.createLoginSession("dummy", new UserIdentifier(0), "dummy");
                 Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
+                sessionManager.createLoginSession("dummy", new UserIdentifier(new BigInteger("0")), "dummy");
+                Intent budgetsIntent = new Intent(LoginActivity.this,MainNavDrawerActivity.class);
                 startActivity(budgetsIntent);
             }
         });
@@ -95,9 +98,10 @@ public class LoginActivity extends AppCompatActivity implements
             String personEmail = acct.getEmail();
             String personId = acct.getId();
             String authCode = acct.getServerAuthCode();
+            BigInteger uid = new BigInteger(personId);
 
             //TODO: send details to the backend (do not send name)
-            sessionManager.createLoginSession(personName, new UserIdentifier(0), "Google");
+            sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google");
             Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);

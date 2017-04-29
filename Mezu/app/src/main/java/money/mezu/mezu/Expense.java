@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import java.math.BigInteger;
 import java.sql.Time;
 
 /**
@@ -23,7 +24,7 @@ public class Expense {
         this.description = description;
         this.category = category;
         this.time = time;
-        this.userID = new UserIdentifier(1234);
+        this.userID = new UserIdentifier(new BigInteger("1234"));
         this.userName = "Assafim";
     }
 
@@ -33,7 +34,7 @@ public class Expense {
         this.amount = amount;
         this.category = category;
         //TODO: use SessionManager to get info on user
-        this.userID = new UserIdentifier(1234);
+        this.userID = new UserIdentifier(new BigInteger("1234"));
         this.userName = "Assafim";
     }
 
@@ -43,7 +44,7 @@ public class Expense {
         this.amount = amount;
         this.category = category;
         //TODO: use SessionManager to get info on user
-        this.userID = new UserIdentifier(1234);
+        this.userID = new UserIdentifier(new BigInteger("1234"));
         this.userName = userName;
     }
 

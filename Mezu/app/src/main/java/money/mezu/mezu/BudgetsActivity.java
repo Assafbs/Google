@@ -18,14 +18,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class BudgetsActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
 
     private SessionManager sessionManager;
+    private BackendInterface backend = FirebaseBackend.getInstance();
 
-    private ArrayList<Budget> arrayOfBudgets = new ArrayList<Budget>();
+    private ArrayList<Budget> arrayOfBudgets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +62,12 @@ public class BudgetsActivity extends AppCompatActivity {
 
 
         // Construct the data source
-
+        arrayOfBudgets = backend.getUsersBudgets(sessionManager.getUserId());
         // Create the adapter to convert the array to views
         BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.budgets_list);
         listView.setAdapter(adapter);
-
-
-        Budget b1 = new Budget(new BudgetIdentifier(1111), "Budget 1");
-        adapter.add(b1);
-        Budget b2 = new Budget(new BudgetIdentifier(2222), "Budget 2");
-        adapter.add(b2);
-        Budget b3 = new Budget(new BudgetIdentifier(3333), "Budget 3");
-        adapter.add(b3);
-        Budget b4 = new Budget(new BudgetIdentifier(4444), "Budget 4");
-        adapter.add(b4);
-        Budget b5 = new Budget(new BudgetIdentifier(5555), "Budget 5");
-        adapter.add(b5);
-        Budget b6 = new Budget(new BudgetIdentifier(6666), "Budget 6");
-        adapter.add(b6);
 
     }
 
