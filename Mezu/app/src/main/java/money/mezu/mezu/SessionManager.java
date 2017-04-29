@@ -45,13 +45,14 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void checkLogin(){
+    public boolean checkLogin(){
         if(!this.isLoggedIn()){
             Intent i = new Intent(_context, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             _context.startActivity(i);
+            return false;
         }
-
+        return true;
     }
 
     public UserIdentifier getUserId(){

@@ -34,7 +34,9 @@ public class BudgetsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // This code will make the app go to the login screen if the user is not connected
         sessionManager = new SessionManager(this);
-        sessionManager.checkLogin();
+        if(!sessionManager.checkLogin()) {
+            return;
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
