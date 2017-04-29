@@ -32,7 +32,7 @@ public class FirebaseBackend implements BackendInterface {
 
     public ArrayList<Budget> getUsersBudgets(UserIdentifier uid) {
         final String[][] bids = new String[1][];
-        DatabaseReference ref = mDatabase.child("users").child(uid.toString()).child("budgets");
+        DatabaseReference ref = mDatabase.child("users").child(uid.getId().toString()).child("budgets");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -63,7 +63,7 @@ public class FirebaseBackend implements BackendInterface {
 
     public List<Expense> getExpensesOfBudget(BudgetIdentifier bid) {
         final String[][] eids = new String[1][];
-        DatabaseReference ref = mDatabase.child("budgets").child(bid.toString()).child("expenses");
+        DatabaseReference ref = mDatabase.child("budgets").child(bid.getId().toString()).child("expenses");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -93,19 +93,19 @@ public class FirebaseBackend implements BackendInterface {
     }
 
     public void deleteBudget(BudgetIdentifier bid) {
-        mDatabase.child("budgets").child(bid.toString()).removeValue();
+        mDatabase.child("budgets").child(bid.getId().toString()).removeValue();
         // TODO - go all over users and remove budgets from there?
     }
 
     public void addBudgetToUser(UserIdentifier uid, Budget budget) {
         String bid = budget.getId().toString();
         mDatabase.child("budgets").child(bid).child("budget").setValue(budget);
-        mDatabase.child("users").child(uid.toString()).child("budgets").push().setValue(bid);
+        mDatabase.child("users").child(uid.getId().toString()).child("budgets").push().setValue(bid);
     }
 
     public void addUserToBudget(Budget budget, UserIdentifier uid) {
-        mDatabase.child("users").push().setValue(uid);
-        mDatabase.child("budgets").child(budget.getId().toString()).child("users").push().setValue(uid);
+        mDatabase.child("users").push().setValue(uid.getId().toString());
+        mDatabase.child("budgets").child(budget.getId().toString()).child("users").push().setValue(uid.getId().toString());
     }
 
     public void addExpenseToBudget(Budget budget, Expense expense) {
