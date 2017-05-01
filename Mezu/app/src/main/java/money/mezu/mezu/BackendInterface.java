@@ -12,7 +12,7 @@ public interface BackendInterface {
     // TODO: modify according to the needs
 
     public void registerForAllUserBudgetUpdates(final BudgetsActivity activity);
-    List<Expense> getExpensesOfBudget(BudgetIdentifier bid);
+//    List<Expense> getExpensesOfBudget(BudgetIdentifier bid);
     void deleteBudget(BudgetIdentifier bid);
     void createBudgetAndAddToUser(Budget budget);
     void addUserToBudget(Budget budget);

@@ -33,6 +33,7 @@ public class BudgetsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        staticContext.mContext = getApplicationContext();
         // This code will make the app go to the login screen if the user is not connected
         sessionManager = new SessionManager(this);
         if(!sessionManager.checkLogin()) {
@@ -115,4 +116,5 @@ public class BudgetsActivity extends AppCompatActivity {
     {
         return this.mapOfBudgets.get(id);
     }
+
 }

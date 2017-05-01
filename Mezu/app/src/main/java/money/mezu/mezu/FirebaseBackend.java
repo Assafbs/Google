@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import android.util.Log;
+import android.util.Pair;
 
 /**
  * Created by Or on 4/27/2017.
@@ -22,7 +23,7 @@ public class FirebaseBackend implements BackendInterface {
     private static FirebaseBackend mInstance;
     private static BudgetsActivity mBudgetsActivity;
     public static UserIdentifier mUid;
-    private static HashSet<String> mPathsIListenTo = new HashSet<String>();
+    private static HashSet<Pair<String, ValueEventListener>> mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
     private FirebaseBackend() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -46,8 +47,8 @@ public class FirebaseBackend implements BackendInterface {
         FirebaseBackend.mBudgetsActivity = budgetsActivity;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/" + mUid.getId().toString() + "/budgets");
-        mPathsIListenTo.add("users/" + mUid.getId().toString() + "/budgets");
-        ref.addValueEventListener(new ValueEventListener() {
+
+        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
@@ -70,14 +71,14 @@ public class FirebaseBackend implements BackendInterface {
             public void onCancelled(DatabaseError error) {
             }
         });
+        mPathsIListenTo.add(Pair.create("users/" + mUid.getId().toString() + "/budgets", listener));
     }
     //************************************************************************************************************************************************
     private void registerForBudgetUpdates(String bid)
     {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + bid + "/budget");
-        mPathsIListenTo.add("budgets/" + bid + "/budget");
-        ref.addValueEventListener(new ValueEventListener() {
+        ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
@@ -91,39 +92,40 @@ public class FirebaseBackend implements BackendInterface {
             public void onCancelled(DatabaseError error) {
             }
         });
+        mPathsIListenTo.add(Pair.create("budgets/" + bid + "/budget", listener));
     }
     //************************************************************************************************************************************************
-    public List<Expense> getExpensesOfBudget(BudgetIdentifier bid) {
-        final String[][] eids = new String[1][];
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("budgets/" + bid.getId().toString() + "/expenses");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                eids[0] = (String[]) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-
-        final List<Expense> expenses = new ArrayList<Expense>();
-        for (String eid : eids[0]) {
-            DatabaseReference ref2 = mDatabase.child("expenses").child(eid);
-            ref2.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    expenses.add((Expense)dataSnapshot.getValue());
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                }
-            });
-        }
-        return expenses;
-    }
+//    public List<Expense> getExpensesOfBudget(BudgetIdentifier bid) {
+//        final String[][] eids = new String[1][];
+//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("budgets/" + bid.getId().toString() + "/expenses");
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                eids[0] = (String[]) dataSnapshot.getValue();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//            }
+//        });
+//
+//        final List<Expense> expenses = new ArrayList<Expense>();
+//        for (String eid : eids[0]) {
+//            DatabaseReference ref2 = mDatabase.child("expenses").child(eid);
+//            ref2.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    expenses.add((Expense)dataSnapshot.getValue());
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError error) {
+//                }
+//            });
+//        }
+//        return expenses;
+//    }
     //************************************************************************************************************************************************
     public void deleteBudget(BudgetIdentifier bid) {
         mDatabase.child("budgets").child(bid.getId().toString()).removeValue();
@@ -168,5 +170,17 @@ public class FirebaseBackend implements BackendInterface {
         expense.setId(eid);
         HashMap<String, Object> serializedExpense = expense.serialize();
         expenseRef.setValue(serializedExpense);
+    }
+    //************************************************************************************************************************************************
+    public void stopListeningOnEvents()
+    {
+        Log.d("", "FirebaseBackend:stopListeningOnEvents: stopping");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        for (Pair<String,ValueEventListener > pathListener: mPathsIListenTo)
+        {
+            DatabaseReference ref = database.getReference(pathListener.first);
+            ref.removeEventListener(pathListener.second);
+        }
+        mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
     }
 }

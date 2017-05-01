@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +40,7 @@ public class BudgetViewActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
-    private ExpenseAdapter mAdapter = null;
+    private static ExpenseAdapter mAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +125,13 @@ public class BudgetViewActivity extends AppCompatActivity {
             {
                 EditText amountField = (EditText)layout.findViewById(R.id.EditTextAmount);
                 Spinner categorySpinner =(Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
-
+                Log.d("", String.format("tmp:tmp: id: %d", categorySpinner.getId()));
                 Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
                 EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
                 Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), title.getText().toString(), category, Calendar.getInstance().getTime());
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
                 currentBudget.addExpense(newExpense);
+                mAdapter.notifyDataSetChanged();
                 popUp.dismiss();
             }
         });
