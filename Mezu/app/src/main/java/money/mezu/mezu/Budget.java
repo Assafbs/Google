@@ -1,6 +1,10 @@
 package money.mezu.mezu;
 
+import android.util.Log;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,28 +13,54 @@ import java.util.List;
 
 public class Budget {
 
-    private BudgetIdentifier id;
-    private ArrayList<Expense> expenses;
-    private String name;
+    private String mId;
+    private ArrayList<Expense> mExpenses;
+    private String mName;
 
-    public Budget(BudgetIdentifier id, String name) {
+    public Budget(String id, String name)
+    {
         super();
-        this.id = id;
-        this.name = name;
-        expenses = new ArrayList<>();
+        this.mId = id;
+        this.mName = name;
+        this.mExpenses = new ArrayList<>();
         //TODO: backend to fill
     }
 
-    public BudgetIdentifier getId() {
-        return id;
+    public Budget(HashMap<String, Object> serializedBudget)
+    {
+        super();
+        Log.d("",String.format("Budget:Budget creating budget from serialized budget: %s", serializedBudget.toString()));
+        this.mId = (String)serializedBudget.get("mId");
+        this.mName = (String)serializedBudget.get("mName");
+        ArrayList<Expense> expenses = new ArrayList<Expense>();
+        if (serializedBudget.containsKey("mExpenses"))
+        {
+            ArrayList<HashMap<String, Object>> serializedExpenses = (ArrayList<HashMap<String, Object>>)serializedBudget.get("mExpenses");
+            for(HashMap<String, Object> expense :serializedExpenses)
+            {
+                expenses.add(new Expense(expense));
+            }
+            this.mExpenses = expenses;
+        }
+        else
+        {
+            this.mExpenses = new ArrayList<>();
+        }
+    }
+
+    public String getId() {
+        return mId;
+    }
+    public void setId(String id) {
+        this.mId = id;
     }
 
     public ArrayList<Expense> getExpenses() {
-        return expenses;
+        return mExpenses;
     }
 
     public Expense getExpenseByID(BudgetIdentifier bi){
-        for (Expense expense:expenses) {
+        for (Expense expense:mExpenses) {
             if (expense.getId().equals(bi)){
                 return expense;
             }
@@ -39,5 +69,19 @@ public class Budget {
         return null;
     }
 
-    public String toString(){ return name; }
+    public HashMap<String, Object> serialize()
+    {
+        HashMap<String, Object> serialized = new HashMap<String,Object>();
+        serialized.put("mId", mId);
+        serialized.put("mName", mName);
+        List<HashMap<String, Object>> serializedExpenses = new ArrayList<HashMap<String, Object>>();
+        for (Expense expense : mExpenses)
+        {
+            serializedExpenses.add(expense.serialize());
+        }
+        serialized.put("mExpenses", serializedExpenses);
+        return serialized;
+    }
+
+    public String toString(){ return mName; }
 }

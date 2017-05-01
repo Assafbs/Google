@@ -3,12 +3,14 @@ package money.mezu.mezu;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,10 @@ public class AddBudgetActivity extends Activity {
                     Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
                 } else {
                     //TODO: insert new budget to DB
+                    //TODO: find a way to generate budget identifier. Why do we need it?
+                    // TODO: add initial balance to badget in backend.
+                    Log.d("","AddBudgetActivity: adding budget to db");
+                    FirebaseBackend.getInstance().addBudgetToUser(new Budget("", BudgetName));
                     finish();
                 }
 

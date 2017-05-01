@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +21,14 @@ import com.google.android.gms.common.api.Status;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BudgetsActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
 
     private SessionManager sessionManager;
     private BackendInterface backend = FirebaseBackend.getInstance();
-
-    private ArrayList<Budget> arrayOfBudgets;
+    private HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class BudgetsActivity extends AppCompatActivity {
         if(!sessionManager.checkLogin()) {
             return;
         }
-
+        backend.setUid(sessionManager.getUserId());
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -63,34 +64,51 @@ public class BudgetsActivity extends AppCompatActivity {
         });
 
 
+        // TODO: clean this ones things work.
         // Construct the data source
-        arrayOfBudgets = backend.getUsersBudgets(sessionManager.getUserId());
-        // Create the adapter to convert the array to views
-        BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.budgets_list);
-        listView.setAdapter(adapter);
+        //arrayOfBudgets = backend.getUsersBudgets(sessionManager.getUserId());
+        backend.registerForAllUserBudgetUpdates(this);
+//        arrayOfBudgets  = new ArrayList<Budget>();
+//        // Create the adapter to convert the array to views
+//        BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
+//        // Attach the adapter to a ListView
+//        ListView listView = (ListView) findViewById(R.id.budgets_list);
+//        listView.setAdapter(adapter);
 
+    }
+    public void updateBudgetsCallback(Budget budget)
+    {
+        Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
+        this.mapOfBudgets.put(budget.getId(), budget);
+        ListView listView = (ListView) findViewById(R.id.budgets_list);
+        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+        listView.setAdapter(adapter);   
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.action_log_out) {
+        }
+        else if (id == R.id.action_log_out)
+        {
             logout();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void logout() {
+    private void logout()
+    {
         if (sessionManager.getLoginType().equals("Google")) {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
@@ -103,13 +121,8 @@ public class BudgetsActivity extends AppCompatActivity {
         sessionManager.logoutUser();
     }
 
-    public Budget getBudgetByID(BudgetIdentifier id) {
-        for (Budget budget : arrayOfBudgets) {
-            if (budget.getId().equals(id)) {
-                return budget;
-            }
-        }
-        //ERROR MESSAGE
-        return null;
+    public Budget getBudgetByID(String id)
+    {
+        return this.mapOfBudgets.get(id);
     }
 }

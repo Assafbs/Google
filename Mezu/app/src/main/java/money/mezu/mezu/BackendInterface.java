@@ -1,6 +1,4 @@
 package money.mezu.mezu;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,10 +11,11 @@ import java.util.List;
 public interface BackendInterface {
     // TODO: modify according to the needs
 
-    ArrayList<Budget> getUsersBudgets(UserIdentifier uid);
+    public void registerForAllUserBudgetUpdates(final BudgetsActivity activity);
     List<Expense> getExpensesOfBudget(BudgetIdentifier bid);
     void deleteBudget(BudgetIdentifier bid);
-    void addBudgetToUser(UserIdentifier uid, Budget budget);
-    void addUserToBudget(Budget budget, UserIdentifier uid);
+    void addBudgetToUser(Budget budget);
+    void addUserToBudget(Budget budget);
     void addExpenseToBudget(Budget budget, Expense expense);
+    void setUid(UserIdentifier uid);
 }
