@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -26,8 +27,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by davidled on 21/04/2017.
@@ -38,6 +39,7 @@ public class BudgetViewActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
+    private ExpenseAdapter mAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,24 +61,16 @@ public class BudgetViewActivity extends AppCompatActivity {
 
 
         // Create the adapter to convert the array to views
-        ExpenseAdapter adapter = new ExpenseAdapter(this, currentBudget.getExpenses());
+        mAdapter = new ExpenseAdapter(this, currentBudget.getExpenses());
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.expenses_list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
 
-        adapter.clear();
-        Expense e1 = new Expense(new ExpenseIdentifier(new BigInteger("11111")), 100, Category.FOOD, "ASSAFIM");
-        adapter.add(e1);
-        Expense e2 = new Expense(new ExpenseIdentifier(new BigInteger("11112")), 1000, Category.DEBT_REDUCTION, "LIORIM");
-        adapter.add(e2);
-        Expense e3 = new Expense(new ExpenseIdentifier(new BigInteger("11113")), 600, Category.CLOTHING, "ME");
-        adapter.add(e3);
-        Expense e4 = new Expense(new ExpenseIdentifier(new BigInteger("11114")), 750, Category.HOUSEHOLD_SUPPLIES, "SNIRIM");
-        adapter.add(e4);
-        Expense e5 = new Expense(new ExpenseIdentifier(new BigInteger("11115")), 69.69, Category.PERSONAL, "ME");
-        adapter.add(e5);
-        Expense e6 = new Expense(new ExpenseIdentifier(new BigInteger("11116")), 6969.6969, Category.ENTERTAINMENT, "DAVIDIM");
-        adapter.add(e6);
+        mAdapter.clear();
+        for (Expense currExpense : currentBudget.getExpenses())
+        {
+            mAdapter.add(currExpense);
+        }
 
         sessionManager = new SessionManager(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -117,16 +111,33 @@ public class BudgetViewActivity extends AppCompatActivity {
         // Inflate the popup_layout.xml
         LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View layout = layoutInflater.inflate(R.layout.activity_add_expense, viewGroup);
+        final View layout = layoutInflater.inflate(R.layout.activity_add_expense, viewGroup);
 
         // Creating the PopupWindow
-        PopupWindow popUp = new PopupWindow(context);
+        final PopupWindow popUp = new PopupWindow(context);
         popUp.setContentView(layout);
         popUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         popUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         popUp.setFocusable(true);
 
         popUp.showAtLocation(layout, Gravity.CENTER,0,0);
+        Button add_btn=(Button)layout.findViewById(R.id.add_action_btn);
+        add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0)
+            {
+                EditText amountField = (EditText)layout.findViewById(R.id.EditTextAmount);
+                Spinner categorySpinner =(Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
+
+                Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
+                EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
+                Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), title.getText().toString(), category, Calendar.getInstance().getTime());
+                FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
+                //mAdapter.add(newExpense);
+                currentBudget.addExpense(newExpense);
+                popUp.dismiss();
+            }
+        });
     }
 
     private void logout() {

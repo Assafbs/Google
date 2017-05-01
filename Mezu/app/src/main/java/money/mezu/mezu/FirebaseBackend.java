@@ -130,15 +130,30 @@ public class FirebaseBackend implements BackendInterface {
         // TODO - go all over users and remove budgets from there?
     }
     //************************************************************************************************************************************************
-    public void addBudgetToUser(Budget budget) {
-        Log.d("",String.format("FirebaseBackend:addBudgetToUser: adding budget with userID:%s budgetID:%s",mUid.getId().toString(), budget.getId().toString()));
-        DatabaseReference mypostref = mDatabase.child("budgets").push();
-        String bid = mypostref.getKey();
-        budget.setId(bid);
-        mypostref.child("budget").setValue(budget.serialize());
-        //FirebaseDatabase.getInstance().getReference("budgets/" + bid + "/budget").setValue(budget.serialize());
-        mDatabase.child("users").child(mUid.getId().toString()).child("budgets").child(bid).setValue(bid);
+    public void createBudgetAndAddToUser(Budget budget) {
+        Log.d("","FirebaseBackend:addBudgetToUser: adding budget to user");
+        String newBid = createBudget(budget);
+        addBudgetToUser(newBid);
     }
+    //************************************************************************************************************************************************
+    private String createBudget(Budget budget)
+    {
+        Log.d("","FirebaseBackend:createBudget: creating budget");
+        DatabaseReference budgetRef = mDatabase.child("budgets").push();
+        String bid = budgetRef.getKey();
+        budget.setId(bid);
+        budgetRef.child("budget").setValue(budget.serializeNoExpenses());
+        Log.d("",String.format("FirebaseBackend:createBudget: created budget with id:%s", budget.getId().toString()));
+        return bid;
+    }
+    //************************************************************************************************************************************************
+    private void addBudgetToUser(String bid)
+    {
+        Log.d("",String.format("FirebaseBackend:addBudgetToUser: adding budget with id: %s", bid));
+        mDatabase.child("users").child(mUid.getId().toString()).child("budgets").child(bid).setValue(bid);
+        Log.d("", "FirebaseBackend:addBudgetToUser: added budget");
+    }
+
     //************************************************************************************************************************************************
     public void addUserToBudget(Budget budget) {
 
@@ -146,9 +161,12 @@ public class FirebaseBackend implements BackendInterface {
         mDatabase.child("budgets").child(budget.getId().toString()).child("users").push().setValue(mUid.getId().toString());
     }
     //************************************************************************************************************************************************
-    public void addExpenseToBudget(Budget budget, Expense expense) {
-        String eid = expense.getId().toString();
-        mDatabase.child("expenses").child(eid).child("expense").setValue(expense);
-        mDatabase.child("budgets").child(budget.getId().toString()).child("expenses").push().setValue(eid);
+    public void addExpenseToBudget(Budget budget, Expense expense)
+    {
+        DatabaseReference expenseRef = mDatabase.child("budgets").child(budget.getId()).child("mExpenses").push();
+        String eid = expenseRef.getKey();
+        expense.setId(eid);
+        HashMap<String, Object> serializedExpense = expense.serialize();
+        expenseRef.setValue(serializedExpense);
     }
 }

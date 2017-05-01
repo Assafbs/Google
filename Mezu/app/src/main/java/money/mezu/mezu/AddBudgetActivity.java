@@ -49,7 +49,7 @@ public class AddBudgetActivity extends Activity {
                     //TODO: find a way to generate budget identifier. Why do we need it?
                     // TODO: add initial balance to badget in backend.
                     Log.d("","AddBudgetActivity: adding budget to db");
-                    FirebaseBackend.getInstance().addBudgetToUser(new Budget("", BudgetName));
+                    FirebaseBackend.getInstance().createBudgetAndAddToUser(new Budget("", BudgetName));
                     finish();
                 }
 

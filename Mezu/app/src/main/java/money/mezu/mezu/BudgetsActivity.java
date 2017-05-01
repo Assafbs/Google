@@ -63,35 +63,25 @@ public class BudgetsActivity extends AppCompatActivity {
             }
         });
 
-
-        // TODO: clean this ones things work.
-        // Construct the data source
-        //arrayOfBudgets = backend.getUsersBudgets(sessionManager.getUserId());
         backend.registerForAllUserBudgetUpdates(this);
-//        arrayOfBudgets  = new ArrayList<Budget>();
-//        // Create the adapter to convert the array to views
-//        BudgetAdapter adapter = new BudgetAdapter(this, arrayOfBudgets);
-//        // Attach the adapter to a ListView
-//        ListView listView = (ListView) findViewById(R.id.budgets_list);
-//        listView.setAdapter(adapter);
-
     }
+    //************************************************************************************************************************************************
     public void updateBudgetsCallback(Budget budget)
     {
         Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
         this.mapOfBudgets.put(budget.getId(), budget);
         ListView listView = (ListView) findViewById(R.id.budgets_list);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
-        listView.setAdapter(adapter);   
+        listView.setAdapter(adapter);
     }
-
+    //************************************************************************************************************************************************
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    //************************************************************************************************************************************************
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -106,7 +96,7 @@ public class BudgetsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    //************************************************************************************************************************************************
     private void logout()
     {
         if (sessionManager.getLoginType().equals("Google")) {
@@ -120,7 +110,7 @@ public class BudgetsActivity extends AppCompatActivity {
         }
         sessionManager.logoutUser();
     }
-
+    //************************************************************************************************************************************************
     public Budget getBudgetByID(String id)
     {
         return this.mapOfBudgets.get(id);

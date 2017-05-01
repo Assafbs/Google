@@ -55,6 +55,11 @@ public class Budget {
         this.mId = id;
     }
 
+    public void addExpense(Expense expense)
+    {
+        mExpenses.add(expense);
+    }
+
     public ArrayList<Expense> getExpenses() {
         return mExpenses;
     }
@@ -69,17 +74,11 @@ public class Budget {
         return null;
     }
 
-    public HashMap<String, Object> serialize()
+    public HashMap<String, String> serializeNoExpenses()
     {
-        HashMap<String, Object> serialized = new HashMap<String,Object>();
+        HashMap<String, String> serialized = new HashMap<String,String>();
         serialized.put("mId", mId);
         serialized.put("mName", mName);
-        List<HashMap<String, Object>> serializedExpenses = new ArrayList<HashMap<String, Object>>();
-        for (Expense expense : mExpenses)
-        {
-            serializedExpenses.add(expense.serialize());
-        }
-        serialized.put("mExpenses", serializedExpenses);
         return serialized;
     }
 

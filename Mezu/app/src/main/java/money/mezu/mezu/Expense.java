@@ -2,6 +2,7 @@ package money.mezu.mezu;
 
 import java.math.BigInteger;
 import java.sql.Time;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -11,95 +12,97 @@ import java.util.Objects;
 
 public class Expense {
 
-    private ExpenseIdentifier id;
-    private double amount; // Temporary, should probably be changed
-    private String description;
-    private Category category;
-    private Time time;
-    private UserIdentifier userID;
-    private String userName;
+    private String mId;
+    private double mAmount; // Temporary, should probably be changed
+    private String mDescription;
+    private Category mCategory;
+    private Date mTime;
+    private UserIdentifier mUserID;
+    private String mUserName;
 
-    public Expense(ExpenseIdentifier id, double amount, String description, Category category, Time time) {
+    public Expense(String id, double amount, String description, Category category, Date time) {
         super();
-        this.id = id;
-        this.amount = amount;
-        this.description = description;
-        this.category = category;
-        this.time = time;
-        this.userID = new UserIdentifier(new BigInteger("1234"));
-        this.userName = "Assafim";
+        this.mId = id;
+        this.mAmount = amount;
+        this.mDescription = description;
+        this.mCategory = category;
+        this.mTime = time;
+        this.mUserID = new UserIdentifier(new BigInteger("1234"));
+        this.mUserName = "Assafim";
     }
 
     public Expense(HashMap<String, Object> serializedExpense)
     {
         super();
-        this.id = new ExpenseIdentifier((new BigInteger((String) serializedExpense.get("id"))));
-        this.amount = (double)serializedExpense.get("amount");
-        this.description = (String) serializedExpense.get("description");
-        this.category = Category.values()[(int)serializedExpense.get("category")];
-        this.time = new Time((long) serializedExpense.get("time"));
-        this.userID =  new UserIdentifier((new BigInteger((String) serializedExpense.get("userID"))));
-        this.userName = (String) serializedExpense.get("userName");
+        this.mId = (String) serializedExpense.get("mId");
+        this.mAmount = (double)serializedExpense.get("mAmount");
+        this.mDescription = (String) serializedExpense.get("mDescription");
+        this.mCategory = Category.values()[(int)serializedExpense.get("mCategory")];
+        this.mTime = new Date((long) serializedExpense.get("mTime"));
+        this.mUserID =  new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
+        this.mUserName = (String) serializedExpense.get("mUserName");
     }
 
-    public Expense(ExpenseIdentifier id, double amount, Category category) {
+    public Expense(String id, double amount, Category category) {
         super();
-        this.id = id;
-        this.amount = amount;
-        this.category = category;
+        this.mId = id;
+        this.mAmount = amount;
+        this.mCategory = category;
         //TODO: use SessionManager to get info on user
-        this.userID = new UserIdentifier(new BigInteger("1234"));
-        this.userName = "Assafim";
+        this.mUserID = new UserIdentifier(new BigInteger("1234"));
+        this.mUserName = "Assafim";
     }
 
-    public Expense(ExpenseIdentifier id, double amount, Category category, String userName) {
+    public Expense(String id, double amount, Category category, String userName) {
         super();
-        this.id = id;
-        this.amount = amount;
-        this.category = category;
+        this.mId = id;
+        this.mAmount = amount;
+        this.mCategory = category;
         //TODO: use SessionManager to get info on user
-        this.userID = new UserIdentifier(new BigInteger("1234"));
-        this.userName = userName;
+        this.mUserID = new UserIdentifier(new BigInteger("1234"));
+        this.mUserName = userName;
     }
     public HashMap<String, Object> serialize()
     {
         HashMap<String, Object> serialized = new HashMap<String, Object>();
-        serialized.put("id", id.getId().toString());
-        serialized.put("amount", amount);
-        serialized.put("description", description);
-        serialized.put("category", category.getValue());
-        serialized.put("time", time.getTime());
-        serialized.put("userID", userID.getId().toString());
-        serialized.put("userName", userName);
+        serialized.put("mId", mId);
+        serialized.put("mAmount", mAmount);
+        serialized.put("mDescription", mDescription);
+        serialized.put("mCategory", mCategory.getValue());
+        serialized.put("mTime", mTime.getTime());
+        serialized.put("mUserID", mUserID.getId().toString());
+        serialized.put("mUserName", mUserName);
         return serialized;
     }
 
-    public BigInteger getId() {
-        return id.getId();
+    public String getId() {
+        return mId;
     }
 
+    public void setId(String id) { mId = id; }
+
     public Category getCategory() {
-        return category;
+        return mCategory;
     }
 
     public double getAmount() {
-        return amount;
+        return mAmount;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
-    public Time getTime() {
-        return time;
+    public Date getTime() {
+        return mTime;
     }
 
     public UserIdentifier getUserID() {
-        return userID;
+        return mUserID;
     }
 
     public String getUserName() {
-        return userName;
+        return mUserName;
     }
 }
 
