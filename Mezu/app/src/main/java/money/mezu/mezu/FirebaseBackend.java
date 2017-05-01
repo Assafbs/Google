@@ -163,7 +163,7 @@ public class FirebaseBackend implements BackendInterface {
     //************************************************************************************************************************************************
     public void addExpenseToBudget(Budget budget, Expense expense)
     {
-        DatabaseReference expenseRef = mDatabase.child("budgets").child(budget.getId()).child("mExpenses").push();
+        DatabaseReference expenseRef = mDatabase.child("budgets").child(budget.getId()).child("budget").child("mExpenses").push();
         String eid = expenseRef.getKey();
         expense.setId(eid);
         HashMap<String, Object> serializedExpense = expense.serialize();

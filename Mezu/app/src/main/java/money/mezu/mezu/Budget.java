@@ -35,8 +35,8 @@ public class Budget {
         ArrayList<Expense> expenses = new ArrayList<Expense>();
         if (serializedBudget.containsKey("mExpenses"))
         {
-            ArrayList<HashMap<String, Object>> serializedExpenses = (ArrayList<HashMap<String, Object>>)serializedBudget.get("mExpenses");
-            for(HashMap<String, Object> expense :serializedExpenses)
+            HashMap<String,HashMap<String, Object>> serializedExpenses = (HashMap<String,HashMap<String, Object>>)serializedBudget.get("mExpenses");
+            for(HashMap<String, Object> expense :serializedExpenses.values())
             {
                 expenses.add(new Expense(expense));
             }

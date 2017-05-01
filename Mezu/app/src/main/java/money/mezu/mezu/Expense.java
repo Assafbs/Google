@@ -35,9 +35,9 @@ public class Expense {
     {
         super();
         this.mId = (String) serializedExpense.get("mId");
-        this.mAmount = (double)serializedExpense.get("mAmount");
+        this.mAmount = Double.parseDouble(serializedExpense.get("mAmount").toString());
         this.mDescription = (String) serializedExpense.get("mDescription");
-        this.mCategory = Category.values()[(int)serializedExpense.get("mCategory")];
+        this.mCategory = Category.values()[Integer.parseInt(serializedExpense.get("mCategory").toString())];
         this.mTime = new Date((long) serializedExpense.get("mTime"));
         this.mUserID =  new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
         this.mUserName = (String) serializedExpense.get("mUserName");

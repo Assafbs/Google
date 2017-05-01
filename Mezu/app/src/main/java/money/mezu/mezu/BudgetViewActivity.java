@@ -66,12 +66,6 @@ public class BudgetViewActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.expenses_list);
         listView.setAdapter(mAdapter);
 
-        mAdapter.clear();
-        for (Expense currExpense : currentBudget.getExpenses())
-        {
-            mAdapter.add(currExpense);
-        }
-
         sessionManager = new SessionManager(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -107,7 +101,8 @@ public class BudgetViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showPopup(final Activity context) {
+    private void showPopup(final Activity context)
+    {
         // Inflate the popup_layout.xml
         LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -122,7 +117,8 @@ public class BudgetViewActivity extends AppCompatActivity {
 
         popUp.showAtLocation(layout, Gravity.CENTER,0,0);
         Button add_btn=(Button)layout.findViewById(R.id.add_action_btn);
-        add_btn.setOnClickListener(new View.OnClickListener() {
+        add_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View arg0)
             {
@@ -133,7 +129,6 @@ public class BudgetViewActivity extends AppCompatActivity {
                 EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
                 Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), title.getText().toString(), category, Calendar.getInstance().getTime());
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
-                //mAdapter.add(newExpense);
                 currentBudget.addExpense(newExpense);
                 popUp.dismiss();
             }
