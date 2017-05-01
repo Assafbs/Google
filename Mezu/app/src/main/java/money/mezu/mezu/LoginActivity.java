@@ -51,17 +51,6 @@ public class LoginActivity extends AppCompatActivity implements
         mConnectionProgressDialog = new ProgressDialog(this);
         mConnectionProgressDialog.setMessage("Signing in...");
 
-        Button startBtn = (Button)findViewById(R.id.start_btn);
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: check if user is logged in already
-                sessionManager.createLoginSession("dummy", new UserIdentifier(new BigInteger("0")), "dummy");
-                Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
-                startActivity(budgetsIntent);
-            }
-        });
-
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
