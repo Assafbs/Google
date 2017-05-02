@@ -20,11 +20,10 @@ import java.util.ArrayList;
 
 
 import java.util.ArrayList;
+
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
-        Context context;
     public ExpenseAdapter(Context context, ArrayList<Expense> expenses) {
         super(context, 0, expenses);
-        this.context = context;
     }
 
     @Override
@@ -38,14 +37,25 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         // Lookup view for data population
         TextView category = (TextView) convertView.findViewById(R.id.expenseCategory);
         TextView amount = (TextView) convertView.findViewById(R.id.expenseAmount);
-        TextView user = (TextView) convertView.findViewById(R.id.expenseUser);
+        TextView title = (TextView) convertView.findViewById(R.id.expenseTitle);
         LinearLayout expenseRow = (LinearLayout) convertView.findViewById(R.id.expenseRow);
         expenseRow.setTag(expense);
 
         // Populate the data into the template view using the data object
-        category.setText(expense.getCategory().toString());
+
+        //BAHH
+        if (expense.getCategory() != null) {
+            category.setText(expense.getCategory().toString());
+        } else {
+            category.setText(R.string.category_other);
+        }
         amount.setText(Double.toString(expense.getAmount()));
-        user.setText(expense.getUserName());
+        String t_title = expense.getTitle();
+        if (t_title == null) {
+            title.setText(R.string.general);
+        } else {
+            title.setText(expense.getTitle());
+        }
 
         expenseRow.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,12 +9,12 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/expenseCategory"
+        android:id="@+id/expenseTitle"
         android:textSize="10sp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:gravity="center_vertical" />
+        android:gravity="center" />
     <TextView
         android:id="@+id/expenseAmount"
         android:layout_marginStart="5dp"
@@ -22,15 +22,15 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:textColor="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/expenseUser"
+        android:id="@+id/expenseCategory"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:gravity="center_vertical" />
+        android:gravity="center" />
 
 </LinearLayout>
 

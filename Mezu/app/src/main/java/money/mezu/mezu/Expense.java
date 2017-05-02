@@ -15,15 +15,17 @@ public class Expense {
     private String mId;
     private double mAmount; // Temporary, should probably be changed
     private String mDescription;
+    private String mTitle;
     private Category mCategory;
     private Date mTime;
     private UserIdentifier mUserID;
     private String mUserName;
 
-    public Expense(String id, double amount, String description, Category category, Date time) {
+    public Expense(String id, double amount, String mTitle, String description, Category category, Date time) {
         super();
         this.mId = id;
         this.mAmount = amount;
+        this.mTitle = mTitle;
         this.mDescription = description;
         this.mCategory = category;
         this.mTime = time;
@@ -36,8 +38,16 @@ public class Expense {
         super();
         this.mId = (String) serializedExpense.get("mId");
         this.mAmount = Double.parseDouble(serializedExpense.get("mAmount").toString());
+        this.mTitle = (String) serializedExpense.get("mTitle");
         this.mDescription = (String) serializedExpense.get("mDescription");
-        this.mCategory = Category.values()[Integer.parseInt(serializedExpense.get("mCategory").toString())];
+        //FOR FUTURE REFERENCE?
+        try {
+            this.mCategory = Category.values()[Integer.parseInt(serializedExpense.get("mCategory").toString())];
+        }
+        catch(NumberFormatException e){
+            this.mCategory = (Category) Category.getCategoryFromString(serializedExpense.get("mCategory").toString());
+        }
+
         this.mTime = new Date((long) serializedExpense.get("mTime"));
         this.mUserID =  new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
         this.mUserName = (String) serializedExpense.get("mUserName");
@@ -67,6 +77,7 @@ public class Expense {
         HashMap<String, Object> serialized = new HashMap<String, Object>();
         serialized.put("mId", mId);
         serialized.put("mAmount", mAmount);
+        serialized.put("mTitle", mTitle);
         serialized.put("mDescription", mDescription);
         serialized.put("mCategory", mCategory.getValue());
         serialized.put("mTime", mTime.getTime());
@@ -88,6 +99,8 @@ public class Expense {
     public double getAmount() {
         return mAmount;
     }
+
+    public String getTitle() { return mTitle; }
 
     public String getDescription() {
         return mDescription;

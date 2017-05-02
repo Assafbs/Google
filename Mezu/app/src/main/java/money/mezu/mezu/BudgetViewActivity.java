@@ -143,11 +143,16 @@ public class BudgetViewActivity extends AppCompatActivity {
             public void onClick(View arg0)
             {
                 EditText amountField = (EditText)layout.findViewById(R.id.EditTextAmount);
+                EditText description = (EditText)layout.findViewById(R.id.EditTextDescription);
                 Spinner categorySpinner =(Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
                 Log.d("", String.format("tmp:tmp: id: %d", categorySpinner.getId()));
                 Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
                 EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
-                Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), title.getText().toString(), category, Calendar.getInstance().getTime());
+                String t_title = title.getText().toString();
+                if (t_title.equals("")){
+                    t_title = getResources().getString(R.string.general);
+                }
+                Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), t_title, description.getText().toString(), category, Calendar.getInstance().getTime());
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
                 currentBudget.addExpense(newExpense);
                 mAdapter.notifyDataSetChanged();

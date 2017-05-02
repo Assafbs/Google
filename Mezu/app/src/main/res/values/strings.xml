@@ -22,6 +22,7 @@
     <string name="title_activity_budgets">My Budgets</string>
     <string name = "title_activity_budget_view">Budget View</string>
     <string name="active_budget">Active</string>
+
     <string name="recent_expenses">Recent Expenses</string>
     <!--expense related-->
     <string name="add">Add</string>
@@ -45,7 +46,9 @@
     <string name="category_debt_reduction">Debt Reduction</string>
     <string name="category_donations">Donations</string>
     <string name="category_paycheck">Paycheck</string>
+    <string name="category_other">Other</string>
     <string name="category">Category</string>
+    <string name="not_specified">Not_Specified</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
@@ -58,5 +61,6 @@
     <string name="add_partner">Add partner</string>
     <string name="starting_balance">Starting balance:</string>
     <string name="optional">(Optional)</string>
+
 
 </resources>

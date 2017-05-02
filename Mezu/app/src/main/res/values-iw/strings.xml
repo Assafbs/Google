@@ -23,6 +23,8 @@
     <string name="budget_name">שם התקציב:</string>
     <string name="cancel">ביטול</string>
     <string name="category">קטגוריה</string>
+    <string name="not_specified">ללא</string>
+    <string name="category_other">אחר</string>
     <string name="category_clothing">ביגוד</string>
     <string name="category_debt_reduction">משכנתא/פדיון הלוואות</string>
     <string name="category_donations">תרומות</string>
@@ -43,5 +45,7 @@
     <string name="something_extra_optional">משהו נוסף (אופציונאלי)</string>
     <string name="starting_balance">מאזן התחלתי:</string>
     <string name="title_optional">כותרת (אופציונאלי)</string>
+    <string name="general">כללי</string>
+    <string name="active_budget">פעיל</string>
     <string name="partners_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
 </resources>

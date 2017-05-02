@@ -16,6 +16,7 @@
         <item>@string/category_debt_reduction</item>
         <item>@string/category_donations</item>
         <item>@string/category_paycheck</item>
+        <item>@string/category_other</item>
 
 
     </string-array>
