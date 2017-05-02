@@ -1,6 +1,7 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,6 +29,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +60,7 @@ public class BudgetViewActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.setVisibility(View.INVISIBLE);
                 showPopup(BudgetViewActivity.this);
             }
         });
@@ -115,6 +120,20 @@ public class BudgetViewActivity extends AppCompatActivity {
         popUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         popUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         popUp.setFocusable(true);
+        final EditText EditTextAmount = (EditText) layout.findViewById(R.id.EditTextAmount);
+        EditTextAmount.post(new Runnable() {
+            public void run() {
+                EditTextAmount.requestFocusFromTouch();
+                InputMethodManager lManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                lManager.showSoftInput(EditTextAmount, 0);
+            }
+        });
+        popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                context.findViewById(R.id.fab_expense).setVisibility(View.VISIBLE);
+            }
+        });
 
         popUp.showAtLocation(layout, Gravity.CENTER,0,0);
         Button add_btn=(Button)layout.findViewById(R.id.add_action_btn);
