@@ -111,7 +111,7 @@ public class BudgetViewActivity extends AppCompatActivity {
     {
         // Inflate the popup_layout.xml
         LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = layoutInflater.inflate(R.layout.activity_add_expense, viewGroup);
 
         // Creating the PopupWindow
@@ -152,6 +152,7 @@ public class BudgetViewActivity extends AppCompatActivity {
                 if (t_title.equals("")){
                     t_title = getResources().getString(R.string.general);
                 }
+
                 Expense newExpense = new Expense("",
                         Double.parseDouble(amountField.getText().toString()),
                         t_title,

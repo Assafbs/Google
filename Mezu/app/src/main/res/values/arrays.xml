@@ -2,13 +2,13 @@
 <resources>
     <string-array name="categories_list">
         <item>@string/category_food</item>
-        <item>@string/category_clothing</item>
-        <item>@string/category_entertainment</item>
         <item>@string/category_shelter</item>
+        <item>@string/category_entertainment</item>
+        <item>@string/category_clothing</item>
         <item>@string/category_transportation</item>
         <item>@string/category_medical</item>
-        <item>@string/category_household</item>
         <item>@string/category_insurance</item>
+        <item>@string/category_household</item>
         <item>@string/category_personal</item>
         <item>@string/category_education</item>
         <item>@string/category_gifts</item>
@@ -17,7 +17,6 @@
         <item>@string/category_donations</item>
         <item>@string/category_paycheck</item>
         <item>@string/category_other</item>
-
 
     </string-array>
 </resources>
