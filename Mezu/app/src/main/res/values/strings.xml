@@ -61,6 +61,7 @@
     <string name="add_partner">Add partner</string>
     <string name="starting_balance">Starting balance:</string>
     <string name="optional">(Optional)</string>
+    <string name="general">general</string>
 
 
 </resources>

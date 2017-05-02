@@ -152,7 +152,15 @@ public class BudgetViewActivity extends AppCompatActivity {
                 if (t_title.equals("")){
                     t_title = getResources().getString(R.string.general);
                 }
-                Expense newExpense = new Expense("", Double.parseDouble(amountField.getText().toString()), t_title, description.getText().toString(), category, Calendar.getInstance().getTime());
+                Expense newExpense = new Expense("",
+                        Double.parseDouble(amountField.getText().toString()),
+                        t_title,
+                        description.getText().toString(),
+                        category,
+                        Calendar.getInstance().getTime(),
+                        sessionManager.getUserId(),
+                        sessionManager.getUserName());
+
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
                 currentBudget.addExpense(newExpense);
                 mAdapter.notifyDataSetChanged();

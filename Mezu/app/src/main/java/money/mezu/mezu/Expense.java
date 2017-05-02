@@ -21,7 +21,14 @@ public class Expense {
     private UserIdentifier mUserID;
     private String mUserName;
 
-    public Expense(String id, double amount, String mTitle, String description, Category category, Date time) {
+    public Expense(String id,
+                   double amount,
+                   String mTitle,
+                   String description,
+                   Category category,
+                   Date time,
+                   UserIdentifier uid,
+                   String userName) {
         super();
         this.mId = id;
         this.mAmount = amount;
@@ -29,8 +36,8 @@ public class Expense {
         this.mDescription = description;
         this.mCategory = category;
         this.mTime = time;
-        this.mUserID = new UserIdentifier(new BigInteger("1234"));
-        this.mUserName = "Assafim";
+        this.mUserID = uid;
+        this.mUserName = userName;
     }
 
     public Expense(HashMap<String, Object> serializedExpense)
@@ -53,25 +60,6 @@ public class Expense {
         this.mUserName = (String) serializedExpense.get("mUserName");
     }
 
-    public Expense(String id, double amount, Category category) {
-        super();
-        this.mId = id;
-        this.mAmount = amount;
-        this.mCategory = category;
-        //TODO: use SessionManager to get info on user
-        this.mUserID = new UserIdentifier(new BigInteger("1234"));
-        this.mUserName = "Assafim";
-    }
-
-    public Expense(String id, double amount, Category category, String userName) {
-        super();
-        this.mId = id;
-        this.mAmount = amount;
-        this.mCategory = category;
-        //TODO: use SessionManager to get info on user
-        this.mUserID = new UserIdentifier(new BigInteger("1234"));
-        this.mUserName = userName;
-    }
     public HashMap<String, Object> serialize()
     {
         HashMap<String, Object> serialized = new HashMap<String, Object>();
