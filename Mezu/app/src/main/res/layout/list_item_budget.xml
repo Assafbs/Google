@@ -2,7 +2,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/budgetRow"
-    android:background="@drawable/my_background"
     android:orientation="horizontal"
     android:padding="10dp"
     android:clickable="true">
@@ -12,21 +11,11 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        android:gravity="center" />
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center_vertical"
-        android:textColor="@color/colorPrimary"
-         />
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:text="@string/active_budget" />
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
 
 </LinearLayout>
 

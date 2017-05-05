@@ -44,7 +44,7 @@ public class BudgetViewActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
     GoogleApiClient mGoogleApiClient;
-    private static ExpenseAdapter mAdapter = null;
+    private ExpenseAdapter mAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +110,8 @@ public class BudgetViewActivity extends AppCompatActivity {
     private void showPopup(final Activity context)
     {
         // Inflate the popup_layout.xml
-        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.activity_add_expense);
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View layout = layoutInflater.inflate(R.layout.activity_add_expense, viewGroup);
+        final View layout = layoutInflater.inflate(R.layout.activity_add_expense, null);
 
         // Creating the PopupWindow
         final PopupWindow popUp = new PopupWindow(context);

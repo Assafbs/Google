@@ -30,8 +30,8 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10.0sp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1.0sp"
             android:id="@+id/budgets_list" />
 
     </LinearLayout>
