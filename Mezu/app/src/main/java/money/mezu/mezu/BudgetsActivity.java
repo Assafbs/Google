@@ -39,7 +39,7 @@ public class BudgetsActivity extends AppCompatActivity {
         if(!sessionManager.checkLogin()) {
             return;
         }
-        backend.setUid(sessionManager.getUserId());
+        UserIdentifier uid = sessionManager.getUserId();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -64,7 +64,7 @@ public class BudgetsActivity extends AppCompatActivity {
             }
         });
 
-        backend.registerForAllUserBudgetUpdates(this);
+        backend.registerForAllUserBudgetUpdates(this, uid);
     }
     //************************************************************************************************************************************************
     public void updateBudgetsCallback(Budget budget)

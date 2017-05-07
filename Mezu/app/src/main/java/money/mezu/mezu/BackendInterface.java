@@ -11,11 +11,9 @@ import java.util.List;
 public interface BackendInterface {
     // TODO: modify according to the needs
 
-    public void registerForAllUserBudgetUpdates(final BudgetsActivity activity);
-//    List<Expense> getExpensesOfBudget(BudgetIdentifier bid);
-    void deleteBudget(BudgetIdentifier bid);
-    void createBudgetAndAddToUser(Budget budget);
-    void addUserToBudget(Budget budget);
+    public void registerForAllUserBudgetUpdates(final BudgetsActivity activity, UserIdentifier uid);
+    void deleteBudget(String bid);
+    void createBudgetAndAddToUser(Budget budget, UserIdentifier uid);
+    void addUserToBudget(String bid, UserIdentifier uid);
     void addExpenseToBudget(Budget budget, Expense expense);
-    void setUid(UserIdentifier uid);
 }

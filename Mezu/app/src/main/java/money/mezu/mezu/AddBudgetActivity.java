@@ -45,11 +45,11 @@ public class AddBudgetActivity extends Activity {
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
                     Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
                 } else {
-                    //TODO: insert new budget to DB
-                    //TODO: find a way to generate budget identifier. Why do we need it?
-                    // TODO: add initial balance to badget in backend.
+                    // TODO: add initial balance to budget in backend.
                     Log.d("","AddBudgetActivity: adding budget to db");
-                    FirebaseBackend.getInstance().createBudgetAndAddToUser(new Budget("", BudgetName));
+                    SessionManager sessionManager = new SessionManager(getApplicationContext());
+                    UserIdentifier uid = sessionManager.getUserId();
+                    FirebaseBackend.getInstance().createBudgetAndAddToUser(new Budget("", BudgetName), uid);
                     finish();
                 }
 
