@@ -48,4 +48,10 @@
     <string name="general">כללי</string>
     <string name="active_budget">פעיל</string>
     <string name="partners_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
+    <string name="pref_title_display_name">שם תצוגה</string>
+    <string name="pref_title_language">שפה</string>
+    <string name="pref_title_allow_notifications">אפשר התראות</string>
+    <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
+    <string name="english">אנגלית</string>
+    <string name="hebrew">עברית</string>
 </resources>

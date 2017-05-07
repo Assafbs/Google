@@ -2,6 +2,7 @@ package money.mezu.mezu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -100,7 +101,8 @@ public class BudgetViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
+            Intent SettingsIntent = new Intent(BudgetViewActivity.this, SettingsActivity.class);
+            startActivity(SettingsIntent);
         } else if (id == R.id.action_log_out) {
             logout();
         }

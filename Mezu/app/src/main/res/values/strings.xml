@@ -20,7 +20,7 @@
         completions."
     </string>
     <string name="title_activity_budgets">My Budgets</string>
-    <string name = "title_activity_budget_view">Budget View</string>
+    <string name="title_activity_budget_view">Budget View</string>
     <string name="active_budget">Active</string>
 
     <string name="recent_expenses">Recent Expenses</string>
@@ -62,6 +62,22 @@
     <string name="starting_balance">Starting balance:</string>
     <string name="optional">(Optional)</string>
     <string name="general">general</string>
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
 
 
+    <string name="hebrew">Hebrew</string>
+    <string name="english">English</string>
+
+    <string-array name="pref_language_list_titles">
+        <item>@string/hebrew</item>
+        <item>@string/english</item>
+    </string-array>
+    <string-array name="pref_language_list_values">
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_title_language">Language</string>
 </resources>

@@ -89,7 +89,8 @@ public class BudgetsActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
+            Intent SettingsIntent = new Intent(BudgetsActivity.this, SettingsActivity.class);
+            startActivity(SettingsIntent);
         }
         else if (id == R.id.action_log_out)
         {
