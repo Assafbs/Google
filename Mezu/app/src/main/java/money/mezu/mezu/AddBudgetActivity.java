@@ -33,11 +33,11 @@ public class AddBudgetActivity extends Activity {
             public void onClick(View view) {
                 String BudgetName = ((EditText) findViewById(R.id.budget_name)).getText().toString();
                 String startingBalanceString = ((EditText) findViewById(R.id.starting_balance)).getText().toString();
-                int startingBalance;
+                double startingBalance;
                 if (startingBalanceString.equals("")) {
-                    startingBalance = 0;
+                    startingBalance = 0; // By convention
                 } else {
-                    startingBalance = Integer.parseInt(startingBalanceString);
+                    startingBalance = Double.parseDouble(startingBalanceString);
                 }
 
                 if (BudgetName.equals("")) {
@@ -45,11 +45,11 @@ public class AddBudgetActivity extends Activity {
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
                     Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // TODO: add initial balance to budget in backend.
                     Log.d("","AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
-                    FirebaseBackend.getInstance().createBudgetAndAddToUser(new Budget("", BudgetName), uid);
+                    Budget newBudget = new Budget(BudgetName, startingBalance);
+                    FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
                     finish();
                 }
 

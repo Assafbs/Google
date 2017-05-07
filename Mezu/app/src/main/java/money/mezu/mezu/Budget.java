@@ -16,13 +16,15 @@ public class Budget {
     private String mId;
     private ArrayList<Expense> mExpenses;
     private String mName;
+    private double mInitialBalance;
 
-    public Budget(String id, String name)
+    public Budget(String name, double initialBalance)
     {
         super();
-        this.mId = id;
+        this.mId = "";
         this.mName = name;
         this.mExpenses = new ArrayList<>();
+        this.mInitialBalance = initialBalance;
         //TODO: backend to fill
     }
 
@@ -45,6 +47,14 @@ public class Budget {
         else
         {
             this.mExpenses = new ArrayList<>();
+        }
+        if (serializedBudget.containsKey("mInitialBalance"))
+        {
+            this.mInitialBalance = Double.parseDouble(serializedBudget.get("mInitialBalance").toString());
+        }
+        else
+        {
+            this.mInitialBalance = 0;
         }
     }
 
@@ -74,11 +84,12 @@ public class Budget {
         return null;
     }
 
-    public HashMap<String, String> serializeNoExpenses()
+    public HashMap<String, Object> serializeNoExpenses()
     {
-        HashMap<String, String> serialized = new HashMap<String,String>();
+        HashMap<String, Object> serialized = new HashMap<>();
         serialized.put("mId", mId);
         serialized.put("mName", mName);
+        serialized.put("mInitialBalance", mInitialBalance);
         return serialized;
     }
 
