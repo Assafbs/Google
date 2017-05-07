@@ -80,4 +80,6 @@
 
     <string name="title_activity_settings">Settings</string>
     <string name="pref_title_language">Language</string>
+    <string name="pref_description_allow_notifications">A notification will appear every time an expense is added to one of your budgets</string>
+    <string name="pref_title_allow_notifications">Allow notifications</string>
 </resources>
