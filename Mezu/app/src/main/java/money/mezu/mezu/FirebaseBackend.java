@@ -112,7 +112,7 @@ public class FirebaseBackend implements BackendInterface {
     public void createBudgetAndAddToUser(Budget budget, UserIdentifier uid) {
         Log.d("","FirebaseBackend:addBudgetToUser: adding budget to user");
         String newBid = createBudget(budget);
-        addBudgetToUser(newBid, uid);
+        connectBudgetAndUser(newBid, uid.getId().toString());
     }
     //************************************************************************************************************************************************
     private String createBudget(Budget budget)
@@ -126,19 +126,18 @@ public class FirebaseBackend implements BackendInterface {
         return bid;
     }
     //************************************************************************************************************************************************
-    private void addBudgetToUser(String bid, UserIdentifier uid)
+    private void addBudgetToUser(String bid, String uid)
     {
         Log.d("",String.format("FirebaseBackend:addBudgetToUser: adding budget with id: %s", bid));
-        mDatabase.child("users").child(uid.getId().toString()).child("budgets").child(bid).setValue(bid);
+        mDatabase.child("users").child(uid).child("budgets").child(bid).setValue(bid);
         Log.d("", "FirebaseBackend:addBudgetToUser: added budget");
     }
     //************************************************************************************************************************************************
-    public void addUserToBudget(String bid, UserIdentifier uid)
+    public void addUserToBudget(String bid, String uid)
     {
-        String uidAsString = uid.getId().toString();
         // TODO - make sure user entry always exists in DB in this stage
         //mDatabase.child("users").push().setValue(uid.getId().toString());
-        mDatabase.child("budgets").child(bid).child("users").child(uidAsString).setValue(uidAsString);
+        mDatabase.child("budgets").child(bid).child("users").child(uid).setValue(uid);
     }
     //************************************************************************************************************************************************
     public void addExpenseToBudget(Budget budget, Expense expense)
@@ -160,5 +159,75 @@ public class FirebaseBackend implements BackendInterface {
             ref.removeEventListener(pathListener.second);
         }
         mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+    }
+    //************************************************************************************************************************************************
+    public void addUserIfNeeded(UserIdentifier uid, String username, String email)
+    {
+        final String uidToAdd = uid.getId().toString();
+        final String usernameToAdd = username;
+        final String emailToAdd = email;
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("users/");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (!dataSnapshot.hasChild(uidToAdd)) {
+                    mDatabase.child("users").child(uidToAdd).child("username").setValue(usernameToAdd);
+                    mDatabase.child("users").child(uidToAdd).child("email").setValue(emailToAdd);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+    }
+    //************************************************************************************************************************************************
+    private void connectBudgetAndUser(String bid, String uid)
+    {
+        addBudgetToUser(bid, uid);
+        addUserToBudget(bid, uid);
+    }
+    //************************************************************************************************************************************************
+    public void connectBudgetAndUserByEmail(Budget budget, String email)
+    {
+        //TODO - maybe change DB representation in the future...
+        final String innerEmail = email;
+        final String bid = budget.getId();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("users/");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                HashMap<String, Object> uidDict =(HashMap<String, Object>)dataSnapshot.getValue();
+                for (final String uidAsString : uidDict.keySet()) {
+                    DatabaseReference ref2 = database.getReference("users/" + uidAsString + "/email/");
+                    if (ref2 == null)
+                        continue;
+                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(innerEmail)) {
+                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), innerEmail));
+                                connectBudgetAndUser(bid, uidAsString);
+                            }
+                            else {
+                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, innerEmail));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 }
