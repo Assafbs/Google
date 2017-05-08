@@ -14,7 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddBudgetActivity extends Activity {
+public class AddBudgetActivity extends BaseNavDrawerActivity {
 
     List<String> partnersEmails;
     TextView partnersList;

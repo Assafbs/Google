@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.net.Uri;
+import com.squareup.picasso.Picasso;
 
 public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.ViewHolder> {
 
@@ -16,7 +18,7 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
     private int mIcons[];
 
     private String name;
-    private int profile;
+    private Uri image;
     private String email;
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
@@ -47,12 +49,12 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         }
     }
 
-    NavDrawerAdapter(String Titles[],int Icons[],String Name,String Email, int Profile){
+    NavDrawerAdapter(String Titles[],int Icons[],String Name,String Email, Uri Image){
         mNavTitles = Titles;
         mIcons = Icons;
         name = Name;
         email = Email;
-        profile = Profile;
+        image = Image;
     }
 
     @Override
@@ -80,7 +82,11 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
             holder.imageView.setImageResource(mIcons[position -1]);
         }
         else{
-            holder.profile.setImageResource(profile);
+            if (image != null) {
+                Picasso.with(staticContext.mContext).load(image).into(holder.profile);
+            } else {
+                holder.profile.setImageResource(R.drawable.rich_man_small);
+            }
             holder.Name.setText(name);
             holder.email.setText(email);
         }

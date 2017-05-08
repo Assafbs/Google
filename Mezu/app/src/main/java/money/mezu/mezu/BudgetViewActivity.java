@@ -36,23 +36,16 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by davidled on 21/04/2017.
- */
-
-public class BudgetViewActivity extends AppCompatActivity {
+public class BudgetViewActivity extends BaseNavDrawerActivity {
     protected static Budget currentBudget;
 
-    private SessionManager sessionManager;
-    GoogleApiClient mGoogleApiClient;
     private ExpenseAdapter mAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         TextView budgetName = (TextView) findViewById(R.id.budgetViewName);
         budgetName.setText(currentBudget.toString());
 
@@ -66,47 +59,15 @@ public class BudgetViewActivity extends AppCompatActivity {
             }
         });
 
-
         // Create the adapter to convert the array to views
         mAdapter = new ExpenseAdapter(this, currentBudget.getExpenses());
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.expenses_list);
         listView.setAdapter(mAdapter);
-
-        sessionManager = new SessionManager(this);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult connectionResult) {
-                    }
-                }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
     }
 
     public static void setCurrentBudget(Budget budget) {
         currentBudget = budget;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent SettingsIntent = new Intent(BudgetViewActivity.this, SettingsActivity.class);
-            startActivity(SettingsIntent);
-        } else if (id == R.id.action_log_out) {
-            logout();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void showPopup(final Activity context)
@@ -160,8 +121,8 @@ public class BudgetViewActivity extends AppCompatActivity {
                         description.getText().toString(),
                         category,
                         Calendar.getInstance().getTime(),
-                        sessionManager.getUserId(),
-                        sessionManager.getUserName());
+                        mSessionManager.getUserId(),
+                        mSessionManager.getUserName());
 
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
                 currentBudget.addExpense(newExpense);
@@ -169,18 +130,5 @@ public class BudgetViewActivity extends AppCompatActivity {
                 popUp.dismiss();
             }
         });
-    }
-
-    private void logout() {
-        if (sessionManager.getLoginType().equals("Google")) {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            // ...
-                        }
-                    });
-        }
-        sessionManager.logoutUser();
     }
 }
