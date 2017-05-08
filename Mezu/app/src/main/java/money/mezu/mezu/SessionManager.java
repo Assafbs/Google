@@ -23,6 +23,7 @@ public class SessionManager {
     public static final String KEY_NAME = "name";
     public static final String KEY_ID = "id";
     public static final String KEY_LOGIN_TYPE = "loginType";
+    public static final String KEY_EMAIL = "";
 
     public SessionManager(Context context){
         this._context = context;
@@ -37,11 +38,12 @@ public class SessionManager {
                 .build();
     }
 
-    public void createLoginSession(String name, UserIdentifier id, String logInType){
+    public void createLoginSession(String name, UserIdentifier id, String logInType, String email){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_ID, id.getId().toString());
         editor.putString(KEY_LOGIN_TYPE, logInType);
+        editor.putString(KEY_EMAIL, email);
         editor.commit();
     }
 

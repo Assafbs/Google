@@ -14,6 +14,8 @@ public interface BackendInterface {
     void registerForAllUserBudgetUpdates(final BudgetsActivity activity, UserIdentifier uid);
     void deleteBudget(String bid);
     void createBudgetAndAddToUser(Budget budget, UserIdentifier uid);
-    void addUserToBudget(String bid, UserIdentifier uid);
+    void addUserToBudget(String bid, String uid);
     void addExpenseToBudget(Budget budget, Expense expense);
+    void addUserIfNeeded(UserIdentifier uid, String username, String email);
+    void connectBudgetAndUserByEmail(Budget budget, String email);
 }

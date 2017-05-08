@@ -50,10 +50,11 @@ public class AddBudgetActivity extends Activity {
                     UserIdentifier uid = sessionManager.getUserId();
                     Budget newBudget = new Budget(BudgetName, startingBalance);
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
+                    for (String email : partnersEmails) {
+                        FirebaseBackend.getInstance().connectBudgetAndUserByEmail(newBudget, email);
+                    }
                     finish();
                 }
-
-
             }
         });
 
@@ -76,7 +77,6 @@ public class AddBudgetActivity extends Activity {
                 }
             }
         });
-
     }
 
     private boolean isValidEmail(String email){
