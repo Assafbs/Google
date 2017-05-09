@@ -54,4 +54,6 @@
     <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
     <string name="english">אנגלית</string>
     <string name="hebrew">עברית</string>
+    <string name="title_activity_add_budget_view">הוספת תקציב</string>
+
 </resources>

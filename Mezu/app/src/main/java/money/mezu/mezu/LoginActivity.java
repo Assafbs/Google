@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.net.Uri;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestServerAuthCode(serverClientId)
                 .requestEmail()
+                .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -87,10 +89,11 @@ public class LoginActivity extends AppCompatActivity implements
             String personId = acct.getId();
             String authCode = acct.getServerAuthCode();
             BigInteger uid = new BigInteger(personId);
+            Uri personImage = acct.getPhotoUrl();
             UserIdentifier userId = new UserIdentifier(uid);
 
             //TODO: send details to the backend (do not send name)
-            sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google", personEmail);
+            sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google", personEmail, personImage);
             FirebaseBackend.getInstance().addUserIfNeeded(userId, personName, personEmail);
             Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

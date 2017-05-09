@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.math.BigInteger;
+import android.net.Uri;
 
 public class SessionManager {
     SharedPreferences pref;
@@ -23,7 +24,8 @@ public class SessionManager {
     public static final String KEY_NAME = "name";
     public static final String KEY_ID = "id";
     public static final String KEY_LOGIN_TYPE = "loginType";
-    public static final String KEY_EMAIL = "";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_IMAGE = "image";
 
     public SessionManager(Context context){
         this._context = context;
@@ -38,12 +40,13 @@ public class SessionManager {
                 .build();
     }
 
-    public void createLoginSession(String name, UserIdentifier id, String logInType, String email){
+    public void createLoginSession(String name, UserIdentifier id, String logInType, String email, Uri image){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_ID, id.getId().toString());
         editor.putString(KEY_LOGIN_TYPE, logInType);
         editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_IMAGE, image.toString());
         editor.commit();
     }
 
@@ -70,6 +73,18 @@ public class SessionManager {
 
     public String getUserName(){
         return pref.getString(KEY_NAME, null);
+    }
+
+    public String getUserEmail(){ return pref.getString(KEY_EMAIL, null); }
+
+    public Uri getUserImage()
+    {
+        Uri image = null;
+        String imageString = pref.getString(KEY_IMAGE, null);
+        if (imageString != null) {
+            image = Uri.parse(imageString);
+        }
+        return image;
     }
 
     public void logoutUser(){
