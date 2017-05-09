@@ -20,19 +20,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-
 import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -55,7 +54,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.INVISIBLE);
-                showPopup(BudgetViewActivity.this);
+                showPopupAddExpenseActivity(BudgetViewActivity.this);
             }
         });
 
@@ -70,7 +69,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         currentBudget = budget;
     }
 
-    private void showPopup(final Activity context)
+    private void showPopupAddExpenseActivity(final Activity context)
     {
         // Inflate the popup_layout.xml
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -111,8 +110,15 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                 Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
                 EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
                 String t_title = title.getText().toString();
+                boolean isExpense = true;
                 if (t_title.equals("")){
                     t_title = getResources().getString(R.string.general);
+                }
+
+                RadioGroup rgExpense = (RadioGroup) layout.findViewById(R.id.radio_expense_group);
+                int selectedId = rgExpense.getCheckedRadioButtonId();
+                if (selectedId == R.id.radio_income){
+                    isExpense = false;
                 }
 
                 Expense newExpense = new Expense("",
@@ -122,7 +128,8 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                         category,
                         Calendar.getInstance().getTime(),
                         mSessionManager.getUserId(),
-                        mSessionManager.getUserName());
+                        mSessionManager.getUserName(),
+                        isExpense);
 
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
                 currentBudget.addExpense(newExpense);

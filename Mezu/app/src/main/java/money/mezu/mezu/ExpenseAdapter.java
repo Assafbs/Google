@@ -1,6 +1,7 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +66,10 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             category.setText(R.string.category_other);
         }
         amount.setText(Double.toString(expense.getAmount()));
+        if (!expense.getIsExpense()){
+            amount.setText(Double.toString(expense.getAmount()) + "+");
+            amount.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        }
         String t_title = expense.getTitle();
         if (t_title == null) {
             title.setText(R.string.general);
@@ -100,7 +107,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         String titleString = expense.getTitle();
         TextView titleView = (TextView)layout.findViewById(R.id.add_expense_title);
         if (titleString == null){
-            titleString = "General Expense";
+            titleString = "General";
         }
         titleView.setText(titleString);
 
@@ -109,6 +116,19 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         Spinner category = (Spinner)layout.findViewById(R.id.SpinnerCategoriesType);
         category.setSelection(expense.getCategory().getValue());
+
+        RadioButton rb_expense = (RadioButton) layout.findViewById(R.id.radio_expense);
+        RadioButton rb_income = (RadioButton) layout.findViewById(R.id.radio_income);
+        rb_expense.setClickable(false);
+        rb_income.setClickable(false);
+
+        if (expense.getIsExpense()){
+            rb_expense.setChecked(true);
+            rb_income.setChecked(false);
+        }else{
+            rb_expense.setChecked(false);
+            rb_income.setChecked(true);
+        }
 
         EditText user = (EditText)layout.findViewById(R.id.EditTextTitle);
         user.setText(expense.getUserName());

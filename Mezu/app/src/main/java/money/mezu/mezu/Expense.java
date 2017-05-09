@@ -20,6 +20,7 @@ public class Expense {
     private Date mTime;
     private UserIdentifier mUserID;
     private String mUserName;
+    private boolean mIsExpense;
 
     public Expense(String id,
                    double amount,
@@ -28,7 +29,8 @@ public class Expense {
                    Category category,
                    Date time,
                    UserIdentifier uid,
-                   String userName) {
+                   String userName,
+                   boolean isExpense) {
         super();
         this.mId = id;
         this.mAmount = amount;
@@ -38,30 +40,34 @@ public class Expense {
         this.mTime = time;
         this.mUserID = uid;
         this.mUserName = userName;
+        this.mIsExpense = isExpense;
     }
 
-    public Expense(HashMap<String, Object> serializedExpense)
-    {
+    public Expense(HashMap<String, Object> serializedExpense) {
         super();
         this.mId = (String) serializedExpense.get("mId");
         this.mAmount = Double.parseDouble(serializedExpense.get("mAmount").toString());
         this.mTitle = (String) serializedExpense.get("mTitle");
         this.mDescription = (String) serializedExpense.get("mDescription");
-        //FOR FUTURE REFERENCE?
+        //CAN BE DELETED BEFORE RELEASE
         try {
             this.mCategory = Category.values()[Integer.parseInt(serializedExpense.get("mCategory").toString())];
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.mCategory = (Category) Category.getCategoryFromString(serializedExpense.get("mCategory").toString());
         }
 
         this.mTime = new Date((long) serializedExpense.get("mTime"));
-        this.mUserID =  new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
+        this.mUserID = new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
         this.mUserName = (String) serializedExpense.get("mUserName");
+        //CAN BE DELETED BEFORE RELEASE
+        try {
+            this.mIsExpense = (boolean) serializedExpense.get("mIsExpense");
+        } catch (NullPointerException e) {
+            this.mIsExpense = true;
+        }
     }
 
-    public HashMap<String, Object> serialize()
-    {
+    public HashMap<String, Object> serialize() {
         HashMap<String, Object> serialized = new HashMap<String, Object>();
         serialized.put("mId", mId);
         serialized.put("mAmount", mAmount);
@@ -71,6 +77,7 @@ public class Expense {
         serialized.put("mTime", mTime.getTime());
         serialized.put("mUserID", mUserID.getId().toString());
         serialized.put("mUserName", mUserName);
+        serialized.put("mIsExpense", mIsExpense);
         return serialized;
     }
 
@@ -78,7 +85,9 @@ public class Expense {
         return mId;
     }
 
-    public void setId(String id) { mId = id; }
+    public void setId(String id) {
+        mId = id;
+    }
 
     public Category getCategory() {
         return mCategory;
@@ -88,7 +97,9 @@ public class Expense {
         return mAmount;
     }
 
-    public String getTitle() { return mTitle; }
+    public String getTitle() {
+        return mTitle;
+    }
 
     public String getDescription() {
         return mDescription;
@@ -105,5 +116,11 @@ public class Expense {
     public String getUserName() {
         return mUserName;
     }
+
+    public boolean getIsExpense() {
+        return mIsExpense;
+    }
+
+
 }
 
