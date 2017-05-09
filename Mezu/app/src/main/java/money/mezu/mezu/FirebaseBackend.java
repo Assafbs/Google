@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.Charset;
+import java.math.BigInteger;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -173,8 +177,8 @@ public class FirebaseBackend implements BackendInterface {
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 if (!dataSnapshot.hasChild(uidToAdd)) {
-                    mDatabase.child("users").child(uidToAdd).child("username").setValue(usernameToAdd);
-                    mDatabase.child("users").child(uidToAdd).child("email").setValue(emailToAdd);
+                    mDatabase.child("users").child(uidToAdd).child("username").setValue(md5(usernameToAdd));
+                    mDatabase.child("users").child(uidToAdd).child("email").setValue(md5(emailToAdd));
                 }
             }
 
@@ -193,7 +197,7 @@ public class FirebaseBackend implements BackendInterface {
     public void connectBudgetAndUserByEmail(Budget budget, String email)
     {
         //TODO - maybe change DB representation in the future...
-        final String innerEmail = email;
+        final String emailHash = md5(email);
         final String bid = budget.getId();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/");
@@ -209,12 +213,12 @@ public class FirebaseBackend implements BackendInterface {
                     ref2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(innerEmail)) {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), innerEmail));
+                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
+                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
                                 connectBudgetAndUser(bid, uidAsString);
                             }
                             else {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, innerEmail));
+                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
                             }
                         }
 
@@ -229,5 +233,24 @@ public class FirebaseBackend implements BackendInterface {
             public void onCancelled(DatabaseError error) {
             }
         });
+    }
+
+    private static String md5(String s)
+    {
+        MessageDigest digest;
+        try
+        {
+            digest = MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes(Charset.forName("US-ASCII")),0,s.length());
+            byte[] magnitude = digest.digest();
+            BigInteger bi = new BigInteger(1, magnitude);
+            String hash = String.format("%0" + (magnitude.length << 1) + "x", bi);
+            return hash;
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
