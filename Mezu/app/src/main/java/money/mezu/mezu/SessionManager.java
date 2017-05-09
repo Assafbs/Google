@@ -46,7 +46,8 @@ public class SessionManager {
         editor.putString(KEY_ID, id.getId().toString());
         editor.putString(KEY_LOGIN_TYPE, logInType);
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_IMAGE, image.toString());
+        if (image != null)
+            editor.putString(KEY_IMAGE, image.toString());
         editor.commit();
     }
 
