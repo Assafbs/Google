@@ -36,7 +36,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class BudgetViewActivity extends BaseNavDrawerActivity {
+public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener{
     protected static Budget currentBudget;
 
     private ExpenseAdapter mAdapter = null;
@@ -44,6 +44,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
         setContentView(R.layout.activity_budget_view);
 
         TextView budgetName = (TextView) findViewById(R.id.budgetViewName);
@@ -107,7 +108,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                 EditText amountField = (EditText)layout.findViewById(R.id.EditTextAmount);
                 EditText description = (EditText)layout.findViewById(R.id.EditTextDescription);
                 Spinner categorySpinner =(Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
-                Log.d("", String.format("tmp:tmp: id: %d", categorySpinner.getId()));
                 Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
                 EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
                 String t_title = title.getText().toString();
@@ -125,10 +125,25 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                         mSessionManager.getUserName());
 
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
-                currentBudget.addExpense(newExpense);
-                mAdapter.notifyDataSetChanged();
+                //currentBudget.addExpense(newExpense);
+                //mAdapter.notifyDataSetChanged();
                 popUp.dismiss();
             }
         });
+    }
+
+    public void expenseUpdatedCallback()
+    {
+        Log.d("","BudgetViewActivity:expenseUpdatedCallback: invoked");
+        for(Expense expense: currentBudget.getExpenses())
+        {
+            Log.d("",String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
+        }
+
+        mAdapter = new ExpenseAdapter(this, currentBudget.getExpenses());
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.expenses_list);
+        listView.setAdapter(mAdapter);
+        listView.invalidate();
     }
 }

@@ -83,7 +83,10 @@ public class Budget {
         //ERROR MESSAGE
         return null;
     }
-
+    public void setExpenses(ArrayList<Expense> newExpenses)
+    {
+        this.mExpenses = newExpenses;
+    }
     public HashMap<String, Object> serializeNoExpenses()
     {
         HashMap<String, Object> serialized = new HashMap<>();
@@ -91,6 +94,24 @@ public class Budget {
         serialized.put("mName", mName);
         serialized.put("mInitialBalance", mInitialBalance);
         return serialized;
+    }
+
+    public void setFromBudget(Budget budget)
+    {
+        this.mId = budget.getId();
+        this.mName = budget.getName();
+        this.mExpenses = budget.getExpenses();
+        this.mInitialBalance = budget.getInitialBalance();
+    }
+
+    public double getInitialBalance()
+    {
+        return this.mInitialBalance;
+    }
+
+    public String getName()
+    {
+        return this.mName;
     }
 
     public String toString(){ return mName; }

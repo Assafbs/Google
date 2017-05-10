@@ -11,7 +11,7 @@ import java.util.List;
 public interface BackendInterface {
     // TODO: modify according to the needs
 
-    void registerForAllUserBudgetUpdates(final BudgetsActivity activity, UserIdentifier uid);
+    void startListeningForAllUserBudgetUpdates(UserIdentifier uid);
     void deleteBudget(String bid);
     void createBudgetAndAddToUser(Budget budget, UserIdentifier uid);
     void addUserToBudget(String bid, String uid);

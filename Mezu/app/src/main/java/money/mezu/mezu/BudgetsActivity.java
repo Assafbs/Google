@@ -22,12 +22,13 @@ import com.google.android.gms.common.api.Status;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BudgetsActivity extends BaseNavDrawerActivity {
+public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
 
     private HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         staticContext.mContext = getApplicationContext();
         // This code will make the app go to the login screen if the user is not connected
@@ -47,14 +48,22 @@ public class BudgetsActivity extends BaseNavDrawerActivity {
                 startActivity(addBudgetIntent);
             }
         });
-
-        mBackend.registerForAllUserBudgetUpdates(this, uid);
+        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
+        mBackend.startListeningForAllUserBudgetUpdates(uid);
     }
     //************************************************************************************************************************************************
-    public void updateBudgetsCallback(Budget budget)
+    public void budgetUpdatedCallback(Budget budget)
     {
         Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
-        this.mapOfBudgets.put(budget.getId(), budget);
+        if (mapOfBudgets.containsKey(budget.getId()))
+        {
+            mapOfBudgets.get(budget.getId()).setFromBudget(budget);
+            EventDispatcher.getInstance().notifyExpenceUpdatedListeners();
+        }
+        else
+        {
+            this.mapOfBudgets.put(budget.getId(), budget);
+        }
         ListView listView = (ListView) findViewById(R.id.budgets_list);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);

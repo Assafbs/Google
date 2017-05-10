@@ -25,7 +25,6 @@ public class FirebaseBackend implements BackendInterface {
     private DatabaseReference mDatabase;
     private static boolean mInitialized;
     private static FirebaseBackend mInstance;
-    private static BudgetsActivity mBudgetsActivity;
     private static HashSet<Pair<String, ValueEventListener>> mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
     private FirebaseBackend() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -39,8 +38,7 @@ public class FirebaseBackend implements BackendInterface {
         return mInstance;
     }
     //************************************************************************************************************************************************
-    public void registerForAllUserBudgetUpdates(BudgetsActivity budgetsActivity, UserIdentifier uid) {
-        FirebaseBackend.mBudgetsActivity = budgetsActivity;
+    public void startListeningForAllUserBudgetUpdates(UserIdentifier uid) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/" + uid.getId().toString() + "/budgets");
 
@@ -81,7 +79,7 @@ public class FirebaseBackend implements BackendInterface {
                 Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: budget has changed: hip hip horay got the following shit: %s", dataSnapshot.toString()));
                 Budget newBudget = new Budget((HashMap<String, Object>)dataSnapshot.getValue());
                 Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: deserialized budget is: %s", newBudget.toString()));
-                FirebaseBackend.mBudgetsActivity.updateBudgetsCallback(newBudget);
+                EventDispatcher.getInstance().notifyBudgetUpdatedListeners(newBudget);
             }
 
             @Override
