@@ -43,12 +43,9 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setTitle(currentBudget.getName());
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
         setContentView(R.layout.activity_budget_view);
-
-        TextView budgetName = (TextView) findViewById(R.id.budgetViewName);
-        budgetName.setText(currentBudget.toString());
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
         fab.setOnClickListener(new View.OnClickListener() {
