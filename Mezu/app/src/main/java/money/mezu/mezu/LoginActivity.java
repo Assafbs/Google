@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements
             Uri personImage = acct.getPhotoUrl();
             UserIdentifier userId = new UserIdentifier(uid);
 
-            //TODO: send details to the backend (do not send name)
             sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google", personEmail, personImage);
             FirebaseBackend.getInstance().addUserIfNeeded(userId, personName, personEmail);
             Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);

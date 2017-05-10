@@ -132,8 +132,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
                         isExpense);
 
                 FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
-                //currentBudget.addExpense(newExpense);
-                //mAdapter.notifyDataSetChanged();
                 popUp.dismiss();
             }
         });
