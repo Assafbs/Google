@@ -49,6 +49,8 @@
     <string name="category_other">Other</string>
     <string name="category">Category</string>
     <string name="not_specified">Not_Specified</string>
+    <string name="expense">expense</string>
+    <string name="income">income</string>
 
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>

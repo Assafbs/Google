@@ -47,6 +47,8 @@
     <string name="title_optional">כותרת (אופציונאלי)</string>
     <string name="general">כללי</string>
     <string name="active_budget">פעיל</string>
+    <string name="expense">הוצאה</string>
+    <string name="income">הכנסה</string>
     <string name="partners_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
     <string name="pref_title_display_name">שם תצוגה</string>
     <string name="pref_title_language">שפה</string>
