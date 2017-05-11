@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,18 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.id;
 import android.os.Build;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
 
     List<String> partnersEmails;
     TextView partnersList;
-    ArrayList<String> contactEmails;
+    AutoCompleteTextView addPartnerEmailTextView;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -38,27 +36,11 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_budget);
 
-        partnersEmails = new ArrayList<String>();
+        partnersEmails = new ArrayList<>();
         partnersList = (TextView)findViewById(R.id.partners_list);
+        addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
-        contactEmails = new ArrayList<>();
-        final AutoCompleteTextView textView = (AutoCompleteTextView)
-                findViewById(R.id.partner_email);
-        final AddBudgetActivity activity = this;
-        final boolean[] clicked = new boolean[1];
-        clicked[0] = false;
-        textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!clicked[0] && hasFocus) {
-                    tryInitializingContactEmails();
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity,
-                            android.R.layout.simple_dropdown_item_1line, contactEmails);
-                    textView.setAdapter(adapter);
-                    clicked[0] = true;
-                }
-            }
-        });
+        tryInitializingContactEmails();
 
         Button addBudgetBtn = (Button) findViewById(R.id.add_budget);
         addBudgetBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,31 +103,9 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
     public void tryInitializingContactEmails() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
+            new InitContactEmailsTask().execute(this);
         }
-        else {
-            initializeContactEmails();
-        }
-    }
-
-    public void initializeContactEmails() {
-        ContentResolver cr = getContentResolver();
-        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        while (cursor.moveToNext()) {
-            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            Cursor emailCur = cr.query(
-                    ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                    null,
-                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
-                    new String[]{id}, null);
-            while (emailCur.moveToNext()) {
-                String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                //Log.d("", String.format("AddBudgetActivity: foo2, email is %s", email));
-                contactEmails.add(email);
-
-            }
-            emailCur.close();
-        }
-        cursor.close();
     }
 
     @Override
@@ -154,10 +114,46 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                initializeContactEmails();
+                new InitContactEmailsTask().execute(this);
             } else {
                 //Toast.makeText(this, "Until you grant the permission, there will be no autocomplete for emails", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private class InitContactEmailsTask extends AsyncTask<Activity, Void, Activity> {
+        private ArrayList<String> contactEmails;
+
+        @Override
+        protected Activity doInBackground(Activity... activities) {
+            initializeContactEmails();
+            return activities[0];
+        }
+
+        private void initializeContactEmails() {
+            contactEmails = new ArrayList<>();
+            ContentResolver cr = getContentResolver();
+            Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                Cursor emailCur = cr.query(
+                        ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                        new String[]{id}, null);
+                while (emailCur.moveToNext()) {
+                    String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+                    contactEmails.add(email);
+                }
+                emailCur.close();
+            }
+            cursor.close();
+        }
+
+        protected void onPostExecute(Activity activity) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
+                    android.R.layout.simple_dropdown_item_1line, contactEmails);
+            addPartnerEmailTextView.setAdapter(adapter);
         }
     }
 }
