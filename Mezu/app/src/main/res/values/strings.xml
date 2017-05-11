@@ -76,8 +76,8 @@
         <item>@string/english</item>
     </string-array>
     <string-array name="pref_language_list_values">
-        <item>1</item>
-        <item>0</item>
+        <item>heb</item>
+        <item>eng</item>
     </string-array>
 
     <string name="title_activity_add_budget_view">Add Budget</string>
