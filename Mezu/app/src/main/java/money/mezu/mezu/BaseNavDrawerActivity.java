@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
@@ -121,7 +122,8 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-            Toast.makeText(this, "Open Settings ", Toast.LENGTH_SHORT).show();
+            Intent SettingsIntent = new Intent(BaseNavDrawerActivity.this, SettingsActivity.class);
+            startActivity(SettingsIntent);
         }
         else if (id == R.id.action_log_out)
         {
