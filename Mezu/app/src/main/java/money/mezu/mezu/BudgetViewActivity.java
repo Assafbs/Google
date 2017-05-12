@@ -2,50 +2,40 @@ package money.mezu.mezu;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Point;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import org.w3c.dom.Text;
-import java.util.ArrayList;
+
 import java.util.Calendar;
 
-public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener{
-    protected static Budget currentBudget;
+public class BudgetViewActivity extends BaseNavDrawerActivity {
 
-    private ExpenseAdapter mAdapter = null;
+    protected static Budget mCurrentBudget;
+
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private TabsViewPagerAdapter mViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle(currentBudget.getName());
-        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
+        this.setTitle(mCurrentBudget.getName());
+
         setContentView(R.layout.activity_budget_view);
+
+        setupTabs();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,17 +46,18 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             }
         });
 
-        // Create the adapter to convert the array to views
-        mAdapter = new ExpenseAdapter(this, currentBudget.getExpenses());
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.expenses_list);
-        listView.setAdapter(mAdapter);
-    }
+        // Create the tabs that will be shown
+        // Currently only one tab is needed, more should be added here
+        ExpensesTabFragment expenseTabFragment = new ExpensesTabFragment();
+        expenseTabFragment.setCurrentBudget(mCurrentBudget);
 
+        mViewPagerAdapter.setupTabsFragments(expenseTabFragment);
+    }
+    //************************************************************************************************************************************************
     public static void setCurrentBudget(Budget budget) {
-        currentBudget = budget;
+        mCurrentBudget = budget;
     }
-
+    //************************************************************************************************************************************************
     private void showPopupAddExpenseActivity(final Activity context)
     {
         // Inflate the popup_layout.xml
@@ -128,24 +119,36 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
                         mSessionManager.getUserName(),
                         isExpense);
 
-                FirebaseBackend.getInstance().addExpenseToBudget(currentBudget, newExpense);
+                FirebaseBackend.getInstance().addExpenseToBudget(mCurrentBudget, newExpense);
                 popUp.dismiss();
             }
         });
     }
+    //************************************************************************************************************************************************
+    private void setupTabs() {
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
-    public void expenseUpdatedCallback()
-    {
-        Log.d("","BudgetViewActivity:expenseUpdatedCallback: invoked");
-        for(Expense expense: currentBudget.getExpenses())
-        {
-            Log.d("",String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
-        }
+        mViewPagerAdapter = new TabsViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mViewPagerAdapter);
 
-        mAdapter = new ExpenseAdapter(this, currentBudget.getExpenses());
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) findViewById(R.id.expenses_list);
-        listView.setAdapter(mAdapter);
-        listView.invalidate();
+        final TabLayout.Tab expensesTab = mTabLayout.newTab();
+        final TabLayout.Tab graphsTab = mTabLayout.newTab();
+        final TabLayout.Tab reviewTab = mTabLayout.newTab();
+
+        expensesTab.setText(R.string.expenses_tab_title);
+        graphsTab.setText(R.string.graphs_tab_title);
+        reviewTab.setText(R.string.review_tab_title);
+
+        mTabLayout.addTab(expensesTab, 0);
+        mTabLayout.addTab(graphsTab, 1);
+        mTabLayout.addTab(reviewTab, 2);
+
+        mTabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.indicator));
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
+
 }

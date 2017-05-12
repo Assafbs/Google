@@ -58,4 +58,8 @@
     <string name="hebrew">עברית</string>
     <string name="title_activity_add_budget_view">הוספת תקציב</string>
 
+    <string name="expenses_tab_title">הוצאות</string>
+    <string name="graphs_tab_title">גרפים</string>
+    <string name="review_tab_title">סקירה</string>
+
 </resources>

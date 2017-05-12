@@ -13,9 +13,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_login" />
+
         <activity android:name=".BudgetsActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_budgets"
@@ -26,14 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".BudgetViewActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_budget_view"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".AddBudgetActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_add_budget_view"/>
+
         <activity android:name=".SettingsActivity"
             android:screenOrientation="portrait"
             android:label="@string/settings"

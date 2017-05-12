@@ -86,4 +86,8 @@
     <string name="pref_title_language">Language</string>
     <string name="pref_description_allow_notifications">A notification will appear every time an expense is added to one of your budgets</string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
+
+    <string name="expenses_tab_title">Expenses</string>
+    <string name="graphs_tab_title">Graphs</string>
+    <string name="review_tab_title">Review</string>
 </resources>
