@@ -2,18 +2,15 @@ package money.mezu.mezu;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
 
@@ -50,19 +47,9 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String language = sharedPref.getString("language", "");
         if (!language.isEmpty()){
-            if (!Locale.getDefault().getISO3Language().equals(language)){
-                String languageCode;
-                if (language.equals("heb")){
-                    languageCode = "he";
-                }
-                else {
-                    languageCode = "en";
-                }
-                Resources res = getResources();
-                DisplayMetrics dm = res.getDisplayMetrics();
-                android.content.res.Configuration conf = res.getConfiguration();
-                conf.setLocale(new Locale(languageCode.toLowerCase()));
-                res.updateConfiguration(conf, dm);
+            if (!LanguageUtils.getISO3CurrentLanguageCode().equals(language)){
+                String languageCode = LanguageUtils.getLanguageCodeFromValue(language);
+                LanguageUtils.setLanguage(languageCode, getApplicationContext());
             }
         }
     }
