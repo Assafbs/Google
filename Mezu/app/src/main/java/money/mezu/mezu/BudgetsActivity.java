@@ -1,26 +1,19 @@
 package money.mezu.mezu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
 
@@ -29,6 +22,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        setLanguage();
         super.onCreate(savedInstanceState);
         staticContext.mContext = getApplicationContext();
         // This code will make the app go to the login screen if the user is not connected
@@ -51,6 +45,28 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         mBackend.startListeningForAllUserBudgetUpdates(uid);
     }
+
+    private void setLanguage() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String language = sharedPref.getString("language", "");
+        if (!language.isEmpty()){
+            if (!Locale.getDefault().getISO3Language().equals(language)){
+                String languageCode;
+                if (language.equals("heb")){
+                    languageCode = "he";
+                }
+                else {
+                    languageCode = "en";
+                }
+                Resources res = getResources();
+                DisplayMetrics dm = res.getDisplayMetrics();
+                android.content.res.Configuration conf = res.getConfiguration();
+                conf.setLocale(new Locale(languageCode.toLowerCase()));
+                res.updateConfiguration(conf, dm);
+            }
+        }
+    }
+
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget)
     {
