@@ -1,6 +1,7 @@
 package money.mezu.mezu;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
@@ -53,6 +54,16 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
         /* Assinging the toolbar object ot the view and setting the the Action bar to our toolbar*/
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        // Following code is to make sure labels are aligned with language chosen
+        String label = null;
+        try {
+            label = getResources().getString(
+                    getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        getSupportActionBar().setTitle(label);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);
