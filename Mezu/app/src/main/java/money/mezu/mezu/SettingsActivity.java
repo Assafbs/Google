@@ -60,11 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     // TODO: save in shared preference and change accordingly when app starts
                     String languageCode = getLanguageCodeFromValue(o.toString());
-                    Resources res = getResources();
-                    DisplayMetrics dm = res.getDisplayMetrics();
-                    android.content.res.Configuration conf = res.getConfiguration();
-                    conf.setLocale(new Locale(languageCode.toLowerCase()));
-                    res.updateConfiguration(conf, dm);
+                    setLanguage(languageCode);
 
                     // restart app to apply change in language:
                     Intent restartIntent = getActivity().getBaseContext().getPackageManager()
@@ -115,6 +111,14 @@ public class SettingsActivity extends AppCompatActivity {
             else {
                 return "en";
             }
+        }
+
+        private void setLanguage(String languageCode){
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            android.content.res.Configuration conf = res.getConfiguration();
+            conf.setLocale(new Locale(languageCode.toLowerCase()));
+            res.updateConfiguration(conf, dm);
         }
     }
 
