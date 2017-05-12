@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener{
 
@@ -61,7 +64,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int month = (mMonth == 12) ? 1 : mMonth + 1;
+                int month = nextMonth(mMonth);
                 int year = (month == 1) ? mYear + 1 : mYear;
                 setMonth(month, year);
             }
@@ -69,18 +72,44 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int month = (mMonth == 1) ? 12 : mMonth - 1;
+                int month = previousMonth(mMonth);
                 int year = (month == 12) ? mYear - 1 : mYear;
                 setMonth(month, year);
             }
         });
     }
 
-    private void setMonth (int month, int year) {
+    private void setMonth(int month, int year) {
         mMonth = month;
         mYear = year;
         TextView currentMonthTextView = (TextView) mView.findViewById(R.id.current_month);
         currentMonthTextView.setText(mMonth + "/" + mYear);
+        filterExpenses(mMonth, mYear);
+    }
+
+    private void filterExpenses(int month, int year) {
+        ListView listView = (ListView)mView.findViewById(R.id.expenses_list);
+        Date startDate = new Date(getEpoch(month, year));
+        Date endDate = new Date(getEpoch(nextMonth(month), year));
+        ArrayList<Expense> expenses = Filter.filterExpensesByDate(mCurrentBudget.getExpenses(), startDate, endDate);
+        mExpenseAdapter = new ExpenseAdapter(getActivity(), expenses);
+        listView.setAdapter(mExpenseAdapter);
+        listView.invalidate();
+    }
+
+    private long getEpoch(int month, int year){ // milliseconds since January 1, 1970
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.clear();
+        calendar.set(year, month - 1, 1);
+        return calendar.getTimeInMillis();
+    }
+
+    private int nextMonth(int month){
+        return (month == 12) ? 1 : month + 1;
+    }
+
+    private int previousMonth(int month){
+        return (month == 1) ? 12 : month - 1;
     }
 
     public static void setCurrentBudget(Budget budget) {
