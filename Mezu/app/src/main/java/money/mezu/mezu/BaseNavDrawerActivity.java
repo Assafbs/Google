@@ -63,7 +63,9 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        getSupportActionBar().setTitle(label);
+        if (!label.equals(getString(R.string.title_activity_budget_view))){
+            getSupportActionBar().setTitle(label);
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);
