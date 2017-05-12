@@ -55,7 +55,6 @@ public class SettingsActivity extends AppCompatActivity {
                         return true; // current language chosen again - nothing to change
                     }
                     String languageCode = LanguageUtils.getLanguageCodeFromValue(o.toString());
-                    //setLanguage(languageCode);
                     LanguageUtils.setLanguage(languageCode, getActivity());
 
                     // restart app to apply change in language:
@@ -63,6 +62,9 @@ public class SettingsActivity extends AppCompatActivity {
                             .getLaunchIntentForPackage(getActivity().getPackageName() );
                     restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(restartIntent);
+
+                    Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+                    startActivity(settingsIntent);
 
                     return true;
                 }
