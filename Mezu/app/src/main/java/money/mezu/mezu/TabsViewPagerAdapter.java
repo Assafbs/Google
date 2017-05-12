@@ -6,18 +6,23 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
 
+    private boolean mIsRtl;
     private ExpensesTabFragment mExpenseTabFragment;
-
-    public void setupTabsFragments (ExpensesTabFragment expenseTabFragment) {
-        this.mExpenseTabFragment = expenseTabFragment;
-    }
 
     public TabsViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
+    public void setupTabsFragments (boolean isRtl, ExpensesTabFragment expenseTabFragment) {
+        mIsRtl = isRtl;
+        this.mExpenseTabFragment = expenseTabFragment;
+    }
+
     @Override
     public Fragment getItem(int position) {
+        if (mIsRtl) {
+            position = 2 - position;
+        }
         switch (position) {
             case 0:
                 return mExpenseTabFragment;

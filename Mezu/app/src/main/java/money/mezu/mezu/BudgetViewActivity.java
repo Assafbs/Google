@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity {
 
@@ -51,7 +52,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         ExpensesTabFragment expenseTabFragment = new ExpensesTabFragment();
         expenseTabFragment.setCurrentBudget(mCurrentBudget);
 
-        mViewPagerAdapter.setupTabsFragments(expenseTabFragment);
+        mViewPagerAdapter.setupTabsFragments(isRTL(), expenseTabFragment);
     }
     //************************************************************************************************************************************************
     public static void setCurrentBudget(Budget budget) {
@@ -140,15 +141,36 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         graphsTab.setText(R.string.graphs_tab_title);
         reviewTab.setText(R.string.review_tab_title);
 
-        mTabLayout.addTab(expensesTab, 0);
-        mTabLayout.addTab(graphsTab, 1);
-        mTabLayout.addTab(reviewTab, 2);
+        if (isRTL()) {
+            mTabLayout.addTab(reviewTab, 0);
+            mTabLayout.addTab(graphsTab, 1);
+            mTabLayout.addTab(expensesTab, 2);
+        } else {
+            mTabLayout.addTab(expensesTab, 0);
+            mTabLayout.addTab(graphsTab, 1);
+            mTabLayout.addTab(reviewTab, 2);
+        }
 
         mTabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
         mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.indicator));
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        if (isRTL()) {
+            mTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            mViewPager.setCurrentItem(2);
+        }
+    }
+
+    private static boolean isRTL() {
+        return isRTL(Locale.getDefault());
+    }
+
+    private static boolean isRTL(Locale locale) {
+        final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
+        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
 
 }
