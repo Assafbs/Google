@@ -2,6 +2,9 @@ package money.mezu.mezu;
 
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
+
+import java.text.DateFormat;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.inputmethod.InputMethodManager;
@@ -26,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ import java.util.ArrayList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
     Context mContext;
@@ -66,7 +72,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             category.setText(R.string.category_other);
         }
         amount.setText(Double.toString(expense.getAmount()));
-        if (!expense.getIsExpense()){
+        if (!expense.getIsExpense()) {
             amount.setText(Double.toString(expense.getAmount()) + "+");
             amount.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         }
@@ -82,7 +88,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             public void onClick(View view) {
                 Expense expense = (Expense) view.getTag();
                 showPopup(mContext, expense);
-                ((Activity)mContext).findViewById(R.id.fab_expense).setVisibility(View.INVISIBLE);
+                ((Activity) mContext).findViewById(R.id.fab_expense).setVisibility(View.INVISIBLE);
             }
         });
 
@@ -90,8 +96,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         return convertView;
     }
 
-    private void showPopup(final Context context, Expense expense)
-    {
+    private void showPopup(final Context context, Expense expense) {
         // Inflate the popup_layout.xml
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = layoutInflater.inflate(R.layout.activity_add_expense, null);
@@ -105,16 +110,16 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         popUp.setFocusable(true);
 
         String titleString = expense.getTitle();
-        TextView titleView = (TextView)layout.findViewById(R.id.add_expense_title);
-        if (titleString == null){
+        TextView titleView = (TextView) layout.findViewById(R.id.add_expense_title);
+        if (titleString == null) {
             titleString = "General";
         }
         titleView.setText(titleString);
 
-        EditText amount = (EditText)layout.findViewById(R.id.EditTextAmount);
+        EditText amount = (EditText) layout.findViewById(R.id.EditTextAmount);
         amount.setText("" + expense.getAmount());
 
-        Spinner category = (Spinner)layout.findViewById(R.id.SpinnerCategoriesType);
+        Spinner category = (Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
         category.setSelection(expense.getCategory().getValue());
 
         RadioButton rb_expense = (RadioButton) layout.findViewById(R.id.radio_expense);
@@ -122,20 +127,20 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         rb_expense.setClickable(false);
         rb_income.setClickable(false);
 
-        if (expense.getIsExpense()){
+        if (expense.getIsExpense()) {
             rb_expense.setChecked(true);
             rb_income.setChecked(false);
-        }else{
+        } else {
             rb_expense.setChecked(false);
             rb_income.setChecked(true);
         }
 
-        EditText user = (EditText)layout.findViewById(R.id.EditTextTitle);
+        EditText user = (EditText) layout.findViewById(R.id.EditTextTitle);
         user.setText(expense.getUserName());
         user.setHint("");
 
 
-        EditText description = (EditText)layout.findViewById(R.id.EditTextDescription);
+        EditText description = (EditText) layout.findViewById(R.id.EditTextDescription);
         description.setText(expense.getDescription());
         description.setHint("");
 
@@ -144,15 +149,23 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             View child = viewGroup.getChildAt(i);
             child.setEnabled(false);
         }
+
+        EditText dateField = (EditText) layout.findViewById(R.id.EditTextDate);
+        EditText timeField = (EditText) layout.findViewById(R.id.EditTextTime);
+        dateField.setText(DateFormat.getDateInstance().format(expense.getTime()));
+        timeField.setText(DateFormat.getTimeInstance().format(expense.getTime()));
+
+
+
         popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                ((Activity)context).findViewById(R.id.fab_expense).setVisibility(View.VISIBLE);
+                ((Activity) context).findViewById(R.id.fab_expense).setVisibility(View.VISIBLE);
             }
         });
 
-        popUp.showAtLocation(layout, Gravity.CENTER,0,0);
-        Button add_btn=(Button)layout.findViewById(R.id.add_action_btn);
+        popUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        Button add_btn = (Button) layout.findViewById(R.id.add_action_btn);
         add_btn.setVisibility(View.INVISIBLE);
 
     }

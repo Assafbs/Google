@@ -57,6 +57,11 @@
     <string name="english">אנגלית</string>
     <string name="hebrew">עברית</string>
     <string name="title_activity_add_budget_view">הוספת תקציב</string>
+    <string name="today">היום</string>
+    <string name="now">עכשיו</string>
+
+    <string name="pick_date">היום (לחץ לשינוי)</string>
+    <string name="pick_time">עכשיו (לחץ לשינוי)</string>
 
     <string name="expenses_tab_title">הוצאות</string>
     <string name="graphs_tab_title">גרפים</string>

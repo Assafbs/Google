@@ -1,29 +1,48 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity {
 
     protected static Budget mCurrentBudget;
+
+    private EditText dateField;
+    private EditText timeField;
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    private Calendar c;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -54,13 +73,14 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
         mViewPagerAdapter.setupTabsFragments(isRTL(), expenseTabFragment);
     }
+
     //************************************************************************************************************************************************
     public static void setCurrentBudget(Budget budget) {
         mCurrentBudget = budget;
     }
+
     //************************************************************************************************************************************************
-    private void showPopupAddExpenseActivity(final Activity context)
-    {
+    private void showPopupAddExpenseActivity(final Activity context) {
         // Inflate the popup_layout.xml
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View layout = layoutInflater.inflate(R.layout.activity_add_expense, null);
@@ -75,7 +95,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         EditTextAmount.post(new Runnable() {
             public void run() {
                 EditTextAmount.requestFocusFromTouch();
-                InputMethodManager lManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager lManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 lManager.showSoftInput(EditTextAmount, 0);
             }
         });
@@ -86,36 +106,108 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             }
         });
 
-        popUp.showAtLocation(layout, Gravity.CENTER,0,0);
-        Button add_btn=(Button)layout.findViewById(R.id.add_action_btn);
-        add_btn.setOnClickListener(new View.OnClickListener()
-        {
+        popUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
+
+        dateField = (EditText) layout.findViewById(R.id.EditTextDate);
+        timeField = (EditText) layout.findViewById(R.id.EditTextTime);
+        c = Calendar.getInstance();
+
+        dateField.setOnTouchListener(new View.OnTouchListener() {
+
+            //NOTHING IS HAPPENING!!!!!
             @Override
-            public void onClick(View arg0)
-            {
-                EditText amountField = (EditText)layout.findViewById(R.id.EditTextAmount);
-                EditText description = (EditText)layout.findViewById(R.id.EditTextDescription);
-                Spinner categorySpinner =(Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
+            public boolean onTouch(View arg1, MotionEvent event) {
+                // Get Current Date
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(BudgetViewActivity.this,
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+
+                                    dateField.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                    mYear = year;
+                                    mMonth = monthOfYear;
+                                    mDay = dayOfMonth;
+                                }
+                            }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                    return true;
+                }
+                return false;
+            }
+
+        });
+        timeField.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View arg1, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // Get Current Time
+                    mHour = c.get(Calendar.HOUR_OF_DAY);
+                    mMinute = c.get(Calendar.MINUTE);
+
+                    // Launch Time Picker Dialog
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(BudgetViewActivity.this,
+                            new TimePickerDialog.OnTimeSetListener() {
+
+                                @Override
+                                public void onTimeSet(TimePicker view, int hourOfDay,
+                                                      int minute) {
+
+                                    timeField.setText(hourOfDay + ":" + minute);
+                                    mHour = hourOfDay;
+                                    mMinute = minute;
+                                }
+                            }, mHour, mMinute, false);
+                    timePickerDialog.show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        Button add_btn = (Button) layout.findViewById(R.id.add_action_btn);
+        add_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View arg0) {
+                EditText amountField = (EditText) layout.findViewById(R.id.EditTextAmount);
+                EditText description = (EditText) layout.findViewById(R.id.EditTextDescription);
+                Spinner categorySpinner = (Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
+                Log.d("", String.format("tmp:tmp: id: %d", categorySpinner.getId()));
                 Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
-                EditText title = (EditText)layout.findViewById(R.id.EditTextTitle);
+                EditText title = (EditText) layout.findViewById(R.id.EditTextTitle);
                 String t_title = title.getText().toString();
                 boolean isExpense = true;
-                if (t_title.equals("")){
+                if (t_title.equals("")) {
                     t_title = getResources().getString(R.string.general);
                 }
 
+                //HANDLE IS EXPENSE/INCOME
                 RadioGroup rgExpense = (RadioGroup) layout.findViewById(R.id.radio_expense_group);
                 int selectedId = rgExpense.getCheckedRadioButtonId();
-                if (selectedId == R.id.radio_income){
+                if (selectedId == R.id.radio_income) {
                     isExpense = false;
                 }
 
+                //HANDLE TIME AND DATE
+
+                c.set(mYear, mMonth, mDay, mHour, mMinute);
+
+                //CREATE EXPENSE
                 Expense newExpense = new Expense("",
                         Double.parseDouble(amountField.getText().toString()),
                         t_title,
                         description.getText().toString(),
                         category,
-                        Calendar.getInstance().getTime(),
+                        c.getTime(),
                         mSessionManager.getUserId(),
                         mSessionManager.getUserName(),
                         isExpense);
@@ -125,6 +217,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             }
         });
     }
+
     //************************************************************************************************************************************************
     private void setupTabs() {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
