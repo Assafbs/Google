@@ -7,16 +7,19 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private boolean mIsRtl;
-    private ExpensesTabFragment mExpenseTabFragment;
+    private ExpensesTabFragment mExpensesTabFragment;
+    private GraphsTabFragment mGraphsTabFragment;
 
     public TabsViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public void setupTabsFragments (boolean isRtl, ExpensesTabFragment expenseTabFragment) {
+    public void setupTabsFragments (boolean isRtl, ExpensesTabFragment expenseTabFragment, GraphsTabFragment graphsTabFragment) {
         mIsRtl = isRtl;
-        this.mExpenseTabFragment = expenseTabFragment;
+        this.mExpensesTabFragment = expenseTabFragment;
+        this.mGraphsTabFragment = graphsTabFragment;
     }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -25,9 +28,9 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         switch (position) {
             case 0:
-                return mExpenseTabFragment;
+                return mExpensesTabFragment;
             case 1:
-                return new Tab2_stub();
+                return mGraphsTabFragment;
             case 2:
                 return new Tab3_stub();
             default:

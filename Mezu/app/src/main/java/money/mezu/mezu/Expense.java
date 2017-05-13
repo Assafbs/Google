@@ -121,6 +121,5 @@ public class Expense {
         return mIsExpense;
     }
 
-
 }
 

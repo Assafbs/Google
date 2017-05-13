@@ -11,4 +11,23 @@
     <color name="icons">#FFFFFF</color>
     <color name="indicator">#ecd95a</color>
     <color name="divider">#BDBDBD</color>
+
+    <color name="pie_red">#fa0505</color>
+    <color name="pie_orange">#fa9c05</color>
+    <color name="pie_yellow">#faee05</color>
+    <color name="pie_green">#22fa05</color>
+    <color name="pie_turquoise">#05faac</color>
+    <color name="pie_sky_blue">#05eafa</color>
+    <color name="pie_blue">#5e88fa</color>
+    <color name="pie_dark_blue">#2a2cb1</color>
+    <color name="pie_purple">#b105fa</color>
+    <color name="pie_pink">#fa0598</color>
+    <color name="pie_beige">#efedcc</color>
+    <color name="pie_dark_green">#229313</color>
+    <color name="pie_brown">#6e5116</color>
+    <color name="pie_fuchsia">#f49cd1</color>
+    <color name="pie_dark_red">#8c0b1e</color>
+    <color name="pie_light_green">#c8fdc1</color>
+
+
 </resources>

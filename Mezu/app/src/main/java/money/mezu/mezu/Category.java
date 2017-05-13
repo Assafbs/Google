@@ -2,6 +2,8 @@ package money.mezu.mezu;
 
 import android.content.res.Resources;
 
+import java.util.ArrayList;
+
 /**
  * Created by asafb on 4/15/2017.
  */

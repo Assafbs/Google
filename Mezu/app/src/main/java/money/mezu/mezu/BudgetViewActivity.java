@@ -30,6 +30,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -48,6 +52,9 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private TabsViewPagerAdapter mViewPagerAdapter;
+
+    protected static PieChart mPieChart;
+    protected static PieDataSet mPieDataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +76,11 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
         // Create the tabs that will be shown
         // Currently only one tab is needed, more should be added here
-        ExpensesTabFragment expenseTabFragment = new ExpensesTabFragment();
-        expenseTabFragment.setCurrentBudget(mCurrentBudget);
+        ExpensesTabFragment expensesTabFragment = new ExpensesTabFragment();
+        GraphsTabFragment graphsTabFragment = new GraphsTabFragment();
+        expensesTabFragment.setCurrentBudget(mCurrentBudget);
 
-        mViewPagerAdapter.setupTabsFragments(isRTL(), expenseTabFragment);
+        mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, graphsTabFragment);
     }
 
     //************************************************************************************************************************************************
@@ -212,6 +220,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                         mSessionManager.getUserId(),
                         mSessionManager.getUserName(),
                         isExpense);
+
+                GraphsTabFragment.calculatePieDataSet();
+                mPieChart.notifyDataSetChanged();
+                mPieChart.invalidate();
 
                 FirebaseBackend.getInstance().addExpenseToBudget(mCurrentBudget, newExpense);
                 popUp.dismiss();

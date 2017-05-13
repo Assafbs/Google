@@ -92,7 +92,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private long getEpoch(int month, int year){ // milliseconds since January 1, 1970
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(year, month - 1, 1);
         return calendar.getTimeInMillis();

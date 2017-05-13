@@ -2,7 +2,7 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/budget_view"
+    android:id="@+id/graph_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="money.mezu.mezu.BudgetViewActivity">
@@ -32,12 +32,12 @@
                 android:src="@drawable/back_icon" />
 
             <TextView
-                android:id="@+id/current_month"
+                android:id="@+id/graph_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="13dp"
-                android:text="@string/recent_expenses"
+                android:text="@string/overall_graph"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -49,20 +49,12 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:src="@drawable/next_icon" />
-
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/expenses_list"
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_weight="13"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1.0sp" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>
-
-

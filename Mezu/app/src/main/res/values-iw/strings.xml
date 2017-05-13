@@ -23,6 +23,7 @@
     <string name="budget_name">שם התקציב:</string>
     <string name="cancel">ביטול</string>
     <string name="category">קטגוריה</string>
+    <string name="categories">קטגוריות</string>
     <string name="not_specified">ללא</string>
     <string name="category_other">אחר</string>
     <string name="category_clothing">ביגוד</string>
@@ -66,5 +67,9 @@
     <string name="expenses_tab_title">הוצאות</string>
     <string name="graphs_tab_title">גרפים</string>
     <string name="review_tab_title">סקירה</string>
+
+    <string name="overall_graph">גרף כולל</string>
+    <string name="expenses_per_categories">הוצאות פר קטגוריה</string>
+    <string name="no_data_pie">החל לבזבז כדי להציג נתונים!</string>
 
 </resources>
