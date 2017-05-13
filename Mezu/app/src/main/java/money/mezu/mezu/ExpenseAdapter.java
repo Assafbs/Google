@@ -117,7 +117,11 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         titleView.setText(titleString);
 
         EditText amount = (EditText) layout.findViewById(R.id.EditTextAmount);
-        amount.setText("" + expense.getAmount());
+        if (expense.getAmount() == 0.0) {
+            amount.setText("0.0");
+        } else {
+            amount.setText("" + expense.getAmount());
+        }
 
         Spinner category = (Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
         category.setSelection(expense.getCategory().getValue());

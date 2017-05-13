@@ -196,10 +196,15 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                     isExpense = false;
                 }
 
-
+                Double amount;
+                if (amountField.getText().toString().equals("")) {
+                    amount = 0.0;
+                } else {
+                    amount = Double.parseDouble(amountField.getText().toString());
+                }
                 //CREATE EXPENSE
                 Expense newExpense = new Expense("",
-                        Double.parseDouble(amountField.getText().toString()),
+                        amount,
                         t_title,
                         description.getText().toString(),
                         category,
