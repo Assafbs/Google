@@ -34,9 +34,8 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         // Attach the adapter to a ListView
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         listView.setAdapter(mExpenseAdapter);
-
+        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
         setupMonthSelection();
-
         return mView;
     }
 
@@ -47,12 +46,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         {
             Log.d("",String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
-
-        mExpenseAdapter = new ExpenseAdapter(getActivity(), mCurrentBudget.getExpenses());
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
-        listView.setAdapter(mExpenseAdapter);
-        listView.invalidate();
+        filterExpenses(mMonth, mYear);
     }
 
     private void setupMonthSelection () {
