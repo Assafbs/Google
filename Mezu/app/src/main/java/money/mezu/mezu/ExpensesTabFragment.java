@@ -86,7 +86,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mCurrentBudget.getExpenses(), startDate, endDate);
-        mExpenseAdapter = new ExpenseAdapter(getActivity(), expenses);
+        mExpenseAdapter = new ExpenseAdapter(mExpenseAdapter.mContext, expenses);
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
     }
