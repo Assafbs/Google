@@ -16,9 +16,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            debuggable true
-        }
+
     }
 
     signingConfigs {
@@ -40,6 +38,7 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }
 
 
