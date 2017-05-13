@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Date;
@@ -110,31 +111,33 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
         dateField = (EditText) layout.findViewById(R.id.EditTextDate);
         timeField = (EditText) layout.findViewById(R.id.EditTextTime);
+        // Get Current Time
         c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
 
         dateField.setOnTouchListener(new View.OnTouchListener() {
 
             //NOTHING IS HAPPENING!!!!!
             @Override
             public boolean onTouch(View arg1, MotionEvent event) {
-                // Get Current Date
-
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mYear = c.get(Calendar.YEAR);
-                    mMonth = c.get(Calendar.MONTH);
-                    mDay = c.get(Calendar.DAY_OF_MONTH);
-
+                    // Launch Date Picker Dialog
                     DatePickerDialog datePickerDialog = new DatePickerDialog(BudgetViewActivity.this,
                             new DatePickerDialog.OnDateSetListener() {
 
                                 @Override
                                 public void onDateSet(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
-
-                                    dateField.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                                     mYear = year;
                                     mMonth = monthOfYear;
                                     mDay = dayOfMonth;
+                                    c.set(mYear, mMonth, mDay, mHour, mMinute);
+                                    dateField.setText(DateFormat.getDateInstance().format(c.getTime()));
+
                                 }
                             }, mYear, mMonth, mDay);
                     datePickerDialog.show();
@@ -149,10 +152,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             @Override
             public boolean onTouch(View arg1, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    // Get Current Time
-                    mHour = c.get(Calendar.HOUR_OF_DAY);
-                    mMinute = c.get(Calendar.MINUTE);
-
                     // Launch Time Picker Dialog
                     TimePickerDialog timePickerDialog = new TimePickerDialog(BudgetViewActivity.this,
                             new TimePickerDialog.OnTimeSetListener() {
@@ -160,12 +159,12 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                                 @Override
                                 public void onTimeSet(TimePicker view, int hourOfDay,
                                                       int minute) {
-
-                                    timeField.setText(hourOfDay + ":" + minute);
                                     mHour = hourOfDay;
                                     mMinute = minute;
+                                    c.set(mYear, mMonth, mDay, mHour, mMinute);
+                                    timeField.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
                                 }
-                            }, mHour, mMinute, false);
+                            }, mHour, mMinute, true);
                     timePickerDialog.show();
                     return true;
                 }
@@ -197,9 +196,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                     isExpense = false;
                 }
 
-                //HANDLE TIME AND DATE
-
-                c.set(mYear, mMonth, mDay, mHour, mMinute);
 
                 //CREATE EXPENSE
                 Expense newExpense = new Expense("",

@@ -153,9 +153,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         EditText dateField = (EditText) layout.findViewById(R.id.EditTextDate);
         EditText timeField = (EditText) layout.findViewById(R.id.EditTextTime);
         dateField.setText(DateFormat.getDateInstance().format(expense.getTime()));
-        timeField.setText(DateFormat.getTimeInstance().format(expense.getTime()));
-
-
+        timeField.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(expense.getTime()));
 
         popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
