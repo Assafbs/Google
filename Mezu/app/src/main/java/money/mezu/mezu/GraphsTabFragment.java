@@ -55,6 +55,7 @@ public class GraphsTabFragment extends Fragment {
         mPieDataSet.setColors(colors);
 
         PieData data = new PieData(mPieDataSet);
+        data.setValueTextSize(13);
         mPieChart.setData(data);
         Description desc = new Description();
         desc.setText(resources.getString(R.string.expenses_per_categories));
@@ -69,6 +70,8 @@ public class GraphsTabFragment extends Fragment {
         mPieChart.setDrawSlicesUnderHole(true);
         mPieChart.setRotationEnabled(false);
         mPieChart.setCenterText(getString(R.string.expenses_sum) + String.valueOf(totalExpenses));
+        mPieChart.setEntryLabelTextSize(15);
+        mPieChart.setCenterTextSize(15);
         mPieChart.invalidate(); // refresh
 
         return mView;
