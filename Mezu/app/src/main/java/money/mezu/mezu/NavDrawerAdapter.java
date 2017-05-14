@@ -59,6 +59,9 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         public void onClick(View v) {
             BaseNavDrawerActivity activity = (BaseNavDrawerActivity) mContext;
             switch (getLayoutPosition()) {
+                case 0:
+                    // this is the header, its not clickable
+                    break;
                 case 1:
                     activity.openSettings();
                     break;
