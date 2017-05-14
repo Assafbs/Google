@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,11 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
     private String name;
     private Uri image;
     private String email;
+    private Context mContext;
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
     // ViewHolder are used to to store the inflated views in order to recycle them
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int Holderid;
 
         TextView textView;
@@ -31,9 +33,15 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         ImageView profile;
         TextView Name;
         TextView email;
+        Context mContext;
 
-        public ViewHolder(View itemView,int ViewType) {
+        public ViewHolder(View itemView,int ViewType, Context context) {
             super(itemView);
+
+            mContext = context;
+
+            itemView.setClickable(true);
+            itemView.setOnClickListener(this);
 
             if(ViewType == TYPE_ITEM) {
                 textView = (TextView) itemView.findViewById(R.id.rowText);
@@ -47,14 +55,29 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
                 Holderid = 0;
             }
         }
+
+        public void onClick(View v) {
+            BaseNavDrawerActivity activity = (BaseNavDrawerActivity) mContext;
+            switch (getLayoutPosition()) {
+                case 1:
+                    activity.openSettings();
+                    break;
+                case 2:
+                    activity.logout();
+                    break;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
     }
 
-    NavDrawerAdapter(String Titles[],int Icons[],String Name,String Email, Uri Image){
+    NavDrawerAdapter(String Titles[],int Icons[],String Name,String Email, Uri Image, Context context){
         mNavTitles = Titles;
         mIcons = Icons;
         name = Name;
         email = Email;
         image = Image;
+        mContext = context;
     }
 
     @Override
@@ -62,12 +85,12 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
 
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_drawer_item_row,parent,false);
-            ViewHolder vhItem = new ViewHolder(v,viewType);
+            ViewHolder vhItem = new ViewHolder(v, viewType, mContext);
 
             return vhItem;
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_drawer_header,parent,false);
-            ViewHolder vhHeader = new ViewHolder(v,viewType);
+            ViewHolder vhHeader = new ViewHolder(v, viewType, mContext);
 
             return vhHeader;
         }

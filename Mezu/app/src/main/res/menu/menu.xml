@@ -2,19 +2,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        android:icon="@mipmap/settings_icon"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="2"
-        />
-
-    <item
-        android:id="@+id/action_log_out"
-        android:title="@string/log_out"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="1"
-        />
-
 </menu>

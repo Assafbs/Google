@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -24,12 +23,9 @@ import com.google.android.gms.common.api.Status;
 
 public abstract class BaseNavDrawerActivity extends AppCompatActivity {
 
-    private String mDrawerTitles[] = {"Home","Events","Mail","Shop","Travel"};
-    private int mDrawerIcons[] = {R.mipmap.budget_icon,
-            R.mipmap.logout_icon,
-            R.mipmap.add_budget_icon,
-            R.mipmap.menu_icon,
-            R.mipmap.nav_drawer_icon};
+    private String mDrawerTitles[] = {"Settings","Log Out"};
+    private int mDrawerIcons[] = {R.drawable.ic_settings_black_30dp,
+            R.drawable.ic_logout_black_30dp};
 
     private String mDrawerName;
     private String mDrawerEmail;
@@ -70,7 +66,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new NavDrawerAdapter(mDrawerTitles, mDrawerIcons, mDrawerName, mDrawerEmail, mDrawerImage);
+        mAdapter = new NavDrawerAdapter(mDrawerTitles, mDrawerIcons, mDrawerName, mDrawerEmail, mDrawerImage, this);
 
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(this);
@@ -132,20 +128,11 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
-        if (id == R.id.action_settings)
-        {
-            Intent SettingsIntent = new Intent(BaseNavDrawerActivity.this, SettingsActivity.class);
-            startActivity(SettingsIntent);
-        }
-        else if (id == R.id.action_log_out)
-        {
-            logout();
-        }
+        // Currently no option items
         return super.onOptionsItemSelected(item);
     }
     //************************************************************************************************************************************************
-    private void logout()
+    protected void logout()
     {
         if (mSessionManager.getLoginType().equals("Google")) {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -157,5 +144,10 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
                     });
         }
         mSessionManager.logoutUser();
+    }
+
+    protected void openSettings() {
+        Intent SettingsIntent = new Intent(BaseNavDrawerActivity.this, SettingsActivity.class);
+        startActivity(SettingsIntent);
     }
 }
