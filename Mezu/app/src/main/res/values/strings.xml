@@ -1,36 +1,42 @@
 <resources>
     <string name="app_name" translatable="false">Mezu</string>
+
+
+    <!-- Login Activity Strings-->
     <string name="welcome_message">Welcome to Mezu!!</string>
     <string name="second_welcome_message">Your Money Management App</string>
-    <string name="start">Start</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="settings">Settings</string>
-    <string name="log_out">Log Out</string>
+    <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+
+    <!--Budgets Activity Strings-->
     <string name="title_activity_budgets">My Budgets</string>
-    <string name="title_activity_budget_view">Budget View</string>
-    <string name="active_budget">Active</string>
 
+
+    <!--Budget View Activity Strigns-->
+    <string name="title_activity_budget_view">Budget View</string>
+    <string name="general">general</string>
+
+
+    <!--Expenses Tab Fragment Strings-->
+    <string name="expenses_tab_title">Expenses</string>
     <string name="recent_expenses">Recent Expenses</string>
-    <!--expense related-->
+
+
+    <!--Add Expense PopUp Strings-->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="add_expense">Add an Expense</string>
     <string name="title_optional">Title (optional)</string>
-    <string name="something_extra_optional">Something Extra (optional)</string>
+    <string name="Description_optional">Description (optional)</string>
     <string name="zero_amount">0.00</string>
+    <string name="expense">expense</string>
+    <string name="income">income</string>
+    <string name="pick_date">Today (tap to change)</string>
+    <string name="pick_time">Now (tap to change)</string>
+
+
+    <!--Categories-->
     <string name="category_food">Food</string>
     <string name="category_shelter">Shelter</string>
     <string name="category_entertainment">Entertainment</string>
@@ -49,31 +55,37 @@
     <string name="category_other">Other</string>
     <string name="category">Category</string>
     <string name="categories">Categories</string>
-    <string name="not_specified">Not_Specified</string>
-    <string name="expense">expense</string>
-    <string name="income">income</string>
-    <string name="today">today</string>
-    <string name="now">now</string>
 
-    <string name="pick_date">Today (tap to change)</string>
-    <string name="pick_time">Now (tap to change)</string>
 
+    <!--Navigation Drawer Strings-->
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
 
-    <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
+
+    <!--Action Bar Strings-->
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
+
+
+    <!--Add Budget Activity-->
+    <string name="title_activity_add_budget_view">Add Budget</string>
     <string name="add_a_budget">Add a budget</string>
     <string name="budget_name">Budget name:</string>
     <string name="shared_with">Shared with:</string>
-    <string name="partners_list_initizal_text">Nobody. This is currently a personal budget. To add a partner, enter the email below and click \'Add partner\'</string>
+    <string name="partners_list_initizal_text">
+        Nobody. This is currently a personal budget. To add a partner, enter the email below and click \'Add partner\'
+    </string>
     <string name="add_partner">Add partner</string>
     <string name="starting_balance">Starting balance:</string>
     <string name="optional">(Optional)</string>
-    <string name="general">general</string>
+
+
+    <!--Settings Activity-->
+    <string name="title_activity_settings">Settings</string>
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 
-
+    <string name="pref_title_language">Language</string>
     <string name="hebrew">Hebrew</string>
     <string name="english">English</string>
 
@@ -86,20 +98,20 @@
         <item>eng</item>
     </string-array>
 
-    <string name="title_activity_add_budget_view">Add Budget</string>
-
-    <string name="title_activity_settings">Settings</string>
-    <string name="pref_title_language">Language</string>
-    <string name="pref_description_allow_notifications">A notification will appear every time an expense is added to one of your budgets</string>
+    <string name="pref_description_allow_notifications">
+        A notification will appear every time an expense is added to one of your budgets
+    </string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
 
-    <string name="expenses_tab_title">Expenses</string>
-    <string name="graphs_tab_title">Graphs</string>
-    <string name="review_tab_title">Review</string>
 
+    <!--Graphs Tab Fragment-->
+    <string name="graphs_tab_title">Graphs</string>
     <string name="overall_graph">Overall</string>
     <string name="expenses_per_categories">Expenses per categories</string>
     <string name="no_data_pie">Start spending to show data!</string>
     <string name="expenses_sum">"Expenses sum: "</string>
 
+
+    <!--Review Tab Fragment-->
+    <string name="review_tab_title">Review</string>
 </resources>

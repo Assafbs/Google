@@ -1,76 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Login Activity Strings-->
     <string name="welcome_message">ברוכים הבאים לMezu!!</string>
     <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות</string>
-    <string name="start">התחלה</string>
-    <string name="action_sign_in_short">כניסה</string>
-    <string name="action_sign_in">כניסה / הרשמה</string>
-    <string name="error_field_required">שדה זה הינו הכרחי</string>
-    <string name="error_incorrect_password">הסיסמה אינה נכונה</string>
-    <string name="error_invalid_email">כתובת האימייל אינה נכונה</string>
-    <string name="error_invalid_password">הסיסמה קצרה מדי</string>
-    <string name="prompt_email">אימייל</string>
-    <string name="prompt_password">סיסמה</string>
     <string name="title_activity_login">כניסה</string>
-    <string name="settings">הגדרות</string>
-    <string name="log_out">יציאה</string>
+
+
+    <!--Budgets Activity Strings-->
     <string name="title_activity_budgets">התקציבים שלי</string>
+
+
+    <!--Budget View Activity Strigns-->
+    <string name="title_activity_budget_view">הצגת תקציב</string>
+    <string name="general">כללי</string>
+
+
+    <!--Expenses Tab Fragment Strings-->
+    <string name="expenses_tab_title">הוצאות</string>
     <string name="recent_expenses">הוצאות אחרונות</string>
+
+
+    <!--Add Expense PopUp Strings-->
     <string name="add">הוספה</string>
-    <string name="add_a_budget">הוספת תקציב</string>
-    <string name="add_expense">הוספת הוצאה</string>
-    <string name="add_partner">הוספת שותף</string>
-    <string name="budget_name">שם התקציב:</string>
     <string name="cancel">ביטול</string>
+    <string name="add_expense">הוסף הוצאה</string>
+    <string name="title_optional">כותרת (אופציונלי)</string>
+    <string name="Description_optional">תיאור (אופציונלי)</string>
+    <string name="expense">הואצה</string>
+    <string name="income">הכנסה</string>
+    <string name="pick_date">היום (לחצ/י לשינוי)</string>
+    <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
+
+
+    <!--Categories-->
+    <string name="category_food">אוכל</string>
+    <string name="category_shelter">מגורים</string>
+    <string name="category_entertainment">בידור</string>
+    <string name="category_clothing">ביגוד</string>
+    <string name="category_transportation">תחבורה</string>
+    <string name="category_medical">רפואי</string>
+    <string name="category_household">משק בית</string>
+    <string name="category_insurance">ביטוח</string>
+    <string name="category_personal">אישי</string>
+    <string name="category_education">חינוך</string>
+    <string name="category_gifts">מתנה</string>
+    <string name="category_subscriptions">מינויים</string>
+    <string name="category_debt_reduction">פדיון הלוואות</string>
+    <string name="category_donations">תרומות</string>
+    <string name="category_paycheck">משכורת</string>
+    <string name="category_other">אחר</string>
     <string name="category">קטגוריה</string>
     <string name="categories">קטגוריות</string>
-    <string name="not_specified">ללא</string>
-    <string name="category_other">אחר</string>
-    <string name="category_clothing">ביגוד</string>
-    <string name="category_debt_reduction">משכנתא/פדיון הלוואות</string>
-    <string name="category_donations">תרומות</string>
-    <string name="category_education">חינוך</string>
-    <string name="category_entertainment">בידור</string>
-    <string name="category_food">מזון</string>
-    <string name="category_gifts">מתנות</string>
-    <string name="category_household">משק בית</string>
-    <string name="category_insurance">ביטוחים</string>
-    <string name="category_medical">רפואי</string>
-    <string name="category_paycheck">המחאות</string>
-    <string name="category_personal">אישי</string>
-    <string name="category_shelter">מגורים</string>
-    <string name="category_subscriptions">מינויים</string>
-    <string name="category_transportation">תחבורה</string>
-    <string name="optional">(אופציונאלי)</string>
-    <string name="shared_with">משותף עם:</string>
-    <string name="something_extra_optional">משהו נוסף (אופציונאלי)</string>
-    <string name="starting_balance">מאזן התחלתי:</string>
-    <string name="title_optional">כותרת (אופציונאלי)</string>
-    <string name="general">כללי</string>
-    <string name="active_budget">פעיל</string>
-    <string name="expense">הוצאה</string>
-    <string name="income">הכנסה</string>
-    <string name="partners_list_initizal_text">אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'</string>
-    <string name="pref_title_display_name">שם תצוגה</string>
-    <string name="pref_title_language">שפה</string>
-    <string name="pref_title_allow_notifications">אפשר התראות</string>
-    <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
-    <string name="english">אנגלית</string>
-    <string name="hebrew">עברית</string>
+
+
+    <!--Navigation Drawer Strings-->
+    <string name="openDrawer">פתח מגירת ניווט</string>
+    <string name="closeDrawer">סגור מגירת ניווט</string>
+
+
+    <!--Action Bar Strings-->
+    <string name="settings">הגדרות</string>
+    <string name="log_out">התנתק/י</string>
+
+
+    <!--Add Budget Activity-->
     <string name="title_activity_add_budget_view">הוספת תקציב</string>
-    <string name="today">היום</string>
-    <string name="now">עכשיו</string>
+    <string name="add_a_budget">הוספת תקציב</string>
+    <string name="budget_name">שם תקציב:</string>
+    <string name="shared_with">משותף עם:</string>
+    <string name="partners_list_initizal_text">
+        אף אחד. כרגע זהו תקציב פרטי. על מנת לצרף שותפים לתקציב זה, רשמו את כתובת האימייל שלהם למטה ולחצו \'הוספת שותף\'
+    </string>
+    <string name="add_partner">הוספת שותפ/ה</string>
+    <string name="starting_balance">מאזן התחלתי:</string>
+    <string name="optional">(אופציונלי)</string>
 
-    <string name="pick_date">היום (לחץ לשינוי)</string>
-    <string name="pick_time">עכשיו (לחץ לשינוי)</string>
 
-    <string name="expenses_tab_title">הוצאות</string>
+    <!--Settings Activity-->
+    <string name="title_activity_settings">הגדרות</string>
+    <string name="pref_title_display_name">שם תצוגה</string>
+    <string name="pref_default_display_name">ישראל ישראלי</string>
+
+    <string name="pref_title_language">שפה</string>
+    <string name="hebrew">עברית</string>
+    <string name="english">אנגלית</string>
+
+    <string-array name="pref_language_list_values">
+        <item>עב</item>
+        <item>אנ</item>
+    </string-array>
+
+    <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
+    <string name="pref_title_allow_notifications">אפשר התראות</string>
+
+
+    <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
-    <string name="review_tab_title">סקירה</string>
-
     <string name="overall_graph">גרף כולל</string>
-    <string name="expenses_per_categories">הוצאות פר קטגוריה</string>
+    <string name="expenses_per_categories">הוצאות לפי קטגוריה</string>
     <string name="no_data_pie">החל לבזבז כדי להציג נתונים!</string>
-    <string name="expenses_sum">"סך כל ההוצאות: "</string>
+    <string name="expenses_sum">"סך כל ההוצאות:"</string>
 
+
+    <!--Review Tab Fragment-->
+    <string name="review_tab_title">סקירה</string>
 </resources>
