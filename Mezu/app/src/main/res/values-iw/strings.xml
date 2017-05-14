@@ -71,5 +71,6 @@
     <string name="overall_graph">גרף כולל</string>
     <string name="expenses_per_categories">הוצאות פר קטגוריה</string>
     <string name="no_data_pie">החל לבזבז כדי להציג נתונים!</string>
+    <string name="expenses_sum">\"סה\"כ הוצאות: \"</string>
 
 </resources>

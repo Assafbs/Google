@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
@@ -59,13 +60,15 @@ public class GraphsTabFragment extends Fragment {
         desc.setText(resources.getString(R.string.expenses_per_categories));
         mPieChart.setDescription(desc);
         mPieChart.setNoDataText(resources.getString(R.string.no_data_pie));
-
-        if (mCurrentBudget.getTotalExpenses() == 0) {
+        double totalExpenses = mCurrentBudget.getTotalExpenses();
+        if (totalExpenses == 0) {
             mPieChart.setCenterText(resources.getString(R.string.no_data_pie));
         }
         mPieChart.setHoleRadius(45);
         mPieChart.setTransparentCircleRadius(50);
         mPieChart.setDrawSlicesUnderHole(true);
+        mPieChart.setRotationEnabled(false);
+        mPieChart.setCenterText(getString(R.string.expenses_sum) + String.valueOf(totalExpenses));
         mPieChart.invalidate(); // refresh
 
         return mView;

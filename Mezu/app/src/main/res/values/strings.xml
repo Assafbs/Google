@@ -100,5 +100,6 @@
     <string name="overall_graph">Overall</string>
     <string name="expenses_per_categories">Expenses per categories</string>
     <string name="no_data_pie">Start spending to show data!</string>
+    <string name="expenses_sum">"Expenses sum: "</string>
 
 </resources>
