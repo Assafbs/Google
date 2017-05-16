@@ -56,9 +56,6 @@
     <!--Navigation Drawer Strings-->
     <string name="openDrawer">פתח מגירת ניווט</string>
     <string name="closeDrawer">סגור מגירת ניווט</string>
-
-
-    <!--Action Bar Strings-->
     <string name="settings">הגדרות</string>
     <string name="log_out">התנתק/י</string>
 

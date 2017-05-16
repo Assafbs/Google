@@ -106,7 +106,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         return (month == 1) ? 12 : month - 1;
     }
 
-    public static void setCurrentBudget(Budget budget) {
+    public void setCurrentBudget(Budget budget) {
         mCurrentBudget = budget;
     }
 }

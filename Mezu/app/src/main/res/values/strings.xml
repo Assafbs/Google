@@ -60,9 +60,6 @@
     <!--Navigation Drawer Strings-->
     <string name="openDrawer">Open navigation drawer</string>
     <string name="closeDrawer">Close navigation drawer</string>
-
-
-    <!--Action Bar Strings-->
     <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
 

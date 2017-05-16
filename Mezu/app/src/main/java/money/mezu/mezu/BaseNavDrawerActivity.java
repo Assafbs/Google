@@ -10,9 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -20,22 +25,25 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.squareup.picasso.Picasso;
 
-public abstract class BaseNavDrawerActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    private String mDrawerTitles[] = {"Settings","Log Out"};
-    private int mDrawerIcons[] = {R.drawable.ic_settings_black_30dp,
-            R.drawable.ic_logout_black_30dp};
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public abstract class BaseNavDrawerActivity extends AppCompatActivity implements View.OnClickListener, BudgetUpdatedListener{
 
     private String mDrawerName;
     private String mDrawerEmail;
     private Uri mDrawerImage;
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    View mDrawerView;
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
+
+    private HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
+
 
     protected GoogleApiClient mGoogleApiClient;
     protected SessionManager mSessionManager = null;
@@ -63,17 +71,14 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(label);
         }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);
+        ViewStub navDrawerStub = (ViewStub) findViewById(R.id.nav_drawer_stub);
+        mDrawerView = navDrawerStub.inflate();
 
-        mAdapter = new NavDrawerAdapter(mDrawerTitles, mDrawerIcons, mDrawerName, mDrawerEmail, mDrawerImage, this);
-
-        mRecyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        setupHeader();
+        setupButtons();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,mToolbar,R.string.openDrawer,R.string.closeDrawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer){
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -85,6 +90,11 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 // Code here will execute once drawer is closed
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, 0); // this disables the animation
             }
         };
 
@@ -101,6 +111,47 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
                     }
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        UserIdentifier uid = mSessionManager.getUserId();
+        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
+        mBackend.startListeningForAllUserBudgetUpdates(uid);
+    }
+    //************************************************************************************************************************************************
+    private void setupHeader() {
+        CircleImageView image = (CircleImageView) mDrawerView.findViewById(R.id.circleView);
+        TextView name = (TextView) mDrawerView.findViewById(R.id.name);
+        TextView email = (TextView) mDrawerView.findViewById(R.id.email);
+
+
+        if (mDrawerImage != null) {
+            Picasso.with(staticContext.mContext).load(mDrawerImage).into(image);
+        }
+        name.setText(mDrawerName);
+        email.setText(mDrawerEmail);
+    }
+    //************************************************************************************************************************************************
+    private void setupButtons() {
+        View buttons = mDrawerView.findViewById(R.id.nav_drawer_bottom_options);
+        buttons.findViewById(R.id.add_budget).setOnClickListener(this);
+        buttons.findViewById(R.id.logout).setOnClickListener(this);
+        buttons.findViewById(R.id.settings).setOnClickListener(this);
+    }
+    //************************************************************************************************************************************************
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.logout:
+                logout();
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.settings:
+                openSettings();
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.add_budget:
+                addBudget();
+                mDrawerLayout.closeDrawers();
+                break;
+        }
     }
     //************************************************************************************************************************************************
     private void instansiateSessionManager()
@@ -145,9 +196,31 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity {
         }
         mSessionManager.logoutUser();
     }
-
+    //************************************************************************************************************************************************
     protected void openSettings() {
         Intent SettingsIntent = new Intent(BaseNavDrawerActivity.this, SettingsActivity.class);
         startActivity(SettingsIntent);
+    }
+    //************************************************************************************************************************************************
+    protected void addBudget() {
+        Intent addBudgetIntent = new Intent(BaseNavDrawerActivity.this, AddBudgetActivity.class);
+        startActivity(addBudgetIntent);
+    }
+    //************************************************************************************************************************************************
+    public void budgetUpdatedCallback(Budget budget)
+    {
+        Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
+        if (mapOfBudgets.containsKey(budget.getId()))
+        {
+            mapOfBudgets.get(budget.getId()).setFromBudget(budget);
+            EventDispatcher.getInstance().notifyExpenceUpdatedListeners();
+        }
+        else
+        {
+            this.mapOfBudgets.put(budget.getId(), budget);
+        }
+        ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
+        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+        listView.setAdapter(adapter);
     }
 }

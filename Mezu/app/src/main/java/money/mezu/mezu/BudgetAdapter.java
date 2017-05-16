@@ -47,6 +47,7 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
                 BudgetViewActivity.setCurrentBudget(budget);
                 Intent budgetViewIntent = new Intent(getContext(), BudgetViewActivity.class);
                 getContext().startActivity(budgetViewIntent);
+                ((BaseNavDrawerActivity)getContext()).mDrawerLayout.closeDrawers();
 
             }
         });

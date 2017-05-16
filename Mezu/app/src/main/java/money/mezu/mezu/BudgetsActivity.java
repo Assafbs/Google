@@ -14,8 +14,6 @@ import java.util.HashMap;
 
 public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
 
-    private HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -27,7 +25,6 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
         if(!mSessionManager.checkLogin()) {
             return;
         }
-        UserIdentifier uid = mSessionManager.getUserId();
 
         setContentView(R.layout.activity_budgets);
 
@@ -39,8 +36,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
                 startActivity(addBudgetIntent);
             }
         });
-        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
-        mBackend.startListeningForAllUserBudgetUpdates(uid);
+
     }
 
     private void setLanguage() {
@@ -55,26 +51,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     }
 
     //************************************************************************************************************************************************
-    public void budgetUpdatedCallback(Budget budget)
-    {
-        Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
-        if (mapOfBudgets.containsKey(budget.getId()))
-        {
-            mapOfBudgets.get(budget.getId()).setFromBudget(budget);
-            EventDispatcher.getInstance().notifyExpenceUpdatedListeners();
-        }
-        else
-        {
-            this.mapOfBudgets.put(budget.getId(), budget);
-        }
-        ListView listView = (ListView) findViewById(R.id.budgets_list);
-        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
-        listView.setAdapter(adapter);
-    }
+
     //************************************************************************************************************************************************
-    public Budget getBudgetByID(String id)
-    {
-        return this.mapOfBudgets.get(id);
-    }
 
 }

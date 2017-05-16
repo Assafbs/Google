@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:tint="@color/icons"
+            android:tint="@color/white"
             app:backgroundTint="@color/accent"
             android:clickable="true"
             app:borderWidth="0dp"
@@ -59,15 +59,15 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView"
+    <ViewStub
+        android:id="@+id/nav_drawer_stub"
+        android:inflatedId="@+id/navigation_drawer"
+        android:layout="@layout/nav_drawer_layout"
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#ffffff">
 
-        android:background="#ffffff"
-        android:scrollbars="vertical">
-
-    </android.support.v7.widget.RecyclerView>
+    </ViewStub>
 
 </android.support.v4.widget.DrawerLayout>
