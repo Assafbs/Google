@@ -74,9 +74,7 @@
         android:id="@+id/EditTextDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:inputType="date"
         android:clickable="true"
         android:hint="@string/pick_date" />
 
@@ -85,9 +83,7 @@
         android:id="@+id/EditTextTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/in_date"
+        android:inputType="datetime"
         android:clickable="true"
         android:hint="@string/pick_time" />
 
@@ -97,7 +93,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:hint="@string/Description_optional"
-        android:inputType="textPersonName"></EditText>
+        android:inputType="textPersonName"/>
 
     <FrameLayout
         android:layout_width="match_parent"

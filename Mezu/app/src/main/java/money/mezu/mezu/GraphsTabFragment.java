@@ -19,17 +19,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import static money.mezu.mezu.BudgetViewActivity.mCurrentBudget;
-
-
 public class GraphsTabFragment extends Fragment {
 
     private View mView = null;
     private static Resources resources = staticContext.mContext.getResources();
 
     protected Budget mCurrentBudget;
-    protected static PieChart mPieChart;
-    protected static PieDataSet mPieDataSet;
+    protected PieChart mPieChart;
+    protected PieDataSet mPieDataSet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
