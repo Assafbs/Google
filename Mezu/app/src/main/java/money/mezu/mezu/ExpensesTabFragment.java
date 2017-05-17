@@ -18,7 +18,7 @@ import java.util.TimeZone;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener{
 
-    protected static Budget mCurrentBudget;
+    protected Budget mCurrentBudget;
     private ExpenseAdapter mExpenseAdapter = null;
     private View mView = null;
 

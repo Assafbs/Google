@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,24 +19,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity {
 
@@ -53,8 +41,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
     private ViewPager mViewPager;
     private TabsViewPagerAdapter mViewPagerAdapter;
 
-    protected static PieChart mPieChart;
-    protected static PieDataSet mPieDataSet;
+    private GraphsTabFragment mGraphsTabFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,19 +62,18 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         });
 
         // Create the tabs that will be shown
-        // Currently only one tab is needed, more should be added here
         ExpensesTabFragment expensesTabFragment = new ExpensesTabFragment();
-        GraphsTabFragment graphsTabFragment = new GraphsTabFragment();
+        mGraphsTabFragment = new GraphsTabFragment();
         expensesTabFragment.setCurrentBudget(mCurrentBudget);
+        mGraphsTabFragment.setCurrentBudget(mCurrentBudget);
 
-        mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, graphsTabFragment);
+        mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, mGraphsTabFragment);
     }
 
     //************************************************************************************************************************************************
     public static void setCurrentBudget(Budget budget) {
         mCurrentBudget = budget;
     }
-
     //************************************************************************************************************************************************
     private void showPopupAddExpenseActivity(final Activity context) {
         // Inflate the popup_layout.xml
@@ -221,9 +207,9 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                         mSessionManager.getUserName(),
                         isExpense);
 
-                GraphsTabFragment.calculatePieDataSet();
-                mPieChart.notifyDataSetChanged();
-                mPieChart.invalidate();
+                mGraphsTabFragment.calculatePieDataSet();
+                mGraphsTabFragment.mPieChart.notifyDataSetChanged();
+                mGraphsTabFragment.mPieChart.invalidate();
 
                 FirebaseBackend.getInstance().addExpenseToBudget(mCurrentBudget, newExpense);
                 popUp.dismiss();

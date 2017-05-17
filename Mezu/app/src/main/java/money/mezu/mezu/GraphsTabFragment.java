@@ -20,14 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static money.mezu.mezu.BudgetViewActivity.mCurrentBudget;
-import static money.mezu.mezu.BudgetViewActivity.mPieChart;
-import static money.mezu.mezu.BudgetViewActivity.mPieDataSet;
 
 
 public class GraphsTabFragment extends Fragment {
 
     private View mView = null;
     private static Resources resources = staticContext.mContext.getResources();
+
+    protected Budget mCurrentBudget;
+    protected static PieChart mPieChart;
+    protected static PieDataSet mPieDataSet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class GraphsTabFragment extends Fragment {
         return mView;
     }
 
-    public static void calculatePieDataSet() {
+    public void calculatePieDataSet() {
         List<PieEntry> entries = new ArrayList<>();
         double amountPerCategory;
 
@@ -90,5 +92,7 @@ public class GraphsTabFragment extends Fragment {
         mPieDataSet = new PieDataSet(entries, resources.getString(R.string.categories));
     }
 
-
+    public void setCurrentBudget(Budget budget) {
+        mCurrentBudget = budget;
+    }
 }
