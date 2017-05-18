@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,24 +9,27 @@ import android.content.SharedPreferences.Editor;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
 
 import java.math.BigInteger;
 import android.net.Uri;
 
 public class SessionManager {
-    SharedPreferences pref;
-    Editor editor;
-    Context _context;
+    private SharedPreferences pref;
+    private Editor editor;
+    private Context _context;
 
-    GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
 
     private static final String PREF_NAME = "MezuPref";
     private static final String IS_LOGIN = "IsLoggedIn";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_ID = "id";
-    public static final String KEY_LOGIN_TYPE = "loginType";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_IMAGE = "image";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_ID = "id";
+    private static final String KEY_LOGIN_TYPE = "loginType";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_IMAGE = "image";
+    private static final String KEY_LAST_BUDGET = "lastBudget";
+
 
     public SessionManager(Context context){
         this._context = context;
@@ -95,9 +99,33 @@ public class SessionManager {
         Intent i = new Intent(_context, LoginActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         _context.startActivity(i);
+        ((Activity)_context).overridePendingTransition(0, 0);
     }
 
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    public void setLastBudget (Budget budget) {
+        Gson gson = new Gson();
+        String json = gson.toJson(budget);
+        setLastBudget(json);
+    }
+
+    public void setLastBudget (String json) {
+        editor.putString(KEY_LAST_BUDGET, json);
+        editor.commit();
+    }
+
+    public boolean goToLastBudget() {
+        String json = pref.getString(KEY_LAST_BUDGET, null);
+        if (json == null)
+            return false;
+        Intent i = new Intent(_context, BudgetViewActivity.class);
+        i.putExtra("budget", json);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        _context.startActivity(i);
+        ((Activity)_context).overridePendingTransition(0, 0);
+        return true;
     }
 }

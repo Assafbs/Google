@@ -26,6 +26,11 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
             return;
         }
 
+        // Try to go to the last budget saved to session manager
+        if (mSessionManager.goToLastBudget()){
+            return;
+        }
+
         setContentView(R.layout.activity_budgets);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

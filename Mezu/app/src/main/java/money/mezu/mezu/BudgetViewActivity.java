@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -24,13 +25,15 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity {
 
-    protected static Budget mCurrentBudget;
+    protected Budget mCurrentBudget;
 
     private EditText dateField;
     private EditText timeField;
@@ -46,6 +49,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupCurrentBudget();
         this.setTitle(mCurrentBudget.getName());
 
         setContentView(R.layout.activity_budget_view);
@@ -71,8 +75,11 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
     }
 
     //************************************************************************************************************************************************
-    public static void setCurrentBudget(Budget budget) {
-        mCurrentBudget = budget;
+    private void setupCurrentBudget() {
+        Intent intent = getIntent();
+        Gson gson = new Gson();
+        String json = intent.getStringExtra("budget");
+        mCurrentBudget = gson.fromJson(json, Budget.class);
     }
     //************************************************************************************************************************************************
     private void setupTabs() {

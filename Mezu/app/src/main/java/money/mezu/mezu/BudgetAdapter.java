@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 /**
@@ -44,11 +46,13 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
             public void onClick(View view) {
                 // Access user from within the tag
                 Budget budget = (Budget) view.getTag();
-                BudgetViewActivity.setCurrentBudget(budget);
                 Intent budgetViewIntent = new Intent(getContext(), BudgetViewActivity.class);
+                Gson gson = new Gson();
+                String json =  gson.toJson(budget);
+                budgetViewIntent.putExtra("budget", json);
                 getContext().startActivity(budgetViewIntent);
+                ((BaseNavDrawerActivity)getContext()).mSessionManager.setLastBudget(json);
                 ((BaseNavDrawerActivity)getContext()).mDrawerLayout.closeDrawers();
-
             }
         });
 
