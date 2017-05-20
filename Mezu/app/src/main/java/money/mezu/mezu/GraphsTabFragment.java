@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
@@ -19,7 +18,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphsTabFragment extends Fragment {
+public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListener {
 
     private View mView = null;
     private static Resources resources = staticContext.mContext.getResources();
@@ -31,8 +30,12 @@ public class GraphsTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_graphs, container, false);
+        GenerateGraph();
+        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
+        return mView;
+    }
 
-
+    private void GenerateGraph() {
         mPieChart = (PieChart) mView.findViewById(R.id.pie_chart);
 
         calculatePieDataSet();
@@ -72,9 +75,13 @@ public class GraphsTabFragment extends Fragment {
         mPieChart.setEntryLabelTextSize(15);
         mPieChart.setCenterTextSize(15);
         mPieChart.invalidate(); // refresh
-
-        return mView;
     }
+
+    public void expenseUpdatedCallback()
+    {
+        GenerateGraph();
+    }
+
 
     public void calculatePieDataSet() {
         List<PieEntry> entries = new ArrayList<>();

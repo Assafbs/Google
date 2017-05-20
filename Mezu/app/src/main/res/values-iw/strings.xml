@@ -26,7 +26,7 @@
     <string name="add_expense">הוסף הוצאה</string>
     <string name="title_optional">כותרת (אופציונלי)</string>
     <string name="Description_optional">תיאור (אופציונלי)</string>
-    <string name="expense">הואצה</string>
+    <string name="expense">הוצאה</string>
     <string name="income">הכנסה</string>
     <string name="pick_date">היום (לחצ/י לשינוי)</string>
     <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
@@ -101,4 +101,5 @@
 
     <!--Review Tab Fragment-->
     <string name="review_tab_title">סקירה</string>
+    <string name="zero_amount" translatable="false"></string>
 </resources>

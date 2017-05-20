@@ -29,7 +29,7 @@
     <string name="add_expense">Add an Expense</string>
     <string name="title_optional">Title (optional)</string>
     <string name="Description_optional">Description (optional)</string>
-    <string name="zero_amount">0.00</string>
+    <string name="zero_amount" translatable="false">0.00</string>
     <string name="expense">expense</string>
     <string name="income">income</string>
     <string name="pick_date">Today (tap to change)</string>
