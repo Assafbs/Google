@@ -61,7 +61,7 @@ public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListene
         if (totalExpenses == 0) {
             mPieChart.setCenterText(resources.getString(R.string.no_data_pie));
         }else{
-            mPieChart.setCenterText(getString(R.string.expenses_sum) + "\n" +  String.valueOf(totalExpenses));
+            mPieChart.setCenterText(resources.getString(R.string.expenses_sum) + "\n" +  String.valueOf(totalExpenses));
         }
         mPieChart.setHoleRadius(45);
         mPieChart.setTransparentCircleRadius(50);
