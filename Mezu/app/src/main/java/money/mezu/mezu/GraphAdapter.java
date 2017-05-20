@@ -18,20 +18,17 @@ import com.github.mikephil.charting.charts.PieChart;
 import java.util.ArrayList;
 
 public class GraphAdapter extends ArrayAdapter<GraphInterface> {
-    protected Budget mCurrentBudget;
     private Context mContext;
     private PieChart mPieChart;
     private BarChart mBarChart;
     private PieChartCategories mPieChartCategories;
     private Resources resources = staticContext.mContext.getResources();
+    private BudgetViewActivity mActivity;
 
     public GraphAdapter(Context context, ArrayList<GraphInterface> graphs) {
         super(context, 0, graphs);
         mContext = context;
-    }
-
-    public void setCurrentBudget(Budget budget) {
-        mCurrentBudget = budget;
+        mActivity = (BudgetViewActivity) context;
     }
 
     @Override
@@ -78,9 +75,9 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mBarChart.setLayoutParams(params);
         mPieChartCategories = (PieChartCategories) graph;
         mPieChartCategories.setPieChart(mPieChart);
-        mPieChartCategories.GenerateGraph(convertView, mCurrentBudget, false);
+        mPieChartCategories.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
         info2.setText(resources.getString(R.string.most_spending_on));
-        info3.setText(mCurrentBudget.getMostExpensiveCategory().toString());
+        info3.setText(mActivity.mCurrentBudget.getMostExpensiveCategory().toString());
     }
 
     private void showPopup(final Context context, GraphInterface graph) {
@@ -106,7 +103,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
             mPieChart = (PieChart) layout.findViewById(R.id.pie_chart);
             mPieChartCategories.setPieChart(mPieChart);
-            mPieChartCategories.GenerateGraph(layout, mCurrentBudget, true);
+            mPieChartCategories.GenerateGraph(layout, mActivity.mCurrentBudget, true);
         }
 
         for (int i = 0; i < viewGroup.getChildCount(); i++) {

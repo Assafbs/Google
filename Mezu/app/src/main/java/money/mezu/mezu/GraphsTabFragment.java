@@ -15,15 +15,16 @@ public class GraphsTabFragment extends Fragment {
 
     private View mView = null;
     private GraphAdapter mGraphAdapter = null;
-    protected Budget mCurrentBudget;
     private Resources resources = staticContext.mContext.getResources();
+
+    private BudgetViewActivity mActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_graphs, container, false);
+        mActivity = (BudgetViewActivity) getActivity();
         // Create the adapter to convert the array to views
         mGraphAdapter = new GraphAdapter(getActivity(), getArrayOfGraphs());
-        mGraphAdapter.setCurrentBudget(mCurrentBudget);
         // Attach the adapter to a ListView
         ListView listView = (ListView) mView.findViewById(R.id.graphs_list);
         listView.setAdapter(mGraphAdapter);
@@ -38,10 +39,5 @@ public class GraphsTabFragment extends Fragment {
         graphArray.add(pie);
         return graphArray;
     }
-
-    public void setCurrentBudget(Budget budget) {
-        mCurrentBudget = budget;
-    }
-
 
 }

@@ -69,7 +69,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         // Create the tabs that will be shown
         ExpensesTabFragment expensesTabFragment = new ExpensesTabFragment();
         mGraphsTabFragment = new GraphsTabFragment();
-        mGraphsTabFragment.setCurrentBudget(mCurrentBudget);
 
         mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, mGraphsTabFragment);
     }
