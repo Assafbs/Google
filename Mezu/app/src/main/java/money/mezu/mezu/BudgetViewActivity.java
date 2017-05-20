@@ -34,6 +34,7 @@ import java.util.Locale;
 public class BudgetViewActivity extends BaseNavDrawerActivity {
 
     protected Budget mCurrentBudget;
+    private boolean updateCurrentBudget = false;
 
     private EditText dateField;
     private EditText timeField;
@@ -68,7 +69,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         // Create the tabs that will be shown
         ExpensesTabFragment expensesTabFragment = new ExpensesTabFragment();
         mGraphsTabFragment = new GraphsTabFragment();
-        expensesTabFragment.setCurrentBudget(mCurrentBudget);
         mGraphsTabFragment.setCurrentBudget(mCurrentBudget);
 
         mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, mGraphsTabFragment);
@@ -80,6 +80,15 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         Gson gson = new Gson();
         String json = intent.getStringExtra("budget");
         mCurrentBudget = gson.fromJson(json, Budget.class);
+        updateCurrentBudget = true;
+    }
+    //************************************************************************************************************************************************
+    public void budgetUpdatedCallback(Budget budget) {
+        super.budgetUpdatedCallback(budget);
+        if (updateCurrentBudget && mCurrentBudget.getId().equals(budget.getId())) {
+            mCurrentBudget = budget;
+            updateCurrentBudget = false;
+        }
     }
     //************************************************************************************************************************************************
     private void setupTabs() {

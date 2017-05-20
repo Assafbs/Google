@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
 
-    protected Budget mCurrentBudget;
+    private BudgetViewActivity mActivity;
     private ExpenseAdapter mExpenseAdapter = null;
     private View mView = null;
 
@@ -27,9 +27,10 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_expenses, container, false);
+        mActivity = (BudgetViewActivity) getActivity();
 
         // Create the adapter to convert the array to views
-        mExpenseAdapter = new ExpenseAdapter(getActivity(), mCurrentBudget.getExpenses());
+        mExpenseAdapter = new ExpenseAdapter(mActivity, mActivity.mCurrentBudget.getExpenses());
         // Attach the adapter to a ListView
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         listView.setAdapter(mExpenseAdapter);
@@ -41,7 +42,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
     public void expenseUpdatedCallback() {
         Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
-        for (Expense expense : mCurrentBudget.getExpenses()) {
+        for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
             Log.d("", String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
         filterExpenses(mMonth, mYear);
@@ -83,7 +84,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
-        ArrayList<Expense> expenses = Filter.filterExpensesByDate(mCurrentBudget.getExpenses(), startDate, endDate);
+        ArrayList<Expense> expenses = Filter.filterExpensesByDate(mActivity.mCurrentBudget.getExpenses(), startDate, endDate);
         mExpenseAdapter = new ExpenseAdapter(mExpenseAdapter.mContext, expenses);
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
@@ -102,9 +103,5 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
     private int previousMonth(int month) {
         return (month == 1) ? 12 : month - 1;
-    }
-
-    public void setCurrentBudget(Budget budget) {
-        mCurrentBudget = budget;
     }
 }
