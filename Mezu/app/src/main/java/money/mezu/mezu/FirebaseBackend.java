@@ -21,24 +21,24 @@ import android.util.Pair;
  * Created by Or on 4/27/2017.
  */
 
-public class FirebaseBackend implements BackendInterface {
+public class FirebaseBackend {
     private DatabaseReference mDatabase;
-    private static boolean mInitialized;
-    private static FirebaseBackend mInstance;
+    private static FirebaseBackend mInstance = null;
     private static HashSet<Pair<String, ValueEventListener>> mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
     private FirebaseBackend() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
     //************************************************************************************************************************************************
-    public static FirebaseBackend getInstance() {
-        if (!mInitialized) {
+    public static FirebaseBackend getInstance()
+    {
+        if (mInstance == null)
             mInstance = new FirebaseBackend();
-            mInitialized = true;
-        }
+
         return mInstance;
     }
     //************************************************************************************************************************************************
-    public void startListeningForAllUserBudgetUpdates(UserIdentifier uid) {
+    public void startListeningForAllUserBudgetUpdates(UserIdentifier uid)
+    {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/" + uid.getId().toString() + "/budgets");
 
@@ -89,7 +89,8 @@ public class FirebaseBackend implements BackendInterface {
         mPathsIListenTo.add(Pair.create("budgets/" + bid + "/budget", listener));
     }
     //************************************************************************************************************************************************
-    public void deleteBudget(String bid) {
+    public void deleteBudget(String bid)
+    {
         final String bidToRemove = bid;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + bid + "/users");
@@ -111,7 +112,84 @@ public class FirebaseBackend implements BackendInterface {
         });
     }
     //************************************************************************************************************************************************
-    public void createBudgetAndAddToUser(Budget budget, UserIdentifier uid) {
+    public void editBudget(Budget budget)
+    {
+        final Budget budgetToEdit = budget;
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
+        // TODO - maybe take care of listeners hash map...
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
+                        setValue(budgetToEdit.serializeNoExpenses());
+                for (Expense expense : budgetToEdit.getExpenses()) {
+                    mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
+                            child(expense.getId()).setValue(expense.serialize());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+    }
+    //************************************************************************************************************************************************
+    public void editBudgetUsers(String bid, List<UserIdentifier> uids)
+    {
+        final String bidToEdit = bid;
+        final List<UserIdentifier> uidsToEdit = uids;
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("budgets/" + bid);
+        // TODO - maybe take care of listeners hash map...
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                DatabaseReference ref2 = mDatabase.child("budgets").child(bidToEdit).child("users");
+                ref2.addValueEventListener(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        HashMap<String, Object> uidDict =(HashMap<String, Object>)dataSnapshot.getValue();
+                        for (String uidAsString : uidDict.keySet()) {
+                            mDatabase.child("users").child(uidAsString).child("budgets").child(bidToEdit).removeValue();
+                            mDatabase.child("budgets").child(bidToEdit).child("users").child(uidAsString).removeValue();
+                        }
+                        for (UserIdentifier uid : uidsToEdit) {
+                            String uidAsString = uid.getId().toString();
+                            mDatabase.child("users").child(uidAsString).child("budgets").child(bidToEdit).setValue(bidToEdit);
+                            mDatabase.child("budgets").child(bidToEdit).child("users").child(uidAsString).setValue(uidAsString);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+    }
+    //************************************************************************************************************************************************
+    public void deleteExpense(String bid, String eid)
+    {
+        mDatabase.child("budgets").child(bid).child("budget").child("mExpenses").child(eid).removeValue();
+    }
+    //************************************************************************************************************************************************
+    public void editExpense(String bid, Expense expense)
+    {
+        HashMap<String, Object> serializedExpense = expense.serialize();
+        mDatabase.child("budgets").child(bid).child("budget").child("mExpenses").
+                child(expense.getId()).setValue(serializedExpense);
+    }
+    //************************************************************************************************************************************************
+    public void createBudgetAndAddToUser(Budget budget, UserIdentifier uid)
+    {
         Log.d("","FirebaseBackend:addBudgetToUser: adding budget to user");
         String newBid = createBudget(budget);
         connectBudgetAndUser(newBid, uid.getId().toString());
@@ -232,7 +310,7 @@ public class FirebaseBackend implements BackendInterface {
             }
         });
     }
-
+    //************************************************************************************************************************************************
     private static String md5(String s)
     {
         MessageDigest digest;

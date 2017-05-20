@@ -44,7 +44,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
     protected GoogleApiClient mGoogleApiClient;
     protected SessionManager mSessionManager = null;
-    protected BackendInterface mBackend = FirebaseBackend.getInstance();
+    protected FirebaseBackend mBackend = FirebaseBackend.getInstance();
 
     protected void onCreateDrawer() {
         instansiateSessionManager();
