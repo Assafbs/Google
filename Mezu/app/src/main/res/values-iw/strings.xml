@@ -94,9 +94,10 @@
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
     <string name="overall_graph">גרף כולל</string>
-    <string name="expenses_per_categories">הוצאות לפי קטגוריה</string>
+    <string name="expenses_per_categories">הוצאות לפי קטגוריות</string>
     <string name="no_data_pie">החל לבזבז כדי להציג נתונים!</string>
     <string name="expenses_sum">"סך כל ההוצאות:"</string>
+    <string name="most_spending_on">"הקטגוריה היקרה ביותר:"</string>
 
 
     <!--Review Tab Fragment-->

@@ -14,9 +14,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener{
+public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
 
     protected Budget mCurrentBudget;
     private ExpenseAdapter mExpenseAdapter = null;
@@ -39,17 +38,16 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         return mView;
     }
 
-    public void expenseUpdatedCallback()
-    {
-        Log.d("","BudgetViewActivity:expenseUpdatedCallback: invoked");
-        for(Expense expense: mCurrentBudget.getExpenses())
-        {
-            Log.d("",String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
+
+    public void expenseUpdatedCallback() {
+        Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
+        for (Expense expense : mCurrentBudget.getExpenses()) {
+            Log.d("", String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
         filterExpenses(mMonth, mYear);
     }
 
-    private void setupMonthSelection () {
+    private void setupMonthSelection() {
         Calendar calendar = Calendar.getInstance();
         setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
 
@@ -82,7 +80,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private void filterExpenses(int month, int year) {
-        ListView listView = (ListView)mView.findViewById(R.id.expenses_list);
+        ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mCurrentBudget.getExpenses(), startDate, endDate);
@@ -91,18 +89,18 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         listView.invalidate();
     }
 
-    private long getEpoch(int month, int year){ // milliseconds since January 1, 1970
+    private long getEpoch(int month, int year) { // milliseconds since January 1, 1970
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(year, month - 1, 1);
         return calendar.getTimeInMillis();
     }
 
-    private int nextMonth(int month){
+    private int nextMonth(int month) {
         return (month == 12) ? 1 : month + 1;
     }
 
-    private int previousMonth(int month){
+    private int previousMonth(int month) {
         return (month == 1) ? 12 : month - 1;
     }
 

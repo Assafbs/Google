@@ -122,6 +122,20 @@ public class Budget {
         return acc;
     }
 
+    public Category getMostExpensiveCategory() {
+        Category category = Category.OTHER;
+        double max = 0.0;
+        double amount;
+        for (Expense expense : mExpenses) {
+            amount = expense.getAmount();
+            if (expense.getIsExpense() && amount > max) {
+                max = amount;
+                category = expense.getCategory();
+            }
+        }
+        return category;
+    }
+
     public double getTotalExpensesPerCategory(Category category) {
         double acc = 0;
         for (Expense expense : mExpenses) {

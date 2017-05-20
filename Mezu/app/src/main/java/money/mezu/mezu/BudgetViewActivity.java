@@ -5,11 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -229,10 +229,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
                 mSessionManager.getUserId(),
                 mSessionManager.getUserName(),
                 isExpense);
-
-        mGraphsTabFragment.calculatePieDataSet();
-        mGraphsTabFragment.mPieChart.notifyDataSetChanged();
-        mGraphsTabFragment.mPieChart.invalidate();
 
         FirebaseBackend.getInstance().addExpenseToBudget(mCurrentBudget, newExpense);
         popUp.dismiss();

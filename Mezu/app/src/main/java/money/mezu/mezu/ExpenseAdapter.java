@@ -1,20 +1,9 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
-
-import java.text.DateFormat;
-
-import android.util.Log;
-import android.view.Gravity;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-
-/**
- * Created by davidled on 22/04/2017.
- */
 import android.content.Context;
-import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +13,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import org.w3c.dom.Text;
-
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class ExpenseAdapter extends ArrayAdapter<Expense> {
     Context mContext;

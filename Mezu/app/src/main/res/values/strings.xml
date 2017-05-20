@@ -104,9 +104,10 @@
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">Graphs</string>
     <string name="overall_graph">Overall</string>
-    <string name="expenses_per_categories">Expenses per categories</string>
+    <string name="expenses_per_categories">Expenses Per Categories</string>
     <string name="no_data_pie">Start spending to show data!</string>
     <string name="expenses_sum">"Expenses sum: "</string>
+    <string name="most_spending_on">"Most spending on: "</string>
 
 
     <!--Review Tab Fragment-->
