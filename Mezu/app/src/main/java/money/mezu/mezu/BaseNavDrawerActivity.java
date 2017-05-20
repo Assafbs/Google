@@ -7,15 +7,12 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -213,7 +210,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         if (mapOfBudgets.containsKey(budget.getId()))
         {
             mapOfBudgets.get(budget.getId()).setFromBudget(budget);
-            EventDispatcher.getInstance().notifyExpenceUpdatedListeners();
+            EventDispatcher.getInstance().notifyExpenseUpdatedListeners();
         }
         else
         {

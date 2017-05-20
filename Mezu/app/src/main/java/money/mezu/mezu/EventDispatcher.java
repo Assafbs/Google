@@ -46,7 +46,7 @@ public class EventDispatcher
         }
     }
     //************************************************************************************************************************************************
-    public void notifyExpenceUpdatedListeners()
+    public void notifyExpenseUpdatedListeners()
     {
         for (ExpenseUpdatedListener listener : mExpenseUpdatedListeners)
         {
