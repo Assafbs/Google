@@ -16,8 +16,11 @@ public class LanguageUtils {
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(languageCode.toLowerCase()));
+        Locale newLocale = new Locale(languageCode.toLowerCase());
+        conf.setLocale(newLocale);
+        Locale.setDefault(newLocale);
         res.updateConfiguration(conf, dm);
+
     }
 
     public static String getDefaultLanguage(Context context){
