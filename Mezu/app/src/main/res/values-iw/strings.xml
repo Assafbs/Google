@@ -102,5 +102,4 @@
 
     <!--Review Tab Fragment-->
     <string name="review_tab_title">סקירה</string>
-    <string name="zero_amount" translatable="false"></string>
 </resources>

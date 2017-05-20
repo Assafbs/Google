@@ -96,6 +96,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             titleString = "General";
         }
         titleView.setText(titleString);
+        titleView.setVisibility(View.VISIBLE);
 
         EditText amount = (EditText) layout.findViewById(R.id.EditTextAmount);
         if (expense.getAmount() == 0.0) {
