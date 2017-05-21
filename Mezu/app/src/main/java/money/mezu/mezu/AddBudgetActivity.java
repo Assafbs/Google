@@ -71,13 +71,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     for (String email : partnersEmails) {
                         FirebaseBackend.getInstance().connectBudgetAndUserByEmail(newBudget, email);
                     }
-                    Intent budgetViewIntent = new Intent(AddBudgetActivity.this, BudgetViewActivity.class);
-                    budgetViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Gson gson = new Gson();
-                    String json =  gson.toJson(newBudget);
-                    budgetViewIntent.putExtra("budget", json);
-                    startActivity(budgetViewIntent);
-                    mSessionManager.setLastBudget(json);
+                    BudgetViewActivity.goToBudgetView(AddBudgetActivity.this, newBudget, mSessionManager);
                 }
             }
         });

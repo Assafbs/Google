@@ -46,12 +46,7 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
             public void onClick(View view) {
                 // Access user from within the tag
                 Budget budget = (Budget) view.getTag();
-                Intent budgetViewIntent = new Intent(getContext(), BudgetViewActivity.class);
-                Gson gson = new Gson();
-                String json =  gson.toJson(budget);
-                budgetViewIntent.putExtra("budget", json);
-                getContext().startActivity(budgetViewIntent);
-                ((BaseNavDrawerActivity)getContext()).mSessionManager.setLastBudget(json);
+                BudgetViewActivity.goToBudgetView(getContext(), budget, ((BaseNavDrawerActivity)getContext()).mSessionManager);
                 ((BaseNavDrawerActivity)getContext()).mDrawerLayout.closeDrawers();
             }
         });

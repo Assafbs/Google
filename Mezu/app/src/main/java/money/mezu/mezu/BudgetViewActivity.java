@@ -307,4 +307,14 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         }
         return false;
     }
+    //************************************************************************************************************************************************
+    public static void goToBudgetView (Context context, Budget budget, SessionManager sessionManager) {
+        Intent budgetViewIntent = new Intent(context, BudgetViewActivity.class);
+        budgetViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Gson gson = new Gson();
+        String json =  gson.toJson(budget);
+        budgetViewIntent.putExtra("budget", json);
+        context.startActivity(budgetViewIntent);
+        sessionManager.setLastBudget(json);
+    }
 }
