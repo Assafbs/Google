@@ -142,8 +142,26 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         mTabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
         mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.indicator));
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout) {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                tryReleaseGraph();
+            }
+        });
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                tryReleaseGraph();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                tryReleaseGraph();
+            }
+        });
 
         if (isRTL()) {
             mTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
@@ -322,12 +340,17 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
     @Override
     public void onBackPressed(){
-        if(graphShown) {
-            mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
-            graphShown = false;
-        } else {
+        if (!tryReleaseGraph()) {
             super.onBackPressed();
         }
     }
 
+    private boolean tryReleaseGraph() {
+        if(graphShown) {
+            mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
+            graphShown = false;
+            return true;
+        }
+        return false;
+    }
 }
