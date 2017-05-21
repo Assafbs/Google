@@ -103,4 +103,12 @@
     <!--Review Tab Fragment-->
     <string name="review_tab_title">סקירה</string>
     <string name="edit">עריכה</string>
+    <string name="edit_budget">עריכת תקציב</string>
+    <string name="save">שמירה</string>
+    <string name="title_activity_edit_budget_view">עריכת תקציב</string>
+    <string name="no">לא</string>
+    <string name="yes">כן</string>
+    <string name="confirm_delete">אישור מחיקה</string>
+    <string name="delete">מחיקה</string>
+    <string name="delete_confirmation_text">האם בטוח שברצונך למחוק תקציב זה?</string>
 </resources>

@@ -113,4 +113,12 @@
     <!--Review Tab Fragment-->
     <string name="review_tab_title">Review</string>
     <string name="edit">Edit</string>
+    <string name="edit_budget">Edit Budget</string>
+    <string name="save">Save</string>
+    <string name="title_activity_edit_budget_view">Edit Budget</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete">Confirm delete</string>
+    <string name="delete_confirmation_text">Are you sure you want to delete this budget?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

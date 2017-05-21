@@ -104,7 +104,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         int id = item.getItemId();
         if (id == R.id.action_edit)
         {
-            Toast.makeText(this, "Edit Budget", Toast.LENGTH_SHORT).show();
+            Intent editBudgetIntent = new Intent(this, EditBudgetActivity.class);
+            editBudgetIntent.putExtra("curBudgetId",mCurrentBudget.getId());
+            editBudgetIntent.putExtra("curBudgetName",mCurrentBudget.getName());
+            startActivity(editBudgetIntent);
         }
         return true;
     }
