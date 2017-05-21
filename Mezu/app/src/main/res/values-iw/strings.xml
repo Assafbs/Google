@@ -102,4 +102,5 @@
 
     <!--Review Tab Fragment-->
     <string name="review_tab_title">סקירה</string>
+    <string name="edit">עריכה</string>
 </resources>

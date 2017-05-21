@@ -13,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -24,6 +26,7 @@ import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -88,6 +91,22 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             mCurrentBudget = budget;
             updateCurrentBudget = false;
         }
+    }
+    //************************************************************************************************************************************************
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.budget_view_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if (id == R.id.action_edit)
+        {
+            Toast.makeText(this, "Edit Budget", Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
     //************************************************************************************************************************************************
     private void setupTabs() {

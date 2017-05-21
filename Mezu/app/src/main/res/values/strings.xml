@@ -112,4 +112,5 @@
 
     <!--Review Tab Fragment-->
     <string name="review_tab_title">Review</string>
+    <string name="edit">Edit</string>
 </resources>
