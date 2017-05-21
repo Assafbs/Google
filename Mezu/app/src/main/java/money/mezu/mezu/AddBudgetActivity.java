@@ -2,6 +2,7 @@ package money.mezu.mezu;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Build;
+
+import com.google.gson.Gson;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
 
@@ -68,7 +71,13 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     for (String email : partnersEmails) {
                         FirebaseBackend.getInstance().connectBudgetAndUserByEmail(newBudget, email);
                     }
-                    finish();
+                    Intent budgetViewIntent = new Intent(AddBudgetActivity.this, BudgetViewActivity.class);
+                    budgetViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Gson gson = new Gson();
+                    String json =  gson.toJson(newBudget);
+                    budgetViewIntent.putExtra("budget", json);
+                    startActivity(budgetViewIntent);
+                    mSessionManager.setLastBudget(json);
                 }
             }
         });
