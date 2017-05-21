@@ -46,9 +46,11 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private TabsViewPagerAdapter mViewPagerAdapter;
+    protected TabsViewPagerAdapter mViewPagerAdapter;
 
     private GraphsTabFragment mGraphsTabFragment;
+
+    public boolean graphShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,4 +319,15 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         context.startActivity(budgetViewIntent);
         sessionManager.setLastBudget(json);
     }
+
+    @Override
+    public void onBackPressed(){
+        if(graphShown) {
+            mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
+            graphShown = false;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 }

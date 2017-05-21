@@ -22,7 +22,6 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     private PieChart mPieChart;
     private BarChart mBarChart;
     private PieChartCategories mPieChartCategories;
-    private Resources resources = staticContext.mContext.getResources();
     private BudgetViewActivity mActivity;
 
     public GraphAdapter(Context context, ArrayList<GraphInterface> graphs) {
@@ -60,7 +59,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
             @Override
             public void onClick(View view) {
                 GraphInterface graph = (GraphInterface) view.getTag();
-                showPopup(mContext, graph);
+                replaceTab(graph);
                 ((Activity) mContext).findViewById(R.id.fab_expense).setVisibility(View.INVISIBLE);
             }
         });
@@ -76,49 +75,15 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mPieChartCategories = (PieChartCategories) graph;
         mPieChartCategories.setPieChart(mPieChart);
         mPieChartCategories.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
-        info2.setText(resources.getString(R.string.most_spending_on));
+        info2.setText(R.string.most_spending_on);
         info3.setText(mActivity.mCurrentBudget.getMostExpensiveCategory().toString());
     }
 
-    private void showPopup(final Context context, GraphInterface graph) {
-        // Inflate the popup_layout.xml
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout viewGroup = null;
-        View layout = null;
-        if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
-            layout = layoutInflater.inflate(R.layout.pie_chart_view, null);
-            viewGroup = (LinearLayout) layout.findViewById(R.id.pie_chart_view);
-        }
-        // Creating the PopupWindow
-        final PopupWindow popUp = new PopupWindow(context);
-        popUp.setContentView(layout);
-        popUp.setWidth(920);
-        popUp.setHeight(1550);
-//        popUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-        popUp.setFocusable(true);
-
-        TextView titleView = (TextView) layout.findViewById(R.id.pie_chart_title);
-        titleView.setText(graph.getTitle());
-
-        if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
-            mPieChart = (PieChart) layout.findViewById(R.id.pie_chart);
-            mPieChartCategories.setPieChart(mPieChart);
-            mPieChartCategories.GenerateGraph(layout, mActivity.mCurrentBudget, true);
-        }
-
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            child.setEnabled(false);
-        }
-
-        popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                ((Activity) context).findViewById(R.id.fab_expense).setVisibility(View.VISIBLE);
-            }
-        });
-
-        popUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
-
+    private void replaceTab (GraphInterface graph) {
+        GraphFragment graphFragment = new GraphFragment();
+        //if (graph.kind == piechart)...
+        graphFragment.setupPieChart(graph,mPieChart,mPieChartCategories);
+        mActivity.mViewPagerAdapter.onSwitchToGraph(graphFragment);
+        mActivity.graphShown = true;
     }
 }

@@ -8,10 +8,12 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private boolean mIsRtl;
     private ExpensesTabFragment mExpensesTabFragment;
-    private GraphsTabFragment mGraphsTabFragment;
+    private /*GraphsTabFragment*/ Fragment mGraphsTabFragment;
+    private FragmentManager mFragmentManager;
 
     public TabsViewPagerAdapter(FragmentManager fm) {
         super(fm);
+        mFragmentManager = fm;
     }
 
     public void setupTabsFragments (boolean isRtl, ExpensesTabFragment expenseTabFragment, GraphsTabFragment graphsTabFragment) {
@@ -19,7 +21,6 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
         this.mExpensesTabFragment = expenseTabFragment;
         this.mGraphsTabFragment = graphsTabFragment;
     }
-
 
     @Override
     public Fragment getItem(int position) {
@@ -41,6 +42,28 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return 3;
+    }
+
+    public void onSwitchToGraph(GraphFragment graphFragment) {
+        mFragmentManager.beginTransaction().remove(mGraphsTabFragment).commit();
+        mGraphsTabFragment = graphFragment;
+        notifyDataSetChanged();
+    }
+
+    public void onSwitchFromGraph(GraphsTabFragment graphsTabFragment) {
+        mFragmentManager.beginTransaction().remove(mGraphsTabFragment).commit();
+        mGraphsTabFragment = graphsTabFragment;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object)
+    {
+        if (object instanceof GraphsTabFragment && mGraphsTabFragment instanceof GraphFragment)
+            return POSITION_NONE;
+        if (object instanceof GraphFragment && mGraphsTabFragment instanceof GraphsTabFragment)
+            return POSITION_NONE;
+        return POSITION_UNCHANGED;
     }
 
 }
