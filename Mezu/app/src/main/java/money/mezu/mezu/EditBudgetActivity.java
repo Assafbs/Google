@@ -22,11 +22,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditBudgetActivity extends BaseNavDrawerActivity {
 
+    protected Budget mCurrentBudget;
     List<String> partnersEmails;
     TextView partnersList;
     AutoCompleteTextView addPartnerEmailTextView;
@@ -38,6 +41,19 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_budget);
+
+        Gson gson = new Gson();
+        String json = getIntent().getStringExtra("budget");
+        mCurrentBudget = gson.fromJson(json, Budget.class);
+
+        EditText budgetNameEditText = (EditText)findViewById(R.id.budget_name);
+        budgetNameEditText.setText(mCurrentBudget.getName());
+
+        double curBalance = mCurrentBudget.getInitialBalance();
+        if (curBalance != 0){
+            EditText initialBalanceEditText = (EditText)findViewById(R.id.starting_balance);
+            initialBalanceEditText.setText(String.valueOf(curBalance));
+        }
 
         partnersEmails = new ArrayList<>();
         partnersList = (TextView)findViewById(R.id.partners_list);
@@ -101,7 +117,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
-                FirebaseBackend.getInstance().deleteBudget(getIntent().getStringExtra("curBudgetId"));
+                FirebaseBackend.getInstance().deleteBudget(mCurrentBudget.getId());
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()

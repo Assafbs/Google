@@ -113,8 +113,9 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         if (id == R.id.action_edit)
         {
             Intent editBudgetIntent = new Intent(this, EditBudgetActivity.class);
-            editBudgetIntent.putExtra("curBudgetId",mCurrentBudget.getId());
-            editBudgetIntent.putExtra("curBudgetName",mCurrentBudget.getName());
+            Gson gson = new Gson();
+            String json =  gson.toJson(mCurrentBudget);
+            editBudgetIntent.putExtra("budget", json);
             startActivity(editBudgetIntent);
         }
         return true;
