@@ -34,7 +34,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class BudgetViewActivity extends BaseNavDrawerActivity {
+public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
 
     protected Budget mCurrentBudget;
     private boolean updateCurrentBudget = false;
@@ -59,6 +59,8 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         this.setTitle(mCurrentBudget.getName());
 
         setContentView(R.layout.activity_budget_view);
+        showBalanceInToolbar();
+        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
 
         setupTabs();
 
@@ -77,7 +79,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
 
         mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, mGraphsTabFragment);
     }
-
+    //************************************************************************************************************************************************
+    public void expenseUpdatedCallback() {
+        showBalanceInToolbar();
+    }
     //************************************************************************************************************************************************
     private void setupCurrentBudget() {
         Intent intent = getIntent();
@@ -92,6 +97,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
         if (updateCurrentBudget && mCurrentBudget.getId().equals(budget.getId())) {
             mCurrentBudget = budget;
             updateCurrentBudget = false;
+            showBalanceInToolbar();
         }
     }
     //************************************************************************************************************************************************
@@ -352,5 +358,14 @@ public class BudgetViewActivity extends BaseNavDrawerActivity {
             return true;
         }
         return false;
+    }
+
+    private void showBalanceInToolbar() {
+        double balance = mCurrentBudget.getCurrentBalance();
+        String balanceString = String.valueOf(balance);
+        if (balance > 0) {
+            balanceString = "+" + balanceString;
+        }
+        mToolbar.setSubtitle(balanceString);
     }
 }

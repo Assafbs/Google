@@ -34,6 +34,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     private String mDrawerName;
     private String mDrawerEmail;
     private Uri mDrawerImage;
+    protected Toolbar mToolbar;
 
     View mDrawerView;
     DrawerLayout mDrawerLayout;
@@ -53,7 +54,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         mDrawerImage = mSessionManager.getUserImage();
 
         /* Assinging the toolbar object ot the view and setting the the Action bar to our toolbar*/
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         // Following code is to make sure labels are aligned with language chosen
