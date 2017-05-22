@@ -26,7 +26,6 @@ import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -49,7 +48,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     protected TabsViewPagerAdapter mViewPagerAdapter;
 
     private GraphsTabFragment mGraphsTabFragment;
-
+    private ExpensesTabFragment mExpensesTabFragment;
     public boolean graphShown = false;
 
     @Override
@@ -74,10 +73,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         });
 
         // Create the tabs that will be shown
-        ExpensesTabFragment expensesTabFragment = new ExpensesTabFragment();
+        mExpensesTabFragment = new ExpensesTabFragment();
         mGraphsTabFragment = new GraphsTabFragment();
 
-        mViewPagerAdapter.setupTabsFragments(isRTL(), expensesTabFragment, mGraphsTabFragment);
+        mViewPagerAdapter.setupTabsFragments(isRTL(), mExpensesTabFragment, mGraphsTabFragment);
     }
     //************************************************************************************************************************************************
     public void expenseUpdatedCallback() {
@@ -98,6 +97,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             mCurrentBudget = budget;
             updateCurrentBudget = false;
             showBalanceInToolbar();
+            mExpensesTabFragment.filterExpenses();
         }
     }
     //************************************************************************************************************************************************

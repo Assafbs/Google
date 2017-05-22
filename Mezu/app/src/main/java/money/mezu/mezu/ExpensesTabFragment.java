@@ -29,13 +29,9 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         mView = inflater.inflate(R.layout.tab_expenses, container, false);
         mActivity = (BudgetViewActivity) getActivity();
 
-        // Create the adapter to convert the array to views
-        mExpenseAdapter = new ExpenseAdapter(mActivity, mActivity.mCurrentBudget.getExpenses());
-        // Attach the adapter to a ListView
-        ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
-        listView.setAdapter(mExpenseAdapter);
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
         setupMonthSelection();
+        filterExpenses(mMonth, mYear);
         return mView;
     }
 
@@ -80,12 +76,16 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         filterExpenses(mMonth, mYear);
     }
 
+    public void filterExpenses() {
+        filterExpenses(mMonth, mYear);
+    }
+
     private void filterExpenses(int month, int year) {
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mActivity.mCurrentBudget.getExpenses(), startDate, endDate);
-        mExpenseAdapter = new ExpenseAdapter(mExpenseAdapter.mContext, expenses);
+        mExpenseAdapter = new ExpenseAdapter(mActivity, expenses);
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
     }
