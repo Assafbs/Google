@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:divider="@android:color/darker_gray"
                 android:dividerHeight="1.0sp"
-                android:id="@+id/budgets_list" />
+                android:id="@+id/budgets_list_large" />
 
         </LinearLayout>
 

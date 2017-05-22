@@ -41,7 +41,6 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
                 startActivity(addBudgetIntent);
             }
         });
-
     }
 
     private void setLanguage() {
@@ -56,7 +55,13 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     }
 
     //************************************************************************************************************************************************
-
+    public void budgetUpdatedCallback(Budget budget)
+    {
+        super.budgetUpdatedCallback(budget);
+        ListView listView = (ListView) findViewById(R.id.budgets_list_large);
+        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+        listView.setAdapter(adapter);
+    }
     //************************************************************************************************************************************************
 
 }

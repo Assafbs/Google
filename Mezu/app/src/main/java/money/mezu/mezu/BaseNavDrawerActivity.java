@@ -40,7 +40,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     DrawerLayout mDrawerLayout;
     ActionBarDrawerToggle mDrawerToggle;
 
-    private HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
+    protected HashMap<String, Budget> mapOfBudgets = new HashMap<String, Budget> ();
 
 
     protected GoogleApiClient mGoogleApiClient;
