@@ -108,6 +108,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             builder.setPositiveButton(R.string.yes, new MyDialogListener());
             builder.setNegativeButton(R.string.no, new MyDialogListener());
             AlertDialog dialog = builder.create();
+            mSessionManager.setLastBudget((String)null);
             dialog.show();
         }
         return true;
