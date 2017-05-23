@@ -45,8 +45,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setVisibility(View.INVISIBLE);
-                showPopupAddExpenseActivity();
+                showAddExpenseFragment();
             }
         });
 
@@ -164,13 +163,19 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
                 directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
     //************************************************************************************************************************************************
-    private void showPopupAddExpenseActivity() {
-        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(0);
-        ExpensesTab.select();
+    private void showAddExpenseFragment() {
         ExpenseFragment expenseFragment = new ExpenseFragment();
         expenseFragment.isAdd = true;
+        setExpenseFragment(expenseFragment);
+    }
+
+    public void setExpenseFragment(ExpenseFragment expenseFragment) {
+        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(0);
+        ExpensesTab.select();
         expenseShown = true;
         mViewPagerAdapter.onSwitchToExpense(expenseFragment);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
+        fab.setVisibility(View.INVISIBLE);
     }
     //************************************************************************************************************************************************
     @Override
