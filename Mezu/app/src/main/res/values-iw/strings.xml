@@ -52,6 +52,20 @@
     <string name="category">קטגוריה</string>
     <string name="categories">קטגוריות</string>
 
+    <!--Months-->
+    <string name="month_jan">ינו\'</string>
+    <string name="month_feb">פבר\'</string>
+    <string name="month_mar">מרץ</string>
+    <string name="month_apr">אפר\'</string>
+    <string name="month_may">מאי</string>
+    <string name="month_jun">יוני</string>
+    <string name="month_jul">יולי</string>
+    <string name="month_aug">אוג\'</string>
+    <string name="month_sep">ספט\'</string>
+    <string name="month_oct">אוק\'</string>
+    <string name="month_nov">נוב\'</string>
+    <string name="month_dec">דצמ\'</string>
+
 
     <!--Navigation Drawer Strings-->
     <string name="openDrawer">פתח מגירת ניווט</string>
@@ -94,10 +108,12 @@
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
     <string name="overall_graph">גרף כולל</string>
-    <string name="expenses_per_categories">הוצאות לפי קטגוריות</string>
-    <string name="no_data_pie">החל לבזבז כדי להציג נתונים!</string>
-    <string name="expenses_sum">"סך כל ההוצאות:"</string>
-    <string name="most_spending_on">"הקטגוריה היקרה ביותר:"</string>
+    <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
+    <string name="expenses_by_months">הוצאות לפי חודשים</string>
+    <string name="no_data_chart">החל לבזבז כדי להציג נתונים!</string>
+    <string name="expenses_sum">סך כל ההוצאות:</string>
+    <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
+    <string name="most_expensive_month">החודש היקר ביותר:</string>
 
 
     <!--Review Tab Fragment-->

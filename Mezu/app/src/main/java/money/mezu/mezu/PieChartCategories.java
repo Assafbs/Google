@@ -6,12 +6,9 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,10 +100,10 @@ public class PieChartCategories implements GraphInterface {
         PieData data = new PieData(mPieDataSet);
         data.setValueTextSize(15);
         mPieChart.setData(data);
-        mPieChart.setNoDataText(resources.getString(R.string.no_data_pie));
+        mPieChart.setNoDataText(resources.getString(R.string.no_data_chart));
         double totalExpenses = budget.getTotalExpenses();
         if (totalExpenses == 0) {
-            mPieChart.setCenterText(resources.getString(R.string.no_data_pie));
+            mPieChart.setCenterText(resources.getString(R.string.no_data_chart));
         } else {
             mPieChart.setCenterText(resources.getString(R.string.expenses_sum) + "\n" + String.valueOf(totalExpenses));
         }

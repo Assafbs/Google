@@ -125,11 +125,9 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         user.setText(expense.getUserName());
         user.setHint("");
 
-
         EditText description = (EditText) layout.findViewById(R.id.EditTextDescription);
         description.setText(expense.getDescription());
         description.setHint("");
-
 
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View child = viewGroup.getChildAt(i);

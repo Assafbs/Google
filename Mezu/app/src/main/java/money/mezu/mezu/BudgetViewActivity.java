@@ -355,6 +355,8 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     private boolean tryReleaseGraph() {
         if(graphShown) {
             mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
+            fab.setVisibility(View.VISIBLE);
             graphShown = false;
             return true;
         }

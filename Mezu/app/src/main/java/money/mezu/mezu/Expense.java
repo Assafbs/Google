@@ -1,14 +1,9 @@
 package money.mezu.mezu;
 
 import java.math.BigInteger;
-import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Objects;
-
-/**
- * Created by asafb on 4/15/2017.
- */
 
 public class Expense {
 
@@ -121,5 +116,16 @@ public class Expense {
         return mIsExpense;
     }
 
+    public int getMonth() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mTime);
+        return c.get(Calendar.MONTH);
+    }
+
+    public int getYear() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mTime);
+        return c.get(Calendar.YEAR);
+    }
 }
 

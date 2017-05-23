@@ -123,17 +123,25 @@ public class Budget {
     }
 
     public Category getMostExpensiveCategory() {
-        Category category = Category.OTHER;
+        Category maxCategory = Category.OTHER;
+        double categoryArray[] = new double[Category.values().length];
+        for (int i = 0; i < Category.values().length; i++) {
+            categoryArray[i] = 0;
+        }
         double max = 0.0;
         double amount;
         for (Expense expense : mExpenses) {
             amount = expense.getAmount();
-            if (expense.getIsExpense() && amount > max) {
-                max = amount;
-                category = expense.getCategory();
+            if (expense.getIsExpense()) {
+                categoryArray[expense.getCategory().getValue()] += amount;
+                amount = categoryArray[expense.getCategory().getValue()];
+                if (amount > max) {
+                    max = amount;
+                    maxCategory = expense.getCategory();
+                }
             }
         }
-        return category;
+        return maxCategory;
     }
 
     public double getTotalExpensesPerCategory(Category category) {
@@ -159,5 +167,27 @@ public class Budget {
 
     public String toString() {
         return mName;
+    }
+
+    public int getMostExpensiveMonthPerYear(int year) {
+        int maxMonth = 1;
+        double monthArray[] = new double[12];
+        for (int i = 0; i < 12; i++) {
+            monthArray[i] = 0;
+        }
+        double max = 0.0;
+        double amount;
+        for (Expense expense : mExpenses) {
+            amount = expense.getAmount();
+            if (expense.getIsExpense() && expense.getYear() == year) {
+                monthArray[expense.getMonth()] += amount;
+                amount = monthArray[expense.getMonth()];
+                if (amount > max) {
+                    max = amount;
+                    maxMonth = expense.getMonth();
+                }
+            }
+        }
+        return maxMonth;
     }
 }

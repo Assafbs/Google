@@ -3,25 +3,28 @@ package money.mezu.mezu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     private Context mContext;
     private PieChart mPieChart;
     private BarChart mBarChart;
+    private LineChart mLineChart;
     private PieChartCategories mPieChartCategories;
+    private LineChartMonths mLineChartMonths;
+    private Resources resources = staticContext.mContext.getResources();
     private BudgetViewActivity mActivity;
 
     public GraphAdapter(Context context, ArrayList<GraphInterface> graphs) {
@@ -46,12 +49,15 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         TextView info3 = (TextView) convertView.findViewById(R.id.graphInfo3);
         mPieChart = (PieChart) convertView.findViewById(R.id.pie_chart_small);
         mBarChart = (BarChart) convertView.findViewById(R.id.bar_chart_small);
+        mLineChart = (LineChart) convertView.findViewById(R.id.line_chart_small);
 
         LinearLayout graphRow = (LinearLayout) convertView.findViewById(R.id.graphRow);
         graphRow.setTag(graph);
 
         if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
             handlePieChart(convertView, graph, info1, info2, info3);
+        } else if (graph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
+            handleLineChart(convertView, graph, info1, info2, info3);
         }
         title.setText(graph.getTitle());
 
@@ -69,9 +75,12 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     }
 
     void handlePieChart(View convertView, GraphInterface graph, TextView info1, TextView info2, TextView info3) {
-        ViewGroup.LayoutParams params = mBarChart.getLayoutParams();
-        params.width = 0;
-        mBarChart.setLayoutParams(params);
+        ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
+        ViewGroup.LayoutParams lineParams = mLineChart.getLayoutParams();
+        barParams.width = 0;
+        lineParams.width = 0;
+        mBarChart.setLayoutParams(barParams);
+        mLineChart.setLayoutParams(lineParams);
         mPieChartCategories = (PieChartCategories) graph;
         mPieChartCategories.setPieChart(mPieChart);
         mPieChartCategories.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
@@ -79,10 +88,27 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         info3.setText(mActivity.mCurrentBudget.getMostExpensiveCategory().toString());
     }
 
-    private void replaceTab (GraphInterface graph) {
+    void handleLineChart(View convertView, GraphInterface graph, TextView info1, TextView info2, TextView info3) {
+        ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
+        ViewGroup.LayoutParams pieParams = mPieChart.getLayoutParams();
+        barParams.width = 0;
+        pieParams.width = 0;
+        mBarChart.setLayoutParams(barParams);
+        mPieChart.setLayoutParams(pieParams);
+        mLineChartMonths = (LineChartMonths) graph;
+        mLineChartMonths.setLineChart(mLineChart);
+        mLineChartMonths.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
+        info2.setText(resources.getString(R.string.most_expensive_month));
+        info3.setText(resources.getStringArray(R.array.months_list)[mActivity.mCurrentBudget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))]);
+    }
+
+    private void replaceTab(GraphInterface graph) {
         GraphFragment graphFragment = new GraphFragment();
-        //if (graph.kind == piechart)...
-        graphFragment.setupPieChart(graph,mPieChart,mPieChartCategories);
+        if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
+            graphFragment.setupPieChart(graph, mPieChart, mPieChartCategories);
+        } else if (graph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
+            graphFragment.setupLineChart(graph, mLineChart, mLineChartMonths);
+        }
         mActivity.mViewPagerAdapter.onSwitchToGraph(graphFragment);
         mActivity.graphShown = true;
     }
