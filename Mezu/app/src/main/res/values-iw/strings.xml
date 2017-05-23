@@ -131,4 +131,5 @@
     <string name="confirm_delete">אישור מחיקה</string>
     <string name="delete">מחיקה</string>
     <string name="delete_confirmation_text">האם בטוח שברצונך למחוק תקציב זה?</string>
+    <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
 </resources>

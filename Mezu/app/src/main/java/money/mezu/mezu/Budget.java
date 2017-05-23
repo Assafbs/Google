@@ -51,6 +51,14 @@ public class Budget {
         this.mId = id;
     }
 
+    public void setName(String name) {
+        this.mName = name;
+    }
+
+    public void setInitialBalance(double balance) {
+        this.mInitialBalance = balance;
+    }
+
     public void addExpense(Expense expense) {
         mExpenses.add(expense);
     }
