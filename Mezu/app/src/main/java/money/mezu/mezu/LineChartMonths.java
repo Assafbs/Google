@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +22,8 @@ import java.util.List;
 
 public class LineChartMonths implements GraphInterface {
     private LineChart mLineChart;
-    private LineDataSet mLineDataSet;
+    private LineDataSet mLineDataSet1;
+    private LineDataSet mLineDataSet2;
     private Resources resources = staticContext.mContext.getResources();
     private String mTitle;
     private GraphEnum mGraphKind = GraphEnum.LINE_CHART;
@@ -30,7 +32,8 @@ public class LineChartMonths implements GraphInterface {
 
     public LineChartMonths(String title) {
         mLineChart = null;
-        mLineDataSet = null;
+        mLineDataSet1 = null;
+        mLineDataSet2 = null;
         mTitle = title;
     }
 
@@ -38,8 +41,12 @@ public class LineChartMonths implements GraphInterface {
         mLineChart = lineChart;
     }
 
-    public void setDataSet(LineDataSet lineDataSet) {
-        mLineDataSet = lineDataSet;
+    public void setDataSet1(LineDataSet lineDataSet) {
+        mLineDataSet1 = lineDataSet;
+    }
+
+    public void setDataSet2(LineDataSet lineDataSet) {
+        mLineDataSet2 = lineDataSet;
     }
 
     public LineChart getLineChart() {
@@ -51,30 +58,50 @@ public class LineChartMonths implements GraphInterface {
         return mGraphKind;
     }
 
-    public LineDataSet getLineDataSet() {
-        return mLineDataSet;
+    public LineDataSet getLineDataSet1() {
+        return mLineDataSet1;
+    }
+
+    public LineDataSet getLineDataSet2() {
+        return mLineDataSet2;
     }
 
     @Override
     public void calculateDataSet(Budget budget) {
         List<Entry> entries = new ArrayList<>();
+        List<Entry> entries2 = new ArrayList<>();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         double amountPerMonth;
+
         for (int i = 1; i <= 12; i++) {
             Date startDate = new Date(getEpoch(i, year));
             Date endDate = new Date(getEpoch(nextMonth(i), year));
             ArrayList<Expense> expenses_by_months = Filter.filterExpensesByDate(budget.getExpenses(), startDate, endDate);
-            amountPerMonth = getTotalExpensesAmount(expenses_by_months);
+            amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, true);
             entries.add(new Entry(i, (float) amountPerMonth));
         }
-        mLineDataSet = new LineDataSet(entries, "");
+        mLineDataSet1 = new LineDataSet(entries, resources.getString(R.string.expenses));
+
+//        entries.clear();
+
+        for (int i = 1; i <= 12; i++) {
+            Date startDate = new Date(getEpoch(i, year));
+            Date endDate = new Date(getEpoch(nextMonth(i), year));
+            ArrayList<Expense> expenses_by_months = Filter.filterExpensesByDate(budget.getExpenses(), startDate, endDate);
+            amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, false);
+            entries2.add(new Entry(i, (float) amountPerMonth));
+        }
+        mLineDataSet2 = new LineDataSet(entries2, resources.getString(R.string.incomes));
     }
 
-    private double getTotalExpensesAmount(ArrayList<Expense> array_of_expenses) {
+
+    private double getTotalExpensesOrIncomesAmount(ArrayList<Expense> array_of_expenses, boolean isExpenses) {
         double acc = 0;
         for (Expense expense : array_of_expenses) {
-            acc += expense.getAmount();
+            if (expense.getIsExpense() == isExpenses) {
+                acc += expense.getAmount();
+            }
         }
         return acc;
     }
@@ -138,19 +165,21 @@ public class LineChartMonths implements GraphInterface {
     public void GenerateGraph(View view, Budget budget, boolean large) {
         calculateDataSet(budget);
 
-        //I MADE IT WORK
-        final int[] MY_COLORS = {getColor(R.color.pie_red)};
+        mLineDataSet1.setColor(getColor(R.color.pie_red));
+        mLineDataSet2.setColor(getColor((R.color.pie_blue)));
+        mLineDataSet2.setValueTextColor(getColor(R.color.pie_dark_green));
+        List<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(mLineDataSet1);
+        dataSets.add(mLineDataSet2);
+        LineData data = new LineData(dataSets);
+        data.setValueTextSize(10);
+//        data.setDrawValues(false);
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        for (int c : MY_COLORS) colors.add(c);
-        mLineDataSet.setColors(colors);
-        LineData data = new LineData(mLineDataSet);
-        data.setValueTextSize(15);
         mLineChart.setData(data);
         mLineChart.setNoDataText(resources.getString(R.string.no_data_chart));
         mLineChart.getDescription().setEnabled(false);
         mLineChart.setPinchZoom(true);
-
+        mLineChart.setAutoScaleMinMaxEnabled(true);
 
         setAxis();
 

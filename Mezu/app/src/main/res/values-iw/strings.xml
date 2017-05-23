@@ -27,7 +27,9 @@
     <string name="title_optional">כותרת (אופציונלי)</string>
     <string name="Description_optional">תיאור (אופציונלי)</string>
     <string name="expense">הוצאה</string>
+    <string name="expenses">הוצאות</string>
     <string name="income">הכנסה</string>
+    <string name="incomes">הכנסות</string>
     <string name="pick_date">היום (לחצ/י לשינוי)</string>
     <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
 
