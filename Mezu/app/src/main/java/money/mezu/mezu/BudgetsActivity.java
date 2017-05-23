@@ -17,6 +17,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Log.d("","BudgetsActivity::onCreate start");
         setLanguage();
         super.onCreate(savedInstanceState);
         staticContext.mContext = getApplicationContext();
@@ -41,8 +42,12 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
                 startActivity(addBudgetIntent);
             }
         });
+        this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
+        ListView listView = (ListView) findViewById(R.id.budgets_list_large);
+        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+        listView.setAdapter(adapter);
     }
-
+    //************************************************************************************************************************************************
     private void setLanguage() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String language = sharedPref.getString("language", "");

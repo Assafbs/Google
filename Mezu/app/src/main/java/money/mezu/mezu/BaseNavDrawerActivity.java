@@ -45,9 +45,10 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
     protected GoogleApiClient mGoogleApiClient;
     protected SessionManager mSessionManager = null;
-    protected FirebaseBackend mBackend = FirebaseBackend.getInstance();
 
-    protected void onCreateDrawer() {
+    protected void onCreateDrawer()
+    {
+        Log.d("","BaseNavDrawerActivity::onCreateDrawer start");
         instansiateSessionManager();
         mDrawerName = mSessionManager.getUserName();
         mDrawerEmail = mSessionManager.getUserEmail();
@@ -110,7 +111,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
                 }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        UserIdentifier uid = mSessionManager.getUserId();
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
         ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
