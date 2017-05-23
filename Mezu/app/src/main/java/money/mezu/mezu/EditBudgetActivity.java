@@ -65,7 +65,24 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         saveBudgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //TODO: Save in DB
+                String budgetName = ((EditText) findViewById(R.id.budget_name)).getText().toString();
+                String startingBalanceString = ((EditText) findViewById(R.id.starting_balance)).getText().toString();
+                double startingBalance;
+                if (startingBalanceString.equals("")) {
+                    startingBalance = 0; // By convention
+                } else {
+                    startingBalance = Double.parseDouble(startingBalanceString);
+                }
+                if (!(budgetName.equals(mCurrentBudget.getName()) &&
+                        startingBalance == mCurrentBudget.getInitialBalance())) { // Something changed
+                    mCurrentBudget.setName(budgetName);
+                    mCurrentBudget.setInitialBalance(startingBalance);
+                    FirebaseBackend.getInstance().editBudget(mCurrentBudget);
+                }
+                for (String email : partnersEmails) {
+                    FirebaseBackend.getInstance().connectBudgetAndUserByEmail(mCurrentBudget, email);
+                }
+                BudgetViewActivity.goToBudgetView(EditBudgetActivity.this, mCurrentBudget, mSessionManager);
             }
         });
 

@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,9 +17,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.DateFormat;
@@ -39,6 +44,8 @@ public class ExpenseFragment extends Fragment {
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Calendar c;
 
+    private Expense expenseToShow;
+
     public boolean isAdd;
 
     private BudgetViewActivity mActivity;
@@ -58,12 +65,67 @@ public class ExpenseFragment extends Fragment {
 
         if (isAdd) {
             setupAddExpense();
+        } else {
+            setupShowExpense();
         }
 
         return mView;
     }
 
-    public void setupAddExpense () {
+    public void setShowExpense (Expense expenseToShow) {
+        this.expenseToShow = expenseToShow;
+        isAdd = false;
+    }
+
+    private void setupShowExpense () {
+        String titleString = expenseToShow.getTitle();
+        TextView titleView = (TextView) mView.findViewById(R.id.add_expense_title);
+        if (titleString == null) {
+            titleString = "General";
+        }
+        titleView.setText(titleString);
+        titleView.setVisibility(View.VISIBLE);
+
+        if (expenseToShow.getAmount() == 0.0) {
+            mEditTextAmount.setText("0.0");
+        } else {
+            mEditTextAmount.setText("" + expenseToShow.getAmount());
+        }
+
+        mCatagorySpinner.setSelection(expenseToShow.getCategory().getValue());
+
+        RadioButton rb_expense  = (RadioButton) mView.findViewById(R.id.radio_expense   );
+        RadioButton rb_income   = (RadioButton) mView.findViewById(R.id.radio_income    );
+        rb_expense. setClickable(false);
+        rb_income.  setClickable(false);
+
+        if (expenseToShow.getIsExpense()) {
+            rb_expense.setChecked(true);
+            rb_income.setChecked(false);
+        } else {
+            rb_expense.setChecked(false);
+            rb_income.setChecked(true);
+        }
+
+        mEditTextTitle.setText("Added by: " + expenseToShow.getUserName());
+        mEditTextTitle.setHint("");
+
+        mEditTextDescription.setText(expenseToShow.getDescription());
+        mEditTextDescription.setHint("");
+
+        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View child = viewGroup.getChildAt(i);
+            child.setEnabled(false);
+        }
+
+        mEditTextDate.setText(DateFormat.getDateInstance().format(expenseToShow.getTime()));
+        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(expenseToShow.getTime()));
+
+        mAddButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void setupAddExpense () {
         mEditTextAmount.post(new Runnable() {
             public void run() {
                 mEditTextAmount.requestFocusFromTouch();
