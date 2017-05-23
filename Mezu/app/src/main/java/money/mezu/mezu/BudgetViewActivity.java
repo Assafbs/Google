@@ -1,8 +1,5 @@
 package money.mezu.mezu;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,38 +7,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TimePicker;
 
 import com.google.gson.Gson;
 
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
 
     protected Budget mCurrentBudget;
     private boolean updateCurrentBudget = false;
-
-    private EditText dateField;
-    private EditText timeField;
-    private int mYear, mMonth, mDay, mHour, mMinute;
-    private Calendar c;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -50,6 +27,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     private GraphsTabFragment mGraphsTabFragment;
     private ExpensesTabFragment mExpensesTabFragment;
     public boolean graphShown = false;
+    public boolean expenseShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +46,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             @Override
             public void onClick(View view) {
                 view.setVisibility(View.INVISIBLE);
-                showPopupAddExpenseActivity(BudgetViewActivity.this);
+                showPopupAddExpenseActivity();
             }
         });
 
@@ -153,20 +131,20 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tryReleaseGraph();
+                tryReleaseTabs();
             }
         });
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-                tryReleaseGraph();
+                tryReleaseTabs();
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 super.onTabSelected(tab);
-                tryReleaseGraph();
+                tryReleaseTabs();
             }
         });
 
@@ -186,153 +164,46 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
                 directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
     //************************************************************************************************************************************************
-    private void showPopupAddExpenseActivity(final Activity context) {
-        // Inflate the popup_layout.xml
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View layout = layoutInflater.inflate(R.layout.activity_add_expense, null);
-
-        // Creating the PopupWindow
-        final PopupWindow popUp = new PopupWindow(context);
-        popUp.setContentView(layout);
-        popUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-        popUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-        popUp.setFocusable(true);
-        final EditText EditTextAmount = (EditText) layout.findViewById(R.id.EditTextAmount);
-        EditTextAmount.post(new Runnable() {
-            public void run() {
-                EditTextAmount.requestFocusFromTouch();
-                InputMethodManager lManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                lManager.showSoftInput(EditTextAmount, 0);
-            }
-        });
-        popUp.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                context.findViewById(R.id.fab_expense).setVisibility(View.VISIBLE);
-            }
-        });
-
-        dateField = (EditText) layout.findViewById(R.id.EditTextDate);
-        timeField = (EditText) layout.findViewById(R.id.EditTextTime);
-
-        // Get Current Time
-        c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-        // Set Current Time to EditTexts
-        dateField.setText(DateFormat.getDateInstance().format(c.getTime()));
-        timeField.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
-
-        dateField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg1, MotionEvent event) {
-                return pickDate(event);
-            }
-        });
-        timeField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View arg1, MotionEvent event) {
-                return pickTime(event);
-            }
-        });
-
-        Button add_btn = (Button) layout.findViewById(R.id.add_action_btn);
-        add_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View arg0) {
-                addExpense(layout, popUp);
-            }
-        });
-
-        popUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    private void showPopupAddExpenseActivity() {
+        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(0);
+        ExpensesTab.select();
+        ExpenseFragment expenseFragment = new ExpenseFragment();
+        expenseFragment.isAdd = true;
+        expenseShown = true;
+        mViewPagerAdapter.onSwitchToExpense(expenseFragment);
     }
     //************************************************************************************************************************************************
-    public void addExpense(View layout, PopupWindow popUp) {
-        EditText amountField = (EditText) layout.findViewById(R.id.EditTextAmount);
-        EditText description = (EditText) layout.findViewById(R.id.EditTextDescription);
-        Spinner categorySpinner = (Spinner) layout.findViewById(R.id.SpinnerCategoriesType);
-        Log.d("", String.format("tmp:tmp: id: %d", categorySpinner.getId()));
-        Category category = Category.getCategoryFromString(categorySpinner.getSelectedItem().toString());
-        EditText title = (EditText) layout.findViewById(R.id.EditTextTitle);
-        String t_title = title.getText().toString();
-        boolean isExpense = true;
-        if (t_title.equals("")) {
-            t_title = getResources().getString(R.string.general);
+    @Override
+    public void onBackPressed(){
+        if (!tryReleaseTabs()) {
+            super.onBackPressed();
         }
-
-        //HANDLE IS EXPENSE/INCOME
-        RadioGroup rgExpense = (RadioGroup) layout.findViewById(R.id.radio_expense_group);
-        int selectedId = rgExpense.getCheckedRadioButtonId();
-        if (selectedId == R.id.radio_income) {
-            isExpense = false;
-        }
-
-        Double amount;
-        if (amountField.getText().toString().equals("")) {
-            amount = 0.0;
-        } else {
-            amount = Double.parseDouble(amountField.getText().toString());
-        }
-        //CREATE EXPENSE
-        Expense newExpense = new Expense("",
-                amount,
-                t_title,
-                description.getText().toString(),
-                category,
-                c.getTime(),
-                mSessionManager.getUserId(),
-                mSessionManager.getUserName(),
-                isExpense);
-
-        FirebaseBackend.getInstance().addExpenseToBudget(mCurrentBudget, newExpense);
-        popUp.dismiss();
     }
     //************************************************************************************************************************************************
-    public boolean pickDate(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            // Launch Date Picker Dialog
-            DatePickerDialog datePickerDialog = new DatePickerDialog(BudgetViewActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-                            mYear = year;
-                            mMonth = monthOfYear;
-                            mDay = dayOfMonth;
-                            c.set(mYear, mMonth, mDay, mHour, mMinute);
-                            dateField.setText(DateFormat.getDateInstance().format(c.getTime()));
-
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
+    public boolean tryReleaseTabs() {
+        if(graphShown) {
+            mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
+            fab.setVisibility(View.VISIBLE);
+            graphShown = false;
+            return true;
+        } else if (expenseShown) {
+            mViewPagerAdapter.onSwitchFromExpense(mExpensesTabFragment);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
+            fab.setVisibility(View.VISIBLE);
+            expenseShown = false;
             return true;
         }
         return false;
     }
     //************************************************************************************************************************************************
-    public boolean pickTime(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(BudgetViewActivity.this,
-                    new TimePickerDialog.OnTimeSetListener() {
-
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay,
-                                              int minute) {
-                            mHour = hourOfDay;
-                            mMinute = minute;
-                            c.set(mYear, mMonth, mDay, mHour, mMinute);
-                            timeField.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
-                        }
-                    }, mHour, mMinute, true);
-            timePickerDialog.show();
-            return true;
+    private void showBalanceInToolbar() {
+        double balance = mCurrentBudget.getCurrentBalance();
+        String balanceString = String.valueOf(balance);
+        if (balance > 0) {
+            balanceString = "+" + balanceString;
         }
-        return false;
+        mToolbar.setSubtitle(balanceString);
     }
     //************************************************************************************************************************************************
     public static void goToBudgetView (Context context, Budget budget, SessionManager sessionManager) {
@@ -343,32 +214,5 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         budgetViewIntent.putExtra("budget", json);
         context.startActivity(budgetViewIntent);
         sessionManager.setLastBudget(json);
-    }
-
-    @Override
-    public void onBackPressed(){
-        if (!tryReleaseGraph()) {
-            super.onBackPressed();
-        }
-    }
-
-    private boolean tryReleaseGraph() {
-        if(graphShown) {
-            mViewPagerAdapter.onSwitchFromGraph(mGraphsTabFragment);
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_expense);
-            fab.setVisibility(View.VISIBLE);
-            graphShown = false;
-            return true;
-        }
-        return false;
-    }
-
-    private void showBalanceInToolbar() {
-        double balance = mCurrentBudget.getCurrentBalance();
-        String balanceString = String.valueOf(balance);
-        if (balance > 0) {
-            balanceString = "+" + balanceString;
-        }
-        mToolbar.setSubtitle(balanceString);
     }
 }

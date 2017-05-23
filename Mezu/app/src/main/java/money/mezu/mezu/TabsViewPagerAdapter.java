@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private boolean mIsRtl;
-    private ExpensesTabFragment mExpensesTabFragment;
+    private /*ExpensesTabFragment*/ Fragment mExpensesTabFragment;
     private /*GraphsTabFragment*/ Fragment mGraphsTabFragment;
     private FragmentManager mFragmentManager;
 
@@ -56,12 +56,28 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    public void onSwitchToExpense(ExpenseFragment expenseFragment) {
+        mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
+        mExpensesTabFragment = expenseFragment;
+        notifyDataSetChanged();
+    }
+
+    public void onSwitchFromExpense(ExpensesTabFragment expensesTabFragment) {
+        mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
+        mExpensesTabFragment = expensesTabFragment;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemPosition(Object object)
     {
         if (object instanceof GraphsTabFragment && mGraphsTabFragment instanceof GraphFragment)
             return POSITION_NONE;
         if (object instanceof GraphFragment && mGraphsTabFragment instanceof GraphsTabFragment)
+            return POSITION_NONE;
+        if (object instanceof ExpensesTabFragment && mExpensesTabFragment instanceof ExpenseFragment)
+            return POSITION_NONE;
+        if (object instanceof ExpenseFragment && mExpensesTabFragment instanceof ExpensesTabFragment)
             return POSITION_NONE;
         return POSITION_UNCHANGED;
     }
