@@ -19,6 +19,7 @@ public class GraphFragment extends Fragment {
     private LineChart mLineChart;
     private LineChartMonths mLineChartMonths;
     private PieChartCategories mPieChartCategories;
+    private BarChartUsers mBarChartUsers;
 
     private GraphInterface mGraph;
 
@@ -36,12 +37,20 @@ public class GraphFragment extends Fragment {
         mLineChartMonths = lineChartMonths;
     }
 
+    public void setupBarChart(GraphInterface graph, BarChart barChart, BarChartUsers barChartUsers) {
+        mGraph = graph;
+        mBarChart = barChart;
+        mBarChartUsers = barChartUsers;
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mActivity = (BudgetViewActivity) getActivity();
         if (mGraph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
             mView = inflater.inflate(R.layout.pie_chart_view, null);
         } else if (mGraph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
             mView = inflater.inflate(R.layout.line_chart_view, null);
+        }else if (mGraph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
+            mView = inflater.inflate(R.layout.bar_chart_view, null);
         }
 
         TextView titleView = (TextView) mView.findViewById(R.id.chart_title);
@@ -50,11 +59,15 @@ public class GraphFragment extends Fragment {
         if (mGraph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
             mPieChart = (PieChart) mView.findViewById(R.id.pie_chart);
             mPieChartCategories.setPieChart(mPieChart);
-            mPieChartCategories.GenerateGraph(mView, mActivity.mCurrentBudget, true);
+            mPieChartCategories.GenerateGraph(mView, true);
         } else if (mGraph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
             mLineChart = (LineChart) mView.findViewById(R.id.line_chart);
             mLineChartMonths.setLineChart(mLineChart);
-            mLineChartMonths.GenerateGraph(mView, mActivity.mCurrentBudget, true);
+            mLineChartMonths.GenerateGraph(mView, true);
+        } else if (mGraph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
+            mBarChart = (BarChart) mView.findViewById(R.id.bar_chart);
+            mBarChartUsers.setBarChart(mBarChart);
+            mBarChartUsers.GenerateGraph(mView, true);
         }
 
         return mView;

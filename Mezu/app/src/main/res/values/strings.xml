@@ -123,10 +123,12 @@
     <string name="overall_graph">Overall</string>
     <string name="expenses_by_categories">Expenses By Categories</string>
     <string name="expenses_by_months">Expenses By Months</string>
+    <string name="expenses_by_users">Expenses By Users</string>
     <string name="no_data_chart">Start spending to show data!</string>
     <string name="expenses_sum">Expenses sum:</string>
     <string name="most_spending_on">Most spending on:</string>
     <string name="most_expensive_month">Most expensive month:</string>
+    <string name="most_expensive_user">Most expensive user:</string>
 
 
 

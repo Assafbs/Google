@@ -2,14 +2,8 @@ package money.mezu.mezu;
 
 import android.util.Log;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-/**
- * Created by asafb on 4/15/2017.
- */
 
 public class Budget {
 
@@ -189,5 +183,54 @@ public class Budget {
             }
         }
         return maxMonth;
+    }
+
+
+    public ArrayList<String> getArrayOfUserNamesExpensesOnly() {
+        ArrayList<String> users = new ArrayList<>();
+        boolean exists = false;
+
+        for (Expense expense : mExpenses) {
+            if (expense.getIsExpense()) {
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).equals(expense.getUserName())) {
+                        exists = true;
+                    }
+                }
+                if (!exists) {
+                    users.add(expense.getUserName());
+                }
+                exists = false;
+            }
+        }
+        return users;
+    }
+
+    public double getAmountPerUserName(String user) {
+        double acc = 0;
+        for (Expense expense : mExpenses) {
+            if (expense.getIsExpense() && expense.getUserName().equals(user)) {
+                acc += expense.getAmount();
+            }
+        }
+        return acc;
+    }
+
+    public String getMostExpensiveUser() {
+        ArrayList<String> users = getArrayOfUserNamesExpensesOnly();
+        String maxUser = users.get(0);
+        double userAmount;
+        double maxAmount = getAmountPerUserName(users.get(0));
+        int i = 0;
+
+        for (String user: users){
+            userAmount = getAmountPerUserName((users.get(i)));
+            if (userAmount > maxAmount){
+                maxAmount = userAmount;
+                maxUser = user;
+            }
+            i++;
+        }
+        return maxUser;
     }
 }

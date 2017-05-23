@@ -92,9 +92,6 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         String titleString = expense.getTitle();
         TextView titleView = (TextView) layout.findViewById(R.id.add_expense_title);
-        if (titleString == null) {
-            titleString = "General";
-        }
         titleView.setText(titleString);
         titleView.setVisibility(View.VISIBLE);
 

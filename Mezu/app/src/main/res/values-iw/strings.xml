@@ -112,10 +112,12 @@
     <string name="overall_graph">גרף כולל</string>
     <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
     <string name="expenses_by_months">הוצאות לפי חודשים</string>
+    <string name="expenses_by_users">הוצאות לפי משתמשים</string>
     <string name="no_data_chart">החל לבזבז כדי להציג נתונים!</string>
     <string name="expenses_sum">סך כל ההוצאות:</string>
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
+    <string name="most_expensive_user">המשתמש היקר ביותר:</string>
 
 
     <!--Review Tab Fragment-->

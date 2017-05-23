@@ -33,12 +33,14 @@ public class GraphsTabFragment extends Fragment {
 
     public ArrayList<GraphInterface> getArrayOfGraphs() {
         ArrayList<GraphInterface> graphArray = new ArrayList<>();
-        PieChartCategories pieChart = new PieChartCategories(resources.getString(R.string.expenses_by_categories));
-        LineChartMonths lineChart = new LineChartMonths(resources.getString(R.string.expenses_by_months));
+        PieChartCategories pieChartCategories = new PieChartCategories(mActivity.mCurrentBudget);
+        LineChartMonths lineChartMonths = new LineChartMonths(mActivity.mCurrentBudget);
+        BarChartUsers barChartUsers = new BarChartUsers(mActivity.mCurrentBudget);
 
         //ADD GRAPHS HERE! ONE PER EACH GRAPH CREATED
-        graphArray.add(pieChart);
-        graphArray.add(lineChart);
+        graphArray.add(pieChartCategories);
+        graphArray.add(lineChartMonths);
+        graphArray.add(barChartUsers);
         return graphArray;
     }
 

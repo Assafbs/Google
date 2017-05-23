@@ -18,12 +18,18 @@ public class PieChartCategories implements GraphInterface {
     private PieDataSet mPieDataSet;
     private Resources resources = staticContext.mContext.getResources();
     private String mTitle;
+    private String mInfoLine;
+    private String mInfoValue;
+    private Budget mBudget;
     private GraphEnum mGraphKind = GraphEnum.PIE_CHART;
 
-    public PieChartCategories(String title) {
+    public PieChartCategories(Budget budget) {
         mPieChart = null;
         mPieDataSet = null;
-        mTitle = title;
+        mTitle = resources.getString(R.string.expenses_by_categories);
+        mInfoLine = resources.getString(R.string.most_spending_on);
+        mBudget = budget;
+        mInfoValue = budget.getMostExpensiveCategory().toString();
     }
 
     public void setPieChart(PieChart pieChart) {
@@ -48,12 +54,12 @@ public class PieChartCategories implements GraphInterface {
     }
 
     @Override
-    public void calculateDataSet(Budget budget) {
+    public void calculateDataSet() {
         List<PieEntry> entries = new ArrayList<>();
         double amountPerCategory;
 
         for (Category category : Category.values()) {
-            amountPerCategory = budget.getTotalExpensesPerCategory(category);
+            amountPerCategory = mBudget.getTotalExpensesPerCategory(category);
             if (amountPerCategory != 0) {
                 entries.add(new PieEntry(((float) amountPerCategory), category.toString()));
             }
@@ -85,8 +91,18 @@ public class PieChartCategories implements GraphInterface {
     }
 
     @Override
-    public void GenerateGraph(View view, Budget budget, boolean large) {
-        calculateDataSet(budget);
+    public String getInfoLine() {
+        return mInfoLine;
+    }
+
+    @Override
+    public String getInfoValue() {
+        return mInfoValue;
+    }
+
+    @Override
+    public void GenerateGraph(View view, boolean large) {
+        calculateDataSet();
 
         //I MADE IT WORK
         final int[] MY_COLORS = {getColor(R.color.pie_red), getColor(R.color.pie_orange), getColor(R.color.pie_yellow), getColor(R.color.pie_green),
@@ -101,7 +117,7 @@ public class PieChartCategories implements GraphInterface {
         data.setValueTextSize(15);
         mPieChart.setData(data);
         mPieChart.setNoDataText(resources.getString(R.string.no_data_chart));
-        double totalExpenses = budget.getTotalExpenses();
+        double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
             mPieChart.setCenterText(resources.getString(R.string.no_data_chart));
         } else {
