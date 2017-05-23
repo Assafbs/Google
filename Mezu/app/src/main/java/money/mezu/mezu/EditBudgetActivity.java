@@ -118,7 +118,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
-                FirebaseBackend.getInstance().deleteBudget(mCurrentBudget.getId());
+                FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId());
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()

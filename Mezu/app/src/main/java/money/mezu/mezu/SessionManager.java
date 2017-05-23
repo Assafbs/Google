@@ -95,7 +95,7 @@ public class SessionManager {
     public void logoutUser(){
         editor.clear();
         editor.commit();
-        FirebaseBackend.getInstance().stopListeningOnEvents();
+        FirebaseBackend.getInstance().stopListeningOnAllPaths();
         Intent i = new Intent(_context, LoginActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         _context.startActivity(i);

@@ -39,9 +39,9 @@ public class FirebaseBackend {
     //************************************************************************************************************************************************
     public void startListeningForAllUserBudgetUpdates(UserIdentifier uid)
     {
+        Log.d("","FirebaseBackend:registerForBudgetUpdates: start");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/" + uid.getId().toString() + "/budgets");
-
         ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
@@ -55,7 +55,16 @@ public class FirebaseBackend {
                 Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: budgets have changed:%s", budgets.toString()));
                 for(String key : budgets.keySet())
                 {
-                    if (!mPathsIListenTo.contains("budgets/" + key + "/budget"))
+                    boolean pathFound = false;
+                    for (Pair<String, ValueEventListener> currentPair: mPathsIListenTo)
+                    {
+                        if (currentPair.first.equals("budgets/" + key + "/budget"))
+                        {
+                            pathFound = true;
+                            break;
+                        }
+                    }
+                    if (!pathFound)
                     {
                         registerForBudgetUpdates(key);
                     }
@@ -76,7 +85,7 @@ public class FirebaseBackend {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: budget has changed: hip hip horay got the following shit: %s", dataSnapshot.toString()));
+                Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: budget has changed: hip hip horay got the following z: %s", dataSnapshot.toString()));
                 Budget newBudget = new Budget((HashMap<String, Object>)dataSnapshot.getValue());
                 Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: deserialized budget is: %s", newBudget.toString()));
                 EventDispatcher.getInstance().notifyBudgetUpdatedListeners(newBudget);
@@ -89,27 +98,31 @@ public class FirebaseBackend {
         mPathsIListenTo.add(Pair.create("budgets/" + bid + "/budget", listener));
     }
     //************************************************************************************************************************************************
-    public void deleteBudget(String bid)
-    {
-        final String bidToRemove = bid;
+    public void leaveBudget(String bid, UserIdentifier uid) {
+        final String bidToLeave = bid;
+        final String uidToUpdate = uid.getId().toString();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        stopListeningOnPath("budgets/" + bid + "/budget");
+        EventDispatcher.getInstance().notifyUserLeftBudgetListeners(bid);
         DatabaseReference ref = database.getReference("budgets/" + bid + "/users");
-        // TODO - maybe take care of listeners hash map...
-        ref.addValueEventListener(new ValueEventListener() {
+        final ValueEventListener newListener = ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                HashMap<String, Object> uidDict =(HashMap<String, Object>)dataSnapshot.getValue();
-                for (String uidAsString : uidDict.keySet()) {
-                    mDatabase.child("users").child(uidAsString).child("budgets").child(bidToRemove).removeValue();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
+                mDatabase.child("users").child(uidToUpdate).child("budgets").child(bidToLeave).removeValue();
+                mDatabase.child("budgets").child(bidToLeave).child("users").child(uidToUpdate).removeValue();
+                // second condition verifies that we were a member of the budget to begin with.
+                if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate)) {
+                    mDatabase.child("budgets").child(bidToLeave).removeValue();
                 }
-                mDatabase.child("budgets").child(bidToRemove).removeValue();
+                stopListeningOnPath("budgets/" + bidToLeave + "/users");
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
             }
         });
+        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave + "/users", newListener));
     }
     //************************************************************************************************************************************************
     public void editBudget(Budget budget)
@@ -229,16 +242,36 @@ public class FirebaseBackend {
         expenseRef.setValue(serializedExpense);
     }
     //************************************************************************************************************************************************
-    public void stopListeningOnEvents()
+    public void stopListeningOnAllPaths()
     {
         Log.d("", "FirebaseBackend:stopListeningOnEvents: stopping");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         for (Pair<String,ValueEventListener > pathListener: mPathsIListenTo)
         {
             DatabaseReference ref = database.getReference(pathListener.first);
+            Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s",  pathListener.first));
             ref.removeEventListener(pathListener.second);
         }
         mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+    }
+    //************************************************************************************************************************************************
+    public void stopListeningOnPath(String path)
+    {
+        HashSet<Pair<String, ValueEventListener>> pairsToDelete = new HashSet<Pair<String, ValueEventListener>>();
+        for (Pair<String, ValueEventListener> currentPair: mPathsIListenTo)
+        {
+            if (currentPair.first.equals(path))
+            {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference(currentPair.first);
+                Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s",  currentPair.first));
+                ref.removeEventListener(currentPair.second);
+                pairsToDelete.add(currentPair);
+            }
+        }
+        for (Pair<String, ValueEventListener> pairToDelete : pairsToDelete)
+        {
+            mPathsIListenTo.remove(pairToDelete);
+        }
     }
     //************************************************************************************************************************************************
     public void addUserIfNeeded(UserIdentifier uid, String username, String email)

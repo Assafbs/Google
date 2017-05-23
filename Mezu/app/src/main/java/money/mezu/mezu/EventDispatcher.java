@@ -11,11 +11,13 @@ public class EventDispatcher
 {
     private HashSet<BudgetUpdatedListener> mBudgetUpdatedListeners;
     private HashSet<ExpenseUpdatedListener> mExpenseUpdatedListeners;
+    private HashSet<UserLeftBudgetListener> mUserLeftBudgetListeners;
     private static EventDispatcher mInstance = null;
     private EventDispatcher()
     {
         mBudgetUpdatedListeners = new HashSet<BudgetUpdatedListener>();
-        mExpenseUpdatedListeners= new HashSet<ExpenseUpdatedListener>();
+        mExpenseUpdatedListeners = new HashSet<ExpenseUpdatedListener>();
+        mUserLeftBudgetListeners = new  HashSet<UserLeftBudgetListener>();
     }
     //************************************************************************************************************************************************
 
@@ -36,6 +38,19 @@ public class EventDispatcher
     public void registerExpenseUpdateListener(ExpenseUpdatedListener newListener)
     {
         mExpenseUpdatedListeners.add(newListener);
+    }
+    //************************************************************************************************************************************************
+    public void registerUserLeftBudgetListener(UserLeftBudgetListener newListener)
+    {
+        mUserLeftBudgetListeners.add(newListener);
+    }
+    //************************************************************************************************************************************************
+    public void notifyUserLeftBudgetListeners(String bid)
+    {
+        for (UserLeftBudgetListener listener : mUserLeftBudgetListeners)
+        {
+            listener.userLeftBudgetCallback(bid);
+        }
     }
     //************************************************************************************************************************************************
     public void notifyBudgetUpdatedListeners(Budget newBudget)

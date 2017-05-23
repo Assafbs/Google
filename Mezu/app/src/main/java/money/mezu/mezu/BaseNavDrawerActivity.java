@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class BaseNavDrawerActivity extends AppCompatActivity implements View.OnClickListener, BudgetUpdatedListener{
+public abstract class BaseNavDrawerActivity extends AppCompatActivity implements View.OnClickListener, BudgetUpdatedListener, UserLeftBudgetListener{
 
     private String mDrawerName;
     private String mDrawerEmail;
@@ -112,7 +112,11 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
         UserIdentifier uid = mSessionManager.getUserId();
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
-        mBackend.startListeningForAllUserBudgetUpdates(uid);
+        this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
+        ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
+        BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+        listView.setAdapter(adapter);
+        EventDispatcher.getInstance().registerUserLeftBudgetListener(this);
     }
     //************************************************************************************************************************************************
     private void setupHeader() {
@@ -220,5 +224,16 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
+    }
+    //************************************************************************************************************************************************
+    public void userLeftBudgetCallback(String bid)
+    {
+        if (this.mapOfBudgets.containsKey(bid))
+        {
+            this.mapOfBudgets.remove(bid);
+            ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
+            BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
+            listView.setAdapter(adapter);
+        }
     }
 }

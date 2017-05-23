@@ -25,7 +25,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
         if(!mSessionManager.checkLogin()) {
             return;
         }
-
+        BackendCache.getInstatnce();
         // Try to go to the last budget saved to session manager
         if (mSessionManager.goToLastBudget()){
             return;
