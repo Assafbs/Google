@@ -226,6 +226,9 @@ public class Budget {
 
     public String getMostExpensiveUser() {
         ArrayList<String> users = getArrayOfUserNamesExpensesOnly();
+        if (users.isEmpty()){
+            return "";
+        }
         String maxUser = users.get(0);
         double userAmount;
         double maxAmount = getAmountPerUserName(users.get(0));
