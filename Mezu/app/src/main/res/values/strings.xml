@@ -142,4 +142,5 @@
     <string name="delete_confirmation_text">Are you sure you want to delete this budget?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="partner_list_edit_text">Add more partners to share this budget with</string>
 </resources>
