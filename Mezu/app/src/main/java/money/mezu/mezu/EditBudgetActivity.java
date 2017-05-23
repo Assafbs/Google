@@ -125,7 +125,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             builder.setPositiveButton(R.string.yes, new MyDialogListener());
             builder.setNegativeButton(R.string.no, new MyDialogListener());
             AlertDialog dialog = builder.create();
-            mSessionManager.setLastBudget((String)null);
             dialog.show();
         }
         return true;
@@ -140,7 +139,8 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(EditBudgetActivity.this.getPackageName() );
-                restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mSessionManager.setLastBudget((String)null);
                 startActivity(restartIntent);
             }
         }
