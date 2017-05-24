@@ -147,9 +147,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
     }
 
     private boolean isValidEmail(String email){
-        //TODO: validate email; if function is implemented somewhere else, use same.
-        //TODO: maybe check if it's in the system, and if not send and invitation to Mezu?
-        return true;
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public void tryInitializingContactEmails() {
