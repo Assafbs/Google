@@ -131,22 +131,12 @@ public class FirebaseBackend {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
         // TODO - maybe take care of listeners hash map...
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
-                        setValue(budgetToEdit.serializeNoExpenses());
-                for (Expense expense : budgetToEdit.getExpenses()) {
-                    mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
-                            child(expense.getId()).setValue(expense.serialize());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
+        mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
+                setValue(budgetToEdit.serializeNoExpenses());
+        for (Expense expense : budgetToEdit.getExpenses()) {
+            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
+                    child(expense.getId()).setValue(expense.serialize());
+        }
     }
     //************************************************************************************************************************************************
     public void editBudgetUsers(String bid, List<UserIdentifier> uids)
