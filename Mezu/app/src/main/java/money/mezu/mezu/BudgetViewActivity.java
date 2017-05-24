@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
     //************************************************************************************************************************************************
     public void expenseUpdatedCallback() {
+        Log.d("","BudgetViewActivity:expenseUpdatedCallback: invoked");
         showBalanceInToolbar();
     }
     //************************************************************************************************************************************************
@@ -69,7 +71,13 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget) {
+        Log.d("",String.format("BudgetViewActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
+
         super.budgetUpdatedCallback(budget);
+
+        if (!updateCurrentBudget)
+            Log.d("","BudgetViewActivity:budgetUpdatedCallback: updateCurrentBudget is false");
+
         if (updateCurrentBudget && mCurrentBudget.getId().equals(budget.getId())) {
             mCurrentBudget = budget;
             updateCurrentBudget = false;

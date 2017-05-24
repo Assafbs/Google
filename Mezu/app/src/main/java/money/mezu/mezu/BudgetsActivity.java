@@ -62,6 +62,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget)
     {
+        Log.d("",String.format("BudgetsActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         super.budgetUpdatedCallback(budget);
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));

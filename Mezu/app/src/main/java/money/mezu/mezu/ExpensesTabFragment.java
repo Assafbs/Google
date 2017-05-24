@@ -37,9 +37,9 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
 
     public void expenseUpdatedCallback() {
-        Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
+        Log.d("", "ExpensesTabFragment:expenseUpdatedCallback: invoked");
         for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
-            Log.d("", String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
+            Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
         filterExpenses(mMonth, mYear);
     }
