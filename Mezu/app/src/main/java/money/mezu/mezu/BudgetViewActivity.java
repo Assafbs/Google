@@ -178,7 +178,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
 
     public void setExpenseFragment(ExpenseFragment expenseFragment) {
-        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(0);
+        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(isRTL()? 2 : 0);
         ExpensesTab.select();
         expenseShown = true;
         mViewPagerAdapter.onSwitchToExpense(expenseFragment);
