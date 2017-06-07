@@ -19,7 +19,6 @@ import java.util.Locale;
 public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
 
     protected Budget mCurrentBudget;
-    private boolean updateCurrentBudget = false;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -67,20 +66,14 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         Gson gson = new Gson();
         String json = intent.getStringExtra("budget");
         mCurrentBudget = gson.fromJson(json, Budget.class);
-        updateCurrentBudget = true;
     }
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget) {
         Log.d("",String.format("BudgetViewActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
 
         super.budgetUpdatedCallback(budget);
-
-        if (!updateCurrentBudget)
-            Log.d("","BudgetViewActivity:budgetUpdatedCallback: updateCurrentBudget is false");
-
-        if (updateCurrentBudget && mCurrentBudget.getId().equals(budget.getId())) {
+        if (mCurrentBudget.getId().equals(budget.getId())) {
             mCurrentBudget = budget;
-            updateCurrentBudget = false;
             showBalanceInToolbar();
             mExpensesTabFragment.filterExpenses();
         }

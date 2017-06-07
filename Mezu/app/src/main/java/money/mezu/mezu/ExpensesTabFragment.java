@@ -81,6 +81,8 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private void filterExpenses(int month, int year) {
+        if (mView == null)
+            return;
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
