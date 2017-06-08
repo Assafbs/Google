@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
@@ -87,10 +88,12 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mActivity.mCurrentBudget.getExpenses(), startDate, endDate);
+        Collections.sort(expenses);
         mExpenseAdapter = new ExpenseAdapter(mActivity, expenses);
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
     }
+
 
     private long getEpoch(int month, int year) { // milliseconds since January 1, 1970
         Calendar calendar = Calendar.getInstance();

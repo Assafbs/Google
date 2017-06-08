@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,19 +123,20 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             builder.setTitle(R.string.confirm_delete);
             builder.setMessage(R.string.delete_confirmation_text);
             builder.setCancelable(true);
-            builder.setPositiveButton(R.string.yes, new MyDialogListener());
-            builder.setNegativeButton(R.string.no, new MyDialogListener());
+            builder.setPositiveButton(R.string.yes, new DeleteDialogListener());
+            builder.setNegativeButton(R.string.no, new DeleteDialogListener());
             AlertDialog dialog = builder.create();
             dialog.show();
         }
         return true;
     }
 
-    private class MyDialogListener implements DialogInterface.OnClickListener {
+    private class DeleteDialogListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId());
+                Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()

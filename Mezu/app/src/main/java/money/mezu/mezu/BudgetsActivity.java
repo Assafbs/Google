@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
 
