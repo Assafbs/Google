@@ -36,6 +36,7 @@
     <string name="incomes">incomes</string>
     <string name="pick_date">Today (tap to change)</string>
     <string name="pick_time">Now (tap to change)</string>
+    <string name="pick_category_toast">Please pick a category</string>
 
 
     <!--Categories-->

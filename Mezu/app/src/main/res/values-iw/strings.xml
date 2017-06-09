@@ -32,6 +32,8 @@
     <string name="incomes">הכנסות</string>
     <string name="pick_date">היום (לחצ/י לשינוי)</string>
     <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
+    <string name="pick_category_toast">אנא בחר קטגוריה</string>
+
 
 
     <!--Categories-->

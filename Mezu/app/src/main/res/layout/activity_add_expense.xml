@@ -86,7 +86,6 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
-            android:entries="@array/categories_list"
             android:prompt="@string/category"
             android:spinnerMode="dialog"
             android:textColor="@color/expense_view" />

@@ -1,31 +1,29 @@
 package money.mezu.mezu;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -34,7 +32,7 @@ public class ExpenseFragment extends Fragment {
 
     EditText mEditTextAmount;
     EditText mEditTextTitle;
-    Spinner mCatagorySpinner;
+    Spinner mCategorySpinner;
     EditText mEditTextDate;
     EditText mEditTextTime;
     EditText mEditTextDescription;
@@ -43,6 +41,10 @@ public class ExpenseFragment extends Fragment {
 
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Calendar c;
+
+    private boolean incomeSelected = false;
+    private Category incomeCat = Category.CATEGORY;
+    private Category expenseCat = Category.CATEGORY;
 
     private Expense expenseToShow;
 
@@ -56,7 +58,7 @@ public class ExpenseFragment extends Fragment {
 
         mEditTextAmount         = (EditText)    mView.findViewById(R.id.EditTextAmount          );
         mEditTextTitle          = (EditText)    mView.findViewById(R.id.EditTextTitle           );
-        mCatagorySpinner        = (Spinner)     mView.findViewById(R.id.SpinnerCategoriesType   );
+        mCategorySpinner        = (Spinner)     mView.findViewById(R.id.SpinnerCategoriesType   );
         mEditTextDate           = (EditText)    mView.findViewById(R.id.EditTextDate            );
         mEditTextTime           = (EditText)    mView.findViewById(R.id.EditTextTime            );
         mEditTextDescription    = (EditText)    mView.findViewById(R.id.EditTextDescription     );
@@ -92,7 +94,9 @@ public class ExpenseFragment extends Fragment {
             mEditTextAmount.setText("" + expenseToShow.getAmount());
         }
 
-        mCatagorySpinner.setSelection(expenseToShow.getCategory().getValue());
+        ArrayList<String> categories =  Category.getCategoriesList();
+        mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+        mCategorySpinner.setSelection(expenseToShow.getCategory().getValue() + 1);
 
         RadioButton rb_expense  = (RadioButton) mView.findViewById(R.id.radio_expense   );
         RadioButton rb_income   = (RadioButton) mView.findViewById(R.id.radio_income    );
@@ -155,6 +159,28 @@ public class ExpenseFragment extends Fragment {
             @Override
             public boolean onTouch(View arg1, MotionEvent event) {
                 return pickTime(event);
+            }
+        });
+
+        ArrayList<String> categories = Category.getExpenseCategoriesList();
+        mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+
+        mRGIsExpense.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if (checkedId == R.id.radio_income & !incomeSelected) {
+                    expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
+                    ArrayList<String> categories = Category.getIncomeCategoriesList();
+                    mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+                    mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
+                    incomeSelected = true;
+                } else {
+                    incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
+                    ArrayList<String> categories = Category.getExpenseCategoriesList();
+                    mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+                    mCategorySpinner.setSelection(expenseCat.getSpinnerLocation(false));
+                    incomeSelected = false;
+                }
             }
         });
 
@@ -223,7 +249,11 @@ public class ExpenseFragment extends Fragment {
             isExpense = false;
         }
 
-        Category category = Category.getCategoryFromString(mCatagorySpinner.getSelectedItem().toString());
+        Category category = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
+        if (category == Category.CATEGORY) {
+            Toast.makeText(mActivity, "Pick a category", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Double amount;
         if (mEditTextAmount.getText().toString().equals("")) {
