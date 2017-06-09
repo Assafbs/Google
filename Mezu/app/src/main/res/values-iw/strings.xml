@@ -133,4 +133,5 @@
     <string name="delete_confirmation_text">האם בטוח שברצונך למחוק תקציב זה?</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>
+    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
 </resources>

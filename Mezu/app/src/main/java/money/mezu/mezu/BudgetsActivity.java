@@ -42,6 +42,9 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
             }
         });
         this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
+        if (this.mapOfBudgets.size() > 0){
+            clearNoBudgetsIndication();
+        }
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
@@ -63,10 +66,14 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     {
         Log.d("",String.format("BudgetsActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         super.budgetUpdatedCallback(budget);
+        clearNoBudgetsIndication();
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
     }
     //************************************************************************************************************************************************
-
+    private void clearNoBudgetsIndication(){
+        findViewById(R.id.explaining_text).setVisibility(View.GONE);
+        findViewById(R.id.logo).setVisibility(View.GONE);
+    }
 }
