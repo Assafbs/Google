@@ -66,7 +66,9 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     Log.d("","AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
-                    Budget newBudget = new Budget(BudgetName, startingBalance);
+                    ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails;
+                    partnerEmailsIncludingMe.add(sessionManager.getUserEmail());
+                    Budget newBudget = new Budget(BudgetName, startingBalance, partnerEmailsIncludingMe);
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
                     for (String email : partnersEmails) {
                         FirebaseBackend.getInstance().connectBudgetAndUserByEmail(newBudget, email);

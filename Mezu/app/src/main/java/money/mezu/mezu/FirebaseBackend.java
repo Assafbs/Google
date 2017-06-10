@@ -102,12 +102,15 @@ public class FirebaseBackend {
         mPathsIListenTo.add(Pair.create("budgets/" + bid + "/budget", listener));
     }
     //************************************************************************************************************************************************
-    public void leaveBudget(String bid, UserIdentifier uid) {
+    public void leaveBudget(String bid, UserIdentifier uid, String userEmail) {
         final String bidToLeave = bid;
         final String uidToUpdate = uid.getId().toString();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         stopListeningOnPath("budgets/" + bid + "/budget");
         EventDispatcher.getInstance().notifyUserLeftBudgetListeners(bid);
+
+        mDatabase.child("budgets").child(bid).child("budget").child("mEmails").child(userEmail).removeValue();
+
         DatabaseReference ref = database.getReference("budgets/" + bid + "/users");
         final ValueEventListener newListener = ref.addValueEventListener(new ValueEventListener() {
             @Override
