@@ -67,7 +67,7 @@ public class EventDispatcher
     {
         // this is used becuase some of the listenners might want to unregister when we invoke them.
         // this pattern should be applied whenever an even that supports unregister is invoked.
-        HashSet<BudgetUpdatedListener> localListenersList = mBudgetUpdatedListeners;
+        HashSet<BudgetUpdatedListener> localListenersList = (HashSet<BudgetUpdatedListener>)mBudgetUpdatedListeners.clone();
         for (BudgetUpdatedListener listener : localListenersList)
         {
             listener.budgetUpdatedCallback(newBudget);
