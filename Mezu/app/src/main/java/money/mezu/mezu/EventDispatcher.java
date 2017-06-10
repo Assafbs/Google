@@ -1,5 +1,7 @@
 package money.mezu.mezu;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -12,12 +14,15 @@ public class EventDispatcher
     private HashSet<BudgetUpdatedListener> mBudgetUpdatedListeners;
     private HashSet<ExpenseUpdatedListener> mExpenseUpdatedListeners;
     private HashSet<UserLeftBudgetListener> mUserLeftBudgetListeners;
+    private HashSet<LocalCacheReadyListener> mLocalCacheReadyListeners;
     private static EventDispatcher mInstance = null;
     private EventDispatcher()
     {
         mBudgetUpdatedListeners = new HashSet<BudgetUpdatedListener>();
         mExpenseUpdatedListeners = new HashSet<ExpenseUpdatedListener>();
         mUserLeftBudgetListeners = new  HashSet<UserLeftBudgetListener>();
+        mLocalCacheReadyListeners = new HashSet<LocalCacheReadyListener>();
+
     }
     //************************************************************************************************************************************************
 
@@ -33,6 +38,11 @@ public class EventDispatcher
     public void registerBudgetUpdateListener(BudgetUpdatedListener newListener)
     {
         mBudgetUpdatedListeners.add(newListener);
+    }
+    //************************************************************************************************************************************************
+    public void unregisterBudgetUpdatedListener(BudgetUpdatedListener listener)
+    {
+        mBudgetUpdatedListeners.remove(listener);
     }
     //************************************************************************************************************************************************
     public void registerExpenseUpdateListener(ExpenseUpdatedListener newListener)
@@ -68,5 +78,12 @@ public class EventDispatcher
             listener.expenseUpdatedCallback();
         }
     }
-
+    //************************************************************************************************************************************************
+    public void notifyLocalCacheReady()
+    {
+        for (LocalCacheReadyListener listener : mLocalCacheReadyListeners)
+        {
+            listener.localCacheReadyCallback();
+        }
+    }
 }

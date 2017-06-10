@@ -1,6 +1,5 @@
 package money.mezu.mezu;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +49,12 @@ public class FirebaseBackend {
                 HashMap<String,String> budgets = (HashMap<String,String>) dataSnapshot.getValue();
                 if (null == budgets)
                 {
+                    EventDispatcher.getInstance().notifyLocalCacheReady();
                     return;
+                }
+                else
+                {
+                    BudgetsDownloadedNotifier.handleIfFirstExecution(budgets.keySet());
                 }
                 Log.d("",String.format("FirebaseBackend:registerForBudgetUpdates: budgets have changed:%s", budgets.toString()));
                 for(String key : budgets.keySet())
@@ -286,8 +290,8 @@ public class FirebaseBackend {
             public void onDataChange(DataSnapshot dataSnapshot)
             {
                 if (!dataSnapshot.hasChild(uidToAdd)) {
-                    mDatabase.child("users").child(uidToAdd).child("username").setValue(md5(usernameToAdd));
-                    mDatabase.child("users").child(uidToAdd).child("email").setValue(md5(emailToAdd));
+                    mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
+                    mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
                 }
             }
 
@@ -306,7 +310,7 @@ public class FirebaseBackend {
     public void connectBudgetAndUserByEmail(Budget budget, String email)
     {
         //TODO - maybe change DB representation in the future...
-        final String emailHash = md5(email);
+        final String emailHash = hash(email);
         final String bid = budget.getId();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/");
@@ -344,6 +348,12 @@ public class FirebaseBackend {
         });
     }
     //************************************************************************************************************************************************
+    private static String hash(String s)
+    {
+        //return md5(s);
+        return s;
+    }
+
     private static String md5(String s)
     {
         MessageDigest digest;
