@@ -65,7 +65,10 @@ public class EventDispatcher
     //************************************************************************************************************************************************
     public void notifyBudgetUpdatedListeners(Budget newBudget)
     {
-        for (BudgetUpdatedListener listener : mBudgetUpdatedListeners)
+        // this is used becuase some of the listenners might want to unregister when we invoke them.
+        // this pattern should be applied whenever an even that supports unregister is invoked.
+        HashSet<BudgetUpdatedListener> localListenersList = mBudgetUpdatedListeners;
+        for (BudgetUpdatedListener listener : localListenersList)
         {
             listener.budgetUpdatedCallback(newBudget);
         }
@@ -81,6 +84,7 @@ public class EventDispatcher
     //************************************************************************************************************************************************
     public void notifyLocalCacheReady()
     {
+
         for (LocalCacheReadyListener listener : mLocalCacheReadyListeners)
         {
             listener.localCacheReadyCallback();
