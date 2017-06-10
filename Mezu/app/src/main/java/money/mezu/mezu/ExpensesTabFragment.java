@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
@@ -37,9 +38,9 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
 
     public void expenseUpdatedCallback() {
-        Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
+        Log.d("", "ExpensesTabFragment:expenseUpdatedCallback: invoked");
         for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
-            Log.d("", String.format("BudgetViewActivity:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
+            Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
         filterExpenses(mMonth, mYear);
     }
@@ -81,14 +82,18 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private void filterExpenses(int month, int year) {
+        if (mView == null)
+            return;
         ListView listView = (ListView) mView.findViewById(R.id.expenses_list);
         Date startDate = new Date(getEpoch(month, year));
         Date endDate = new Date(getEpoch(nextMonth(month), year));
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mActivity.mCurrentBudget.getExpenses(), startDate, endDate);
+        Collections.sort(expenses);
         mExpenseAdapter = new ExpenseAdapter(mActivity, expenses);
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
     }
+
 
     private long getEpoch(int month, int year) { // milliseconds since January 1, 1970
         Calendar calendar = Calendar.getInstance();

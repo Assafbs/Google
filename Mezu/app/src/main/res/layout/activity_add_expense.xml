@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:layoutDirection="rtl"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -21,7 +20,8 @@
         android:gravity="center"
         android:text="@string/add_expense"
         android:textSize="22sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/expense_view"/>
 
     <EditText
         android:id="@+id/EditTextAmount"
@@ -31,7 +31,8 @@
         android:ems="10"
         android:hint="@string/zero_amount"
         android:inputType="numberDecimal"
-        android:textSize="48sp" />
+        android:textSize="48sp"
+        android:textColor="@color/expense_view"/>
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radio_expense_group"
@@ -59,34 +60,64 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:hint="@string/title_optional"
-        android:inputType="textPersonName">
+        android:inputType="textPersonName"
+        android:textColor="@color/expense_view">
     </EditText>
 
-    <Spinner
-        android:id="@+id/SpinnerCategoriesType"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
-        android:entries="@array/categories_list"
-        android:prompt="@string/category"
-        android:spinnerMode="dialog" />
+        android:layoutDirection="inherit"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/EditTextDate"
-        android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/category_title"
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/SpinnerCategoriesType"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:prompt="@string/category"
+            android:spinnerMode="dialog"
+            android:textColor="@color/expense_view" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:clickable="true"
-        android:hint="@string/pick_date" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/EditTextDate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:clickable="true"
+            android:hint="@string/pick_date"
+            android:textColor="@color/expense_view"
+            android:gravity="center"/>
 
 
-    <EditText
-        android:id="@+id/EditTextTime"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="datetime"
-        android:clickable="true"
-        android:hint="@string/pick_time" />
+        <EditText
+            android:id="@+id/EditTextTime"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="datetime"
+            android:clickable="true"
+            android:hint="@string/pick_time"
+            android:textColor="@color/expense_view"
+            android:gravity="center"/>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/EditTextDescription"
@@ -94,7 +125,8 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:hint="@string/Description_optional"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:textColor="@color/expense_view"/>
 
     <FrameLayout
         android:layout_width="match_parent"

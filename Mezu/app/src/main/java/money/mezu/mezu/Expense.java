@@ -1,11 +1,13 @@
 package money.mezu.mezu;
 
+import android.support.annotation.NonNull;
+
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Expense {
+public class Expense implements Comparable<Expense>{
 
     private String mId;
     private double mAmount; // Temporary, should probably be changed
@@ -127,5 +129,19 @@ public class Expense {
         c.setTime(mTime);
         return c.get(Calendar.YEAR);
     }
+
+    @Override
+    public int compareTo(@NonNull Expense other) {
+        if (this.mTime.after(other.mTime)){
+            return -1;
+        }
+        else if (other.mTime.after(this.mTime)) {
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
 }
 

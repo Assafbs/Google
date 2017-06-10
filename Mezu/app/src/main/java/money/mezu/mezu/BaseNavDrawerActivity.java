@@ -211,7 +211,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget)
     {
-        Log.d("",String.format("BudgetsActivity:updateBudgetsCallback: invoked with budget: %s", budget.toString()));
+        Log.d("",String.format("BaseNavDrawerActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         if (mapOfBudgets.containsKey(budget.getId()))
         {
             mapOfBudgets.get(budget.getId()).setFromBudget(budget);
@@ -228,6 +228,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     //************************************************************************************************************************************************
     public void userLeftBudgetCallback(String bid)
     {
+        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
         if (this.mapOfBudgets.containsKey(bid))
         {
             this.mapOfBudgets.remove(bid);

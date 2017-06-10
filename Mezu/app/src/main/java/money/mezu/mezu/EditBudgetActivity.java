@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +66,24 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         saveBudgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //TODO: Save in DB
+                String budgetName = ((EditText) findViewById(R.id.budget_name)).getText().toString();
+                String startingBalanceString = ((EditText) findViewById(R.id.starting_balance)).getText().toString();
+                double startingBalance;
+                if (startingBalanceString.equals("")) {
+                    startingBalance = 0; // By convention
+                } else {
+                    startingBalance = Double.parseDouble(startingBalanceString);
+                }
+                if (!(budgetName.equals(mCurrentBudget.getName()) &&
+                        startingBalance == mCurrentBudget.getInitialBalance())) { // Something changed
+                    mCurrentBudget.setName(budgetName);
+                    mCurrentBudget.setInitialBalance(startingBalance);
+                    FirebaseBackend.getInstance().editBudget(mCurrentBudget);
+                }
+                for (String email : partnersEmails) {
+                    FirebaseBackend.getInstance().connectBudgetAndUserByEmail(mCurrentBudget, email);
+                }
+                BudgetViewActivity.goToBudgetView(EditBudgetActivity.this, mCurrentBudget, mSessionManager);
             }
         });
 
@@ -105,34 +123,33 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             builder.setTitle(R.string.confirm_delete);
             builder.setMessage(R.string.delete_confirmation_text);
             builder.setCancelable(true);
-            builder.setPositiveButton(R.string.yes, new MyDialogListener());
-            builder.setNegativeButton(R.string.no, new MyDialogListener());
+            builder.setPositiveButton(R.string.yes, new DeleteDialogListener());
+            builder.setNegativeButton(R.string.no, new DeleteDialogListener());
             AlertDialog dialog = builder.create();
-            mSessionManager.setLastBudget((String)null);
             dialog.show();
         }
         return true;
     }
 
-    private class MyDialogListener implements DialogInterface.OnClickListener {
+    private class DeleteDialogListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId());
+                Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(EditBudgetActivity.this.getPackageName() );
-                restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mSessionManager.setLastBudget((String)null);
                 startActivity(restartIntent);
             }
         }
     }
 
     private boolean isValidEmail(String email){
-        //TODO: validate email; if function is implemented somewhere else, use same.
-        //TODO: maybe check if it's in the system, and if not send and invitation to Mezu?
-        return true;
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public void tryInitializingContactEmails() {

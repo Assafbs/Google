@@ -36,6 +36,7 @@
     <string name="incomes">incomes</string>
     <string name="pick_date">Today (tap to change)</string>
     <string name="pick_time">Now (tap to change)</string>
+    <string name="pick_category_toast">Please pick a category</string>
 
 
     <!--Categories-->
@@ -123,10 +124,12 @@
     <string name="overall_graph">Overall</string>
     <string name="expenses_by_categories">Expenses By Categories</string>
     <string name="expenses_by_months">Expenses By Months</string>
+    <string name="expenses_by_users">Expenses By Users</string>
     <string name="no_data_chart">Start spending to show data!</string>
     <string name="expenses_sum">Expenses sum:</string>
     <string name="most_spending_on">Most spending on:</string>
     <string name="most_expensive_month">Most expensive month:</string>
+    <string name="most_expensive_user">Most expensive user:</string>
 
 
 
@@ -142,4 +145,7 @@
     <string name="delete_confirmation_text">Are you sure you want to delete this budget?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="partner_list_edit_text">Add more partners to share this budget with</string>
+    <string name="category_title">Category:</string>
+    <string name="loading_budgets">Loading budgets, please wait...</string>
 </resources>

@@ -24,6 +24,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     private LineChart mLineChart;
     private PieChartCategories mPieChartCategories;
     private LineChartMonths mLineChartMonths;
+    private BarChartUsers mBarChartUsers;
     private Resources resources = staticContext.mContext.getResources();
     private BudgetViewActivity mActivity;
 
@@ -50,14 +51,20 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mPieChart = (PieChart) convertView.findViewById(R.id.pie_chart_small);
         mBarChart = (BarChart) convertView.findViewById(R.id.bar_chart_small);
         mLineChart = (LineChart) convertView.findViewById(R.id.line_chart_small);
-
+        info2.setText(graph.getInfoLine());
+        info3.setText(graph.getInfoValue());
+        if (BudgetViewActivity.isRTL() && graph.getTitle().equals(resources.getString(R.string.expenses_by_users))) {
+            info3.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+        }
         LinearLayout graphRow = (LinearLayout) convertView.findViewById(R.id.graphRow);
         graphRow.setTag(graph);
 
         if (graph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
-            handlePieChart(convertView, graph, info1, info2, info3);
+            handlePieChart(convertView, graph);
         } else if (graph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
-            handleLineChart(convertView, graph, info1, info2, info3);
+            handleLineChart(convertView, graph);
+        } else if (graph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
+            handleBarChart(convertView, graph);
         }
         title.setText(graph.getTitle());
 
@@ -74,7 +81,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         return convertView;
     }
 
-    void handlePieChart(View convertView, GraphInterface graph, TextView info1, TextView info2, TextView info3) {
+    void handlePieChart(View convertView, GraphInterface graph) {
         ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
         ViewGroup.LayoutParams lineParams = mLineChart.getLayoutParams();
         barParams.width = 0;
@@ -83,12 +90,10 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mLineChart.setLayoutParams(lineParams);
         mPieChartCategories = (PieChartCategories) graph;
         mPieChartCategories.setPieChart(mPieChart);
-        mPieChartCategories.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
-        info2.setText(R.string.most_spending_on);
-        info3.setText(mActivity.mCurrentBudget.getMostExpensiveCategory().toString());
+        mPieChartCategories.GenerateGraph(convertView, false);
     }
 
-    void handleLineChart(View convertView, GraphInterface graph, TextView info1, TextView info2, TextView info3) {
+    void handleLineChart(View convertView, GraphInterface graph) {
         ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
         ViewGroup.LayoutParams pieParams = mPieChart.getLayoutParams();
         barParams.width = 0;
@@ -97,9 +102,19 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mPieChart.setLayoutParams(pieParams);
         mLineChartMonths = (LineChartMonths) graph;
         mLineChartMonths.setLineChart(mLineChart);
-        mLineChartMonths.GenerateGraph(convertView, mActivity.mCurrentBudget, false);
-        info2.setText(resources.getString(R.string.most_expensive_month));
-        info3.setText(resources.getStringArray(R.array.months_list)[mActivity.mCurrentBudget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))]);
+        mLineChartMonths.GenerateGraph(convertView, false);
+    }
+
+    void handleBarChart(View convertView, GraphInterface graph) {
+        ViewGroup.LayoutParams lineParams = mLineChart.getLayoutParams();
+        ViewGroup.LayoutParams pieParams = mPieChart.getLayoutParams();
+        lineParams.width = 0;
+        pieParams.width = 0;
+        mLineChart.setLayoutParams(lineParams);
+        mPieChart.setLayoutParams(pieParams);
+        mBarChartUsers = (BarChartUsers) graph;
+        mBarChartUsers.setBarChart(mBarChart);
+        mBarChartUsers.GenerateGraph(convertView, false);
     }
 
     private void replaceTab(GraphInterface graph) {
@@ -108,6 +123,8 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
             graphFragment.setupPieChart(graph, mPieChart, mPieChartCategories);
         } else if (graph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
             graphFragment.setupLineChart(graph, mLineChart, mLineChartMonths);
+        } else if (graph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
+            graphFragment.setupBarChart(graph, mBarChart, mBarChartUsers);
         }
         mActivity.mViewPagerAdapter.onSwitchToGraph(graphFragment);
         mActivity.graphShown = true;

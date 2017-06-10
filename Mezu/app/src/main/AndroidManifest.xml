@@ -32,7 +32,8 @@
         <activity android:name=".BudgetViewActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_budget_view"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".AddBudgetActivity"
             android:theme="@style/AppTheme.NoActionBar"

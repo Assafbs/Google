@@ -22,31 +22,37 @@ import java.util.List;
 
 public class LineChartMonths implements GraphInterface {
     private LineChart mLineChart;
-    private LineDataSet mLineDataSet1;
-    private LineDataSet mLineDataSet2;
+    private LineDataSet mLineDataSetExpenses;
+    private LineDataSet mLineDataSetIncomes;
     private Resources resources = staticContext.mContext.getResources();
     private String mTitle;
+    private String mInfoLine;
+    private String mInfoValue;
+    private Budget mBudget;
     private GraphEnum mGraphKind = GraphEnum.LINE_CHART;
     private int mMonth;
     private int mYear;
 
-    public LineChartMonths(String title) {
+    public LineChartMonths(Budget budget) {
         mLineChart = null;
-        mLineDataSet1 = null;
-        mLineDataSet2 = null;
-        mTitle = title;
+        mLineDataSetExpenses = null;
+        mTitle = resources.getString(R.string.expenses_by_months);
+        mInfoLine = resources.getString(R.string.most_expensive_month);
+        mBudget = budget;
+        mInfoValue = resources.getStringArray(R.array.months_list)[budget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))];
+
     }
 
     public void setLineChart(LineChart lineChart) {
         mLineChart = lineChart;
     }
 
-    public void setDataSet1(LineDataSet lineDataSet) {
-        mLineDataSet1 = lineDataSet;
+    public void setDataSetExpenses(LineDataSet lineDataSet) {
+        mLineDataSetExpenses = lineDataSet;
     }
 
-    public void setDataSet2(LineDataSet lineDataSet) {
-        mLineDataSet2 = lineDataSet;
+    public void setDataSetIncomes(LineDataSet lineDataSet) {
+        mLineDataSetIncomes = lineDataSet;
     }
 
     public LineChart getLineChart() {
@@ -58,43 +64,43 @@ public class LineChartMonths implements GraphInterface {
         return mGraphKind;
     }
 
-    public LineDataSet getLineDataSet1() {
-        return mLineDataSet1;
+    public LineDataSet getLineDataSetExpenses() {
+        return mLineDataSetExpenses;
     }
 
-    public LineDataSet getLineDataSet2() {
-        return mLineDataSet2;
+    public LineDataSet getLineDataSetIncomes() {
+        return mLineDataSetIncomes;
     }
 
     @Override
-    public void calculateDataSet(Budget budget) {
+    public void calculateDataSet() {
         List<Entry> entries = new ArrayList<>();
         List<Entry> entries2 = new ArrayList<>();
+        ArrayList<Expense> expenses_by_months = new ArrayList<>();
         Calendar c = Calendar.getInstance();
+        Date startDate;
+        Date endDate;
         int year = c.get(Calendar.YEAR);
         double amountPerMonth;
 
         for (int i = 1; i <= 12; i++) {
-            Date startDate = new Date(getEpoch(i, year));
-            Date endDate = new Date(getEpoch(nextMonth(i), year));
-            ArrayList<Expense> expenses_by_months = Filter.filterExpensesByDate(budget.getExpenses(), startDate, endDate);
+            startDate = new Date(getEpoch(i, year));
+            endDate = new Date(getEpoch(nextMonth(i), year));
+            expenses_by_months = Filter.filterExpensesByDate(mBudget.getExpenses(), startDate, endDate);
             amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, true);
             entries.add(new Entry(i, (float) amountPerMonth));
         }
-        mLineDataSet1 = new LineDataSet(entries, resources.getString(R.string.expenses));
-
-//        entries.clear();
+        mLineDataSetExpenses = new LineDataSet(entries, resources.getString(R.string.expenses));
 
         for (int i = 1; i <= 12; i++) {
-            Date startDate = new Date(getEpoch(i, year));
-            Date endDate = new Date(getEpoch(nextMonth(i), year));
-            ArrayList<Expense> expenses_by_months = Filter.filterExpensesByDate(budget.getExpenses(), startDate, endDate);
+            startDate = new Date(getEpoch(i, year));
+            endDate = new Date(getEpoch(nextMonth(i), year));
+            expenses_by_months = Filter.filterExpensesByDate(mBudget.getExpenses(), startDate, endDate);
             amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, false);
             entries2.add(new Entry(i, (float) amountPerMonth));
         }
-        mLineDataSet2 = new LineDataSet(entries2, resources.getString(R.string.incomes));
+        mLineDataSetIncomes = new LineDataSet(entries2, resources.getString(R.string.incomes));
     }
-
 
     private double getTotalExpensesOrIncomesAmount(ArrayList<Expense> array_of_expenses, boolean isExpenses) {
         double acc = 0;
@@ -136,7 +142,7 @@ public class LineChartMonths implements GraphInterface {
         legend.setYEntrySpace(5f);
     }
 
-    public void setAxis() {
+    public void customizeAxis() {
         YAxis yAxisRight = mLineChart.getAxisRight();
         YAxis yAxisLeft = mLineChart.getAxisLeft();
         XAxis xAxis = mLineChart.getXAxis();
@@ -162,18 +168,26 @@ public class LineChartMonths implements GraphInterface {
     }
 
     @Override
-    public void GenerateGraph(View view, Budget budget, boolean large) {
-        calculateDataSet(budget);
+    public String getInfoLine() {
+        return mInfoLine;
+    }
 
-        mLineDataSet1.setColor(getColor(R.color.pie_red));
-        mLineDataSet2.setColor(getColor((R.color.pie_blue)));
-        mLineDataSet2.setValueTextColor(getColor(R.color.pie_dark_green));
+    @Override
+    public String getInfoValue() {
+        return mInfoValue;
+    }
+
+    @Override
+    public void GenerateGraph(View view, boolean large) {
+        calculateDataSet();
+        mLineDataSetExpenses.setColor(getColor(R.color.pie_red));
+        mLineDataSetIncomes.setColor(getColor((R.color.pie_blue)));
+        mLineDataSetIncomes.setValueTextColor(getColor(R.color.pie_dark_green));
         List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(mLineDataSet1);
-        dataSets.add(mLineDataSet2);
+        dataSets.add(mLineDataSetExpenses);
+        dataSets.add(mLineDataSetIncomes);
         LineData data = new LineData(dataSets);
         data.setValueTextSize(10);
-//        data.setDrawValues(false);
 
         mLineChart.setData(data);
         mLineChart.setNoDataText(resources.getString(R.string.no_data_chart));
@@ -181,8 +195,7 @@ public class LineChartMonths implements GraphInterface {
         mLineChart.setPinchZoom(true);
         mLineChart.setAutoScaleMinMaxEnabled(true);
 
-        setAxis();
-
+        customizeAxis();
         customizeLegend();
         if (!large) {
             mLineChart.getLegend().setEnabled(false);
@@ -204,7 +217,6 @@ public class LineChartMonths implements GraphInterface {
         mLineChart.getAxisRight().setEnabled(false);
         mLineChart.getXAxis().setEnabled(false);
     }
-
 
     public int getColor(int color) {
         return ContextCompat.getColor(staticContext.mContext, color);

@@ -32,6 +32,8 @@
     <string name="incomes">הכנסות</string>
     <string name="pick_date">היום (לחצ/י לשינוי)</string>
     <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
+    <string name="pick_category_toast">אנא בחר קטגוריה</string>
+
 
 
     <!--Categories-->
@@ -112,10 +114,12 @@
     <string name="overall_graph">גרף כולל</string>
     <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
     <string name="expenses_by_months">הוצאות לפי חודשים</string>
+    <string name="expenses_by_users">הוצאות לפי משתמשים</string>
     <string name="no_data_chart">החל לבזבז כדי להציג נתונים!</string>
     <string name="expenses_sum">סך כל ההוצאות:</string>
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
+    <string name="most_expensive_user">המשתמש היקר ביותר:</string>
 
 
     <!--Review Tab Fragment-->
@@ -129,4 +133,7 @@
     <string name="confirm_delete">אישור מחיקה</string>
     <string name="delete">מחיקה</string>
     <string name="delete_confirmation_text">האם בטוח שברצונך למחוק תקציב זה?</string>
+    <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
+    <string name="category_title">קטגוריה:</string>
+    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
 </resources>

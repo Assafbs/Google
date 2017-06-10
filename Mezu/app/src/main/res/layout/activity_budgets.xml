@@ -30,9 +30,24 @@
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
+            android:orientation="vertical"
             android:paddingTop="55dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:src="@mipmap/launcher"/>
+
+            <TextView
+                android:id="@+id/explaining_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="@string/loading_budgets"/>
 
             <ListView
                 android:layout_margin="10dp"
