@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,6 +46,8 @@ public class ExpenseFragment extends Fragment {
     private boolean incomeSelected = false;
     private Category incomeCat = Category.CATEGORY;
     private Category expenseCat = Category.CATEGORY;
+    private ArrayAdapter<String> incomeAdapter;
+    private ArrayAdapter<String> expenseAdapter;
 
     private Expense expenseToShow;
 
@@ -94,9 +97,9 @@ public class ExpenseFragment extends Fragment {
             mEditTextAmount.setText("" + expenseToShow.getAmount());
         }
 
-        ArrayList<String> categories =  Category.getCategoriesList();
+        ArrayList<String> categories =  new ArrayList<>();
+        categories.add(expenseToShow.getCategory().toString());
         mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
-        mCategorySpinner.setSelection(expenseToShow.getCategory().getValue() + 1);
 
         RadioButton rb_expense  = (RadioButton) mView.findViewById(R.id.radio_expense   );
         RadioButton rb_income   = (RadioButton) mView.findViewById(R.id.radio_income    );
@@ -117,16 +120,24 @@ public class ExpenseFragment extends Fragment {
         mEditTextDescription.setText(expenseToShow.getDescription());
         mEditTextDescription.setHint("");
 
-        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            child.setEnabled(false);
-        }
-
         mEditTextDate.setText(DateFormat.getDateInstance().format(expenseToShow.getTime()));
         mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(expenseToShow.getTime()));
 
+        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
+        disableAllFields(viewGroup);
+
         mAddButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void disableAllFields (ViewGroup viewGroup) {
+        for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
+            final View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup)
+                disableAllFields((ViewGroup) child);
+            if (child != null) {
+                child.setEnabled(false);
+            }
+        }
     }
 
     private void setupAddExpense () {
@@ -162,22 +173,21 @@ public class ExpenseFragment extends Fragment {
             }
         });
 
-        ArrayList<String> categories = Category.getExpenseCategoriesList();
-        mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+        expenseAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
+        incomeAdapter  = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList ());
+        mCategorySpinner.setAdapter(expenseAdapter);
 
         mRGIsExpense.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_income & !incomeSelected) {
                     expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
-                    ArrayList<String> categories = Category.getIncomeCategoriesList();
-                    mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+                    mCategorySpinner.setAdapter(incomeAdapter);
                     mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
                     incomeSelected = true;
                 } else {
                     incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
-                    ArrayList<String> categories = Category.getExpenseCategoriesList();
-                    mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+                    mCategorySpinner.setAdapter(expenseAdapter);
                     mCategorySpinner.setSelection(expenseCat.getSpinnerLocation(false));
                     incomeSelected = false;
                 }
