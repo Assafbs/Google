@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_edit_budget"
         android:title="@string/edit"
         android:icon="@drawable/ic_edit_30dp"
         app:showAsAction="ifRoom"

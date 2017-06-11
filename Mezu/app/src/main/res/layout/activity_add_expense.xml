@@ -12,16 +12,42 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="12">
 
-    <TextView
-        android:id="@+id/add_expense_title"
+    <LinearLayout
+        android:id="@+id/edit_expense_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:gravity="center"
-        android:text="@string/add_expense"
-        android:textSize="22sp"
-        android:visibility="gone"
-        android:textColor="@color/expense_view"/>
+        android:clickable="false"
+        android:focusable="true"
+        android:layoutDirection="inherit"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/add_expense_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/add_expense"
+            android:textColor="@color/expense_view"
+            android:textSize="22sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/delete_expense"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="12"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_delete_30dp"
+            android:textAlignment="center"
+            android:tint="@color/common_google_signin_btn_text_light_default"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/EditTextAmount"
@@ -31,8 +57,8 @@
         android:ems="10"
         android:hint="@string/zero_amount"
         android:inputType="numberDecimal"
-        android:textSize="48sp"
-        android:textColor="@color/expense_view"/>
+        android:textColor="@color/expense_view"
+        android:textSize="48sp" />
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radio_expense_group"
@@ -61,8 +87,7 @@
         android:layout_weight="2"
         android:hint="@string/title_optional"
         android:inputType="textPersonName"
-        android:textColor="@color/expense_view">
-    </EditText>
+        android:textColor="@color/expense_view"></EditText>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,8 +109,8 @@
         <Spinner
             android:id="@+id/SpinnerCategoriesType"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:prompt="@string/category"
             android:spinnerMode="dialog"
             android:textColor="@color/expense_view" />
@@ -101,22 +126,22 @@
             android:id="@+id/EditTextDate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
             android:clickable="true"
+            android:gravity="center"
             android:hint="@string/pick_date"
-            android:textColor="@color/expense_view"
-            android:gravity="center"/>
+            android:inputType="date"
+            android:textColor="@color/expense_view" />
 
 
         <EditText
             android:id="@+id/EditTextTime"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:inputType="datetime"
             android:clickable="true"
+            android:gravity="center"
             android:hint="@string/pick_time"
-            android:textColor="@color/expense_view"
-            android:gravity="center"/>
+            android:inputType="datetime"
+            android:textColor="@color/expense_view" />
     </LinearLayout>
 
     <EditText
@@ -126,7 +151,7 @@
         android:layout_weight="2"
         android:hint="@string/Description_optional"
         android:inputType="textPersonName"
-        android:textColor="@color/expense_view"/>
+        android:textColor="@color/expense_view" />
 
     <FrameLayout
         android:layout_width="match_parent"

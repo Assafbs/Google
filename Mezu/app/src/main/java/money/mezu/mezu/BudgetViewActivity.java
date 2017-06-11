@@ -88,7 +88,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        if (id == R.id.action_edit)
+        if (id == R.id.action_edit_budget)
         {
             Intent editBudgetIntent = new Intent(this, EditBudgetActivity.class);
             Gson gson = new Gson();

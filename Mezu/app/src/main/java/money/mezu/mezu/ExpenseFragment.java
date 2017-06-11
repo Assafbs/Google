@@ -1,12 +1,15 @@
 package money.mezu.mezu;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -59,14 +64,14 @@ public class ExpenseFragment extends Fragment {
         mActivity = (BudgetViewActivity) getActivity();
         mView = inflater.inflate(R.layout.activity_add_expense, null);
 
-        mEditTextAmount         = (EditText)    mView.findViewById(R.id.EditTextAmount          );
-        mEditTextTitle          = (EditText)    mView.findViewById(R.id.EditTextTitle           );
-        mCategorySpinner        = (Spinner)     mView.findViewById(R.id.SpinnerCategoriesType   );
-        mEditTextDate           = (EditText)    mView.findViewById(R.id.EditTextDate            );
-        mEditTextTime           = (EditText)    mView.findViewById(R.id.EditTextTime            );
-        mEditTextDescription    = (EditText)    mView.findViewById(R.id.EditTextDescription     );
-        mRGIsExpense            = (RadioGroup)  mView.findViewById(R.id.radio_expense_group     );
-        mAddButton              = (Button)      mView.findViewById(R.id.add_action_btn          );
+        mEditTextAmount = (EditText) mView.findViewById(R.id.EditTextAmount);
+        mEditTextTitle = (EditText) mView.findViewById(R.id.EditTextTitle);
+        mCategorySpinner = (Spinner) mView.findViewById(R.id.SpinnerCategoriesType);
+        mEditTextDate = (EditText) mView.findViewById(R.id.EditTextDate);
+        mEditTextTime = (EditText) mView.findViewById(R.id.EditTextTime);
+        mEditTextDescription = (EditText) mView.findViewById(R.id.EditTextDescription);
+        mRGIsExpense = (RadioGroup) mView.findViewById(R.id.radio_expense_group);
+        mAddButton = (Button) mView.findViewById(R.id.add_action_btn);
 
         if (isAdd) {
             setupAddExpense();
@@ -77,19 +82,32 @@ public class ExpenseFragment extends Fragment {
         return mView;
     }
 
-    public void setShowExpense (Expense expenseToShow) {
+    public void setShowExpense(Expense expenseToShow) {
         this.expenseToShow = expenseToShow;
         isAdd = false;
     }
 
-    private void setupShowExpense () {
+    private void setupShowExpense() {
         String titleString = expenseToShow.getTitle();
         TextView titleView = (TextView) mView.findViewById(R.id.add_expense_title);
+        LinearLayout linearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
+        ImageView deleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
         if (titleString == null) {
             titleString = "General";
         }
         titleView.setText(titleString);
         titleView.setVisibility(View.VISIBLE);
+        linearLayoutEdit.setVisibility(View.VISIBLE);
+        linearLayoutEdit.setClickable(true);
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.bringToFront();
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("", "ExpenseFragment: clicked delete expense");
+                deleteExpense();
+            }
+        });
 
         if (expenseToShow.getAmount() == 0.0) {
             mEditTextAmount.setText("0.0");
@@ -97,14 +115,14 @@ public class ExpenseFragment extends Fragment {
             mEditTextAmount.setText("" + expenseToShow.getAmount());
         }
 
-        ArrayList<String> categories =  new ArrayList<>();
+        ArrayList<String> categories = new ArrayList<>();
         categories.add(expenseToShow.getCategory().toString());
         mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
 
-        RadioButton rb_expense  = (RadioButton) mView.findViewById(R.id.radio_expense   );
-        RadioButton rb_income   = (RadioButton) mView.findViewById(R.id.radio_income    );
-        rb_expense. setClickable(false);
-        rb_income.  setClickable(false);
+        RadioButton rb_expense = (RadioButton) mView.findViewById(R.id.radio_expense);
+        RadioButton rb_income = (RadioButton) mView.findViewById(R.id.radio_income);
+        rb_expense.setClickable(false);
+        rb_income.setClickable(false);
 
         if (expenseToShow.getIsExpense()) {
             rb_expense.setChecked(true);
@@ -129,18 +147,20 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setVisibility(View.INVISIBLE);
     }
 
-    private void disableAllFields (ViewGroup viewGroup) {
+    private void disableAllFields(ViewGroup viewGroup) {
         for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
             final View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup)
                 disableAllFields((ViewGroup) child);
             if (child != null) {
-                child.setEnabled(false);
+                if (child.getId() != R.id.delete_expense) {
+                    child.setEnabled(false);
+                }
             }
         }
     }
 
-    private void setupAddExpense () {
+    private void setupAddExpense() {
         mEditTextAmount.post(new Runnable() {
             public void run() {
                 mEditTextAmount.requestFocusFromTouch();
@@ -174,7 +194,7 @@ public class ExpenseFragment extends Fragment {
         });
 
         expenseAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
-        incomeAdapter  = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList ());
+        incomeAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
         mCategorySpinner.setAdapter(expenseAdapter);
 
         mRGIsExpense.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -284,5 +304,32 @@ public class ExpenseFragment extends Fragment {
 
         FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
         mActivity.tryReleaseTabs();
+    }
+
+    public void deleteExpense() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.confirm_delete);
+        builder.setMessage(R.string.delete_confirmation_expense);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.yes, new ExpenseFragment.DeleteDialogListener());
+        builder.setNegativeButton(R.string.no, new ExpenseFragment.DeleteDialogListener());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private class DeleteDialogListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            if (i == DialogInterface.BUTTON_POSITIVE) {
+                FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
+                Log.d("", "ExpenseFragment: deleting expense");
+                Toast.makeText(mActivity, "Expense deleted", Toast.LENGTH_SHORT).show();
+                // restart app, so won't go back to the deleted expense
+                Intent restartIntent = mActivity.getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage(mActivity.getPackageName());
+                restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(restartIntent);
+            }
+        }
     }
 }

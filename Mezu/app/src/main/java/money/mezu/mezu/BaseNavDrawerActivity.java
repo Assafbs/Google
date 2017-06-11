@@ -49,7 +49,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     protected void onCreateDrawer()
     {
         Log.d("","BaseNavDrawerActivity::onCreateDrawer start");
-        instansiateSessionManager();
+        instantiateSessionManager();
         mDrawerName = mSessionManager.getUserName();
         mDrawerEmail = mSessionManager.getUserEmail();
         mDrawerImage = mSessionManager.getUserImage();
@@ -156,7 +156,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         }
     }
     //************************************************************************************************************************************************
-    private void instansiateSessionManager()
+    private void instantiateSessionManager()
     {
         if (mSessionManager == null){
             mSessionManager = new SessionManager(this);

@@ -121,7 +121,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirm_delete);
-            builder.setMessage(R.string.delete_confirmation_text);
+            builder.setMessage(R.string.delete_confirmation_budget);
             builder.setCancelable(true);
             builder.setPositiveButton(R.string.yes, new DeleteDialogListener());
             builder.setNegativeButton(R.string.no, new DeleteDialogListener());
