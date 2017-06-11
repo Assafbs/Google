@@ -55,6 +55,11 @@ public class EventDispatcher
         mUserLeftBudgetListeners.add(newListener);
     }
     //************************************************************************************************************************************************
+    public void registerLocalCacheReadyListener(LocalCacheReadyListener newListener)
+    {
+        mLocalCacheReadyListeners.add(newListener);
+    }
+    //************************************************************************************************************************************************
     public void notifyUserLeftBudgetListeners(String bid)
     {
         for (UserLeftBudgetListener listener : mUserLeftBudgetListeners)
