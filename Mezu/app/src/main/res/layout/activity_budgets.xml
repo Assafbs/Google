@@ -35,11 +35,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ProgressBar
+                android:id="@+id/loading_spinner"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
             <ImageView
-                android:id="@+id/logo"
-                android:layout_width="match_parent"
+                android:id="@+id/crying_logo"
+                android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:src="@mipmap/launcher"/>
+                android:visibility="gone"
+                android:src="@drawable/crying_logo"/>
 
             <TextView
                 android:id="@+id/explaining_text"

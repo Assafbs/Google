@@ -8,10 +8,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpdatedListener{
+public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpdatedListener, LocalCacheReadyListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,12 +43,10 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
             }
         });
         this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
-        if (this.mapOfBudgets.size() > 0){
-            clearNoBudgetsIndication();
-        }
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
+        EventDispatcher.getInstance().registerLocalCacheReadyListener(this);
     }
     //************************************************************************************************************************************************
     private void setLanguage() {
@@ -66,14 +65,21 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
     {
         Log.d("",String.format("BudgetsActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         super.budgetUpdatedCallback(budget);
-        clearNoBudgetsIndication();
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
     }
     //************************************************************************************************************************************************
-    private void clearNoBudgetsIndication(){
-        findViewById(R.id.explaining_text).setVisibility(View.GONE);
-        findViewById(R.id.logo).setVisibility(View.GONE);
+    @Override
+    public void localCacheReadyCallback() {
+        findViewById(R.id.loading_spinner).setVisibility(View.GONE);
+        if (this.mapOfBudgets.size() > 0){
+            findViewById(R.id.explaining_text).setVisibility(View.GONE);
+        }
+        else {
+            findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.explaining_text))
+                    .setText(getResources().getString(R.string.no_budgets_message));
+        }
     }
 }
