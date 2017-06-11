@@ -1,7 +1,6 @@
 package money.mezu.mezu;
 
 import android.content.res.Resources;
-import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
@@ -23,7 +22,7 @@ public class BarChartUsers implements GraphInterface {
     private BarChart mBarChart;
     private BarDataSet mBarDataSet;
     private ArrayList<String> mUsers;
-    private Resources resources = staticContext.mContext.getResources();
+    private Resources resources = StaticContext.mContext.getResources();
     private String mTitle;
     private String mInfoLine;
     private String mInfoValue;
@@ -170,6 +169,6 @@ public class BarChartUsers implements GraphInterface {
 
 
     public int getColor(int color) {
-        return ContextCompat.getColor(staticContext.mContext, color);
+        return ContextCompat.getColor(StaticContext.mContext, color);
     }
 }

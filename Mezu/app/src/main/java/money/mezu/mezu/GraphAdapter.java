@@ -15,7 +15,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     private Context mContext;
@@ -25,7 +24,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
     private PieChartCategories mPieChartCategories;
     private LineChartMonths mLineChartMonths;
     private BarChartUsers mBarChartUsers;
-    private Resources resources = staticContext.mContext.getResources();
+    private Resources resources = StaticContext.mContext.getResources();
     private BudgetViewActivity mActivity;
 
     public GraphAdapter(Context context, ArrayList<GraphInterface> graphs) {

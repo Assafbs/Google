@@ -16,7 +16,7 @@ import java.util.List;
 public class PieChartCategories implements GraphInterface {
     private PieChart mPieChart;
     private PieDataSet mPieDataSet;
-    private Resources resources = staticContext.mContext.getResources();
+    private Resources resources = StaticContext.mContext.getResources();
     private String mTitle;
     private String mInfoLine;
     private String mInfoValue;
@@ -155,6 +155,6 @@ public class PieChartCategories implements GraphInterface {
 
 
     public int getColor(int color) {
-        return ContextCompat.getColor(staticContext.mContext, color);
+        return ContextCompat.getColor(StaticContext.mContext, color);
     }
 }

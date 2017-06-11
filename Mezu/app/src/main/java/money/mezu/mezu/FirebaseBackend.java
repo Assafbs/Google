@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import android.util.Log;
 import android.util.Pair;
 
@@ -285,6 +287,8 @@ public class FirebaseBackend {
                 if (!dataSnapshot.hasChild(uidToAdd)) {
                     mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
                     mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
+                    mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
+
                 }
             }
 
@@ -292,6 +296,12 @@ public class FirebaseBackend {
             public void onCancelled(DatabaseError error) {
             }
         });
+    }
+    //************************************************************************************************************************************************
+    public void updateUserNotificationToken(String refreshedToken, UserIdentifier uid)
+    {
+        Log.d("", String.format("FirebaseBackend:updateUserNotificationToken: updating notification token:%s", refreshedToken));
+        mDatabase.child("users").child(uid.getId().toString()).child("notificationToken").setValue(refreshedToken);
     }
     //************************************************************************************************************************************************
     private void connectBudgetAndUser(String bid, String uid)

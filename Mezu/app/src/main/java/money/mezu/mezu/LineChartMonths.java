@@ -24,7 +24,7 @@ public class LineChartMonths implements GraphInterface {
     private LineChart mLineChart;
     private LineDataSet mLineDataSetExpenses;
     private LineDataSet mLineDataSetIncomes;
-    private Resources resources = staticContext.mContext.getResources();
+    private Resources resources = StaticContext.mContext.getResources();
     private String mTitle;
     private String mInfoLine;
     private String mInfoValue;
@@ -219,6 +219,6 @@ public class LineChartMonths implements GraphInterface {
     }
 
     public int getColor(int color) {
-        return ContextCompat.getColor(staticContext.mContext, color);
+        return ContextCompat.getColor(StaticContext.mContext, color);
     }
 }

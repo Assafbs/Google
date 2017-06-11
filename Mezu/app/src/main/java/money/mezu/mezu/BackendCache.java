@@ -2,7 +2,6 @@ package money.mezu.mezu;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -36,7 +35,7 @@ public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListen
     //************************************************************************************************************************************************
     private BackendCache()
     {
-        FirebaseBackend.getInstance().startListeningForAllUserBudgetUpdates((new SessionManager(staticContext.mContext)).getUserId());
+        FirebaseBackend.getInstance().startListeningForAllUserBudgetUpdates((new SessionManager(StaticContext.mContext)).getUserId());
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         EventDispatcher.getInstance().registerUserLeftBudgetListener(this);
     }

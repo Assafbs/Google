@@ -40,7 +40,7 @@ public enum Category {
 
 
     public static Category getCategoryFromString(String category) {
-        Resources resources = staticContext.mContext.getResources();
+        Resources resources = StaticContext.mContext.getResources();
 
         if (category.equals("Category"))
             return Category.CATEGORY;
@@ -81,7 +81,7 @@ public enum Category {
     }
 
     public String toString(){
-        Resources resources = staticContext.mContext.getResources();
+        Resources resources = StaticContext.mContext.getResources();
         switch(this){
             case  CATEGORY:
                 return resources.getString(R.string.category);

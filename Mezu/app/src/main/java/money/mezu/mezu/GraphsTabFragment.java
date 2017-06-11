@@ -15,7 +15,7 @@ public class GraphsTabFragment extends Fragment {
 
     private View mView = null;
     private GraphAdapter mGraphAdapter = null;
-    private Resources resources = staticContext.mContext.getResources();
+    private Resources resources = StaticContext.mContext.getResources();
 
     private BudgetViewActivity mActivity;
 

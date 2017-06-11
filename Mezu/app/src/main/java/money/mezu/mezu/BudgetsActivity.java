@@ -19,7 +19,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements  BudgetUpd
         Log.d("","BudgetsActivity::onCreate start");
         setLanguage();
         super.onCreate(savedInstanceState);
-        staticContext.mContext = getApplicationContext();
+        StaticContext.mContext = getApplicationContext();
         // This code will make the app go to the login screen if the user is not connected
         mSessionManager = new SessionManager(this);
         if(!mSessionManager.checkLogin()) {

@@ -126,7 +126,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
 
         if (mDrawerImage != null) {
-            Picasso.with(staticContext.mContext).load(mDrawerImage).into(image);
+            Picasso.with(StaticContext.mContext).load(mDrawerImage).into(image);
         }
         name.setText(mDrawerName);
         email.setText(mDrawerEmail);
