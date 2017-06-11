@@ -111,7 +111,20 @@ public class FirebaseBackend {
         stopListeningOnPath("budgets/" + bid + "/budget");
         EventDispatcher.getInstance().notifyUserLeftBudgetListeners(bid);
 
-        mDatabase.child("budgets").child(bid).child("budget").child("mEmails").child(userEmail).removeValue();
+        //mDatabase.child("budgets").child(bid).child("budget").child("mEmails").child(userEmail).removeValue();
+        mDatabase.child("budgets").child(bid).child("budget").orderByChild("mEmails").equalTo(userEmail).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot.getRef().setValue(null);
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("TodoApp", "getUser:onCancelled", databaseError.toException());
+                    }
+                });
 
         DatabaseReference ref = database.getReference("budgets/" + bid + "/users");
         final ValueEventListener newListener = ref.addValueEventListener(new ValueEventListener() {

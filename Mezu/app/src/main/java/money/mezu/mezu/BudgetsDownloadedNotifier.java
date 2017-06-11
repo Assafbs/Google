@@ -16,7 +16,7 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
     {
         if(firstExecution )
         {
-            BudgetsDownloadedNotifier newNotifier = new BudgetsDownloadedNotifier(bids);
+            new BudgetsDownloadedNotifier(bids);
         }
         firstExecution = false;
     }
