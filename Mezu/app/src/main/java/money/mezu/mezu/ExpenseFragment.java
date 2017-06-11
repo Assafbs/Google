@@ -92,6 +92,7 @@ public class ExpenseFragment extends Fragment {
         TextView titleView = (TextView) mView.findViewById(R.id.add_expense_title);
         LinearLayout linearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
         ImageView deleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
+        ImageView editBtn = (ImageView) mView.findViewById(R.id.edit_expense);
         if (titleString == null) {
             titleString = "General";
         }
@@ -108,6 +109,7 @@ public class ExpenseFragment extends Fragment {
                 deleteExpense();
             }
         });
+        editBtn.setVisibility(View.VISIBLE);
 
         if (expenseToShow.getAmount() == 0.0) {
             mEditTextAmount.setText("0.0");
@@ -132,7 +134,7 @@ public class ExpenseFragment extends Fragment {
             rb_income.setChecked(true);
         }
 
-        mEditTextTitle.setText("Added by: " + expenseToShow.getUserName());
+        mEditTextTitle.setText(getResources().getString(R.string.added_by) + " " + expenseToShow.getUserName());
         mEditTextTitle.setHint("");
 
         mEditTextDescription.setText(expenseToShow.getDescription());
@@ -328,7 +330,9 @@ public class ExpenseFragment extends Fragment {
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(mActivity.getPackageName());
                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.mSessionManager.goToLastBudget();
                 startActivity(restartIntent);
+
             }
         }
     }

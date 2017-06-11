@@ -139,6 +139,7 @@
     <string name="review_tab_title">Review</string>
     <string name="edit">Edit</string>
     <string name="edit_budget">Edit Budget</string>
+    <string name="added_by">Added by:</string>
     <string name="save">Save</string>
     <string name="title_activity_edit_budget_view">Edit Budget</string>
     <string name="delete">Delete</string>

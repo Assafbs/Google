@@ -27,7 +27,7 @@
             android:id="@+id/add_expense_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="@string/add_expense"
             android:textColor="@color/expense_view"
@@ -35,17 +35,35 @@
             android:visibility="gone" />
 
         <ImageView
+            android:id="@+id/edit_expense"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="8"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_edit_30dp"
+            android:textAlignment="center"
+            android:tint="@color/common_google_signin_btn_text_light_default"
+            android:visibility="gone" />
+
+        <ImageView
             android:id="@+id/delete_expense"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="12"
+            android:layout_weight="8"
             android:clickable="true"
             android:focusable="true"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_delete_30dp"
             android:textAlignment="center"
             android:tint="@color/common_google_signin_btn_text_light_default"
             android:visibility="gone" />
+
 
     </LinearLayout>
 
