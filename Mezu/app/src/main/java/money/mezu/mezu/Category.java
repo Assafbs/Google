@@ -26,7 +26,6 @@ public enum Category {
 
     static ArrayList<String> incomeCats = null;
     static ArrayList<String> expenseCats = null;
-    static ArrayList<String> allCats = null;
 
     private final int value;
     private boolean isExpense;
@@ -164,16 +163,5 @@ public enum Category {
             }
         }
         return expenseCats;
-    }
-
-    public static ArrayList<String> getCategoriesList() {
-        if (allCats == null) {
-            allCats = new ArrayList<>();
-
-            for (Category cat : Category.values()) {
-                allCats.add(cat.toString());
-            }
-        }
-        return allCats;
     }
 }
