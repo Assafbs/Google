@@ -52,9 +52,12 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mLineChart = (LineChart) convertView.findViewById(R.id.line_chart_small);
         info2.setText(graph.getInfoLine());
         info3.setText(graph.getInfoValue());
-        if (BudgetViewActivity.isRTL() && graph.getTitle().equals(resources.getString(R.string.expenses_by_users))) {
+        if (BudgetViewActivity.isRTL() &&
+                graph.getTitle().equals(resources.getString(R.string.expenses_by_users)) &&
+                !mActivity.mCurrentBudget.getExpenses().isEmpty()) {
             info3.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         }
+
         LinearLayout graphRow = (LinearLayout) convertView.findViewById(R.id.graphRow);
         graphRow.setTag(graph);
 
@@ -75,6 +78,10 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
                 ((Activity) mContext).findViewById(R.id.fab_expense).setVisibility(View.INVISIBLE);
             }
         });
+
+        if (mActivity.mCurrentBudget.getExpenses().isEmpty()) {
+            graphRow.setClickable(false);
+        }
 
         // Return the completed view to render on screen
         return convertView;

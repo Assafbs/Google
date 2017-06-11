@@ -36,7 +36,7 @@ public class BarChartUsers implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_users);
         mInfoLine = resources.getString(R.string.most_expensive_user);
         mBudget = budget;
-        mInfoValue = budget.getMostExpensiveUser();
+        mInfoValue = mBudget.getExpenses().isEmpty() ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveUser();
     }
 
     public void setBarChart(BarChart barChart) {
@@ -139,6 +139,11 @@ public class BarChartUsers implements GraphInterface {
 
         mBarChart.setData(data);
         mBarChart.setFitBars(true);
+
+        double totalExpenses = mBudget.getTotalExpenses();
+        if (totalExpenses == 0) {
+        mBarChart.setVisibility(View.INVISIBLE);
+        }
         mBarChart.setNoDataText(resources.getString(R.string.no_data_chart));
         mBarChart.getDescription().setEnabled(false);
         mBarChart.setPinchZoom(true);

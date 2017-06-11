@@ -29,7 +29,7 @@ public class PieChartCategories implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_categories);
         mInfoLine = resources.getString(R.string.most_spending_on);
         mBudget = budget;
-        mInfoValue = budget.getMostExpensiveCategory().toString();
+        mInfoValue = mBudget.getExpenses().isEmpty() ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveCategory().toString();
     }
 
     public void setPieChart(PieChart pieChart) {
@@ -116,13 +116,14 @@ public class PieChartCategories implements GraphInterface {
         PieData data = new PieData(mPieDataSet);
         data.setValueTextSize(15);
         mPieChart.setData(data);
-        mPieChart.setNoDataText(resources.getString(R.string.no_data_chart));
+
         double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
-            mPieChart.setCenterText(resources.getString(R.string.no_data_chart));
+        mPieChart.setVisibility(View.INVISIBLE);
         } else {
             mPieChart.setCenterText(resources.getString(R.string.expenses_sum) + "\n" + String.valueOf(totalExpenses));
         }
+        mPieChart.setNoDataText(resources.getString(R.string.no_data_chart));
         mPieChart.setHoleRadius(45);
         mPieChart.setTransparentCircleRadius(50);
         mPieChart.setDrawSlicesUnderHole(true);
@@ -131,7 +132,6 @@ public class PieChartCategories implements GraphInterface {
         mPieChart.setCenterTextSize(15);
         mPieChart.getDescription().setEnabled(false);
         customizeLegend();
-
         if (!large) {
             mPieChart.getLegend().setEnabled(false);
             setSmallChart(data);

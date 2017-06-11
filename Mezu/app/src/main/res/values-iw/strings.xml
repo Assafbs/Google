@@ -120,6 +120,7 @@
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
     <string name="most_expensive_user">המשתמש היקר ביותר:</string>
+    <string name="not_enough_data">אין מספיק מידע!</string>
 
 
     <!--Review Tab Fragment-->

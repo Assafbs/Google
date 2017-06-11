@@ -39,8 +39,8 @@ public class LineChartMonths implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_months);
         mInfoLine = resources.getString(R.string.most_expensive_month);
         mBudget = budget;
-        mInfoValue = resources.getStringArray(R.array.months_list)[budget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))];
-
+        mInfoValue = mBudget.getExpenses().isEmpty() ? resources.getString(R.string.not_enough_data) :
+                resources.getStringArray(R.array.months_list)[budget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))];
     }
 
     public void setLineChart(LineChart lineChart) {
@@ -190,6 +190,11 @@ public class LineChartMonths implements GraphInterface {
         data.setValueTextSize(10);
 
         mLineChart.setData(data);
+        double totalExpenses = mBudget.getTotalExpenses();
+        double totalIncomes = mBudget.getTotalIncomes();
+        if (totalExpenses == 0 && totalIncomes == 0) {
+            mLineChart.setVisibility(View.INVISIBLE);
+        }
         mLineChart.setNoDataText(resources.getString(R.string.no_data_chart));
         mLineChart.getDescription().setEnabled(false);
         mLineChart.setPinchZoom(true);
@@ -207,6 +212,9 @@ public class LineChartMonths implements GraphInterface {
 
     public void setSmallChart(LineData data) {
         data.setValueTextSize(0);
+        data.setDrawValues(false);
+        data.setHighlightEnabled(false);
+
         mLineChart.setNoDataText("");
         mLineChart.getLegend().setEnabled(false);
         mLineChart.setClickable(false);
