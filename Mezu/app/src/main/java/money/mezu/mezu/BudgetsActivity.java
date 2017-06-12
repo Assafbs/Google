@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpdatedListener, LocalCacheReadyListener{
 
+    static boolean budgetsLoadedFromDB = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +49,9 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
         EventDispatcher.getInstance().registerLocalCacheReadyListener(this);
+        if (budgetsLoadedFromDB){
+            setNoBudgetsIndication();
+        }
     }
     //************************************************************************************************************************************************
     private void setLanguage() {
@@ -72,6 +77,11 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
     //************************************************************************************************************************************************
     @Override
     public void localCacheReadyCallback() {
+        budgetsLoadedFromDB = true;
+        setNoBudgetsIndication();
+    }
+
+    private void setNoBudgetsIndication() {
         findViewById(R.id.loading_spinner).setVisibility(View.GONE);
         if (this.mapOfBudgets.size() > 0){
             findViewById(R.id.explaining_text).setVisibility(View.GONE);

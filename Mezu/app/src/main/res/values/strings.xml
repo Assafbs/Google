@@ -11,7 +11,7 @@
 
     <!--Budgets Activity Strings-->
     <string name="title_activity_budgets">My Budgets</string>
-    <string name="no_budgets_message">"Seems you don't have any budgets yet!\nCreate one with the plus button below"</string>
+    <string name="no_budgets_message">"Seems you don't have any budgets!\nCreate one with the plus button below"</string>
 
 
     <!--Budget View Activity Strigns-->
