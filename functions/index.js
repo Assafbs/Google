@@ -59,16 +59,26 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 
 	const uidsPromise = admin.database().ref("/budgets/" + bid).once('value').then(function(snapshot)
 	{
-		console.log('Sending notification on budget: ' + bid);;
 		const users = snapshot.child("users").val();
 		const budgetName = snapshot.child("budget").child("mName").val();
 		const userName = snapshot.child("budget").child("mExpenses").child(eid).child("mUserName").val();
 		const expenseAmount = snapshot.child("budget").child("mExpenses").child(eid).child("mAmount").val();
-		console.log('Expense added by ' + userName);
+		const isExpense = snapshot.child("budget").child("mExpenses").child(eid).child("mIsExpense").val();
+		var messageTitle = "";
+		const messageBody = "By: " + userName + "\nFor: " + expenseAmount;
+		if (isExpense) 
+		{
+			
+			messageTitle = "New expense was added to budget: " + budgetName;
+		}
+		else
+		{
+			messageTitle = "New income was added to budget: " + budgetName;
+		}
+
 		for (var uid in users) 
 		{
-			console.log('sending notification to ' + uid);
-			sendNotification(uid, "New expense was added to budget: " + budgetName, "By: " + userName + "\nFor: " + expenseAmount);
+			sendNotification(uid, messageTitle, messageBody);
 		}
 		
 	});
