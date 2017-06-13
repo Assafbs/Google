@@ -370,7 +370,7 @@ public class ExpenseFragment extends Fragment {
 
         Category category = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
         if (category == Category.CATEGORY) {
-            Toast.makeText(mActivity, R.string.no_category_chosen, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, R.string.pick_category_toast, Toast.LENGTH_SHORT).show();
             return null;
         }
 
