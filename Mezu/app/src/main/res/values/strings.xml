@@ -155,4 +155,6 @@
     <string name="partner_list_edit_text">Add more partners to share this budget with</string>
     <string name="category_title">Category:</string>
     <string name="loading_budgets">Loading budgets, please wait...</string>
+    <string name="no_category_chosen">No category chosen!</string>
+    <string name="partners_email">partners email:</string>
 </resources>

@@ -143,4 +143,6 @@
     <string name="category_title">קטגוריה:</string>
     <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
     <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
+    <string name="no_category_chosen">לא נבחרה קטגוריה!</string>
+    <string name="partners_email">האימייל של השותפ/ה:</string>
 </resources>
