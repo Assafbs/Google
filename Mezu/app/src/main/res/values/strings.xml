@@ -156,4 +156,6 @@
     <string name="category_title">Category:</string>
     <string name="loading_budgets">Loading budgets, please wait...</string>
     <string name="partners_email">partners email:</string>
+    <string name="connection_failed">Connection Failed</string>
+    <string name="login_failed">Login failed, please try again</string>
 </resources>

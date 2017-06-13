@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(LoginActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show();
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);
         } else {
-                Toast.makeText(LoginActivity.this, result.getStatus().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
         }
     }
 }

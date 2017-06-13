@@ -144,4 +144,7 @@
     <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
     <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
     <string name="partners_email">האימייל של השותפ/ה:</string>
+    <string name="connection_failed">החיבור נכשל</string>
+    <string name="login_failed">ההתחברות נכשלה, אנא נסה שוב</string>
+
 </resources>
