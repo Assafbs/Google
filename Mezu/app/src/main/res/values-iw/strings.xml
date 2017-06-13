@@ -24,14 +24,14 @@
     <string name="add">הוספה</string>
     <string name="cancel">ביטול</string>
     <string name="add_expense">הוסף הוצאה</string>
-    <string name="title_optional">כותרת (אופציונלי)</string>
-    <string name="Description_optional">תיאור (אופציונלי)</string>
+    <string name="expense_title">כותרת:</string>
+    <string name="expense_description">תיאור:</string>
     <string name="expense">הוצאה</string>
     <string name="expenses">הוצאות</string>
     <string name="income">הכנסה</string>
     <string name="incomes">הכנסות</string>
-    <string name="pick_date">היום (לחצ/י לשינוי)</string>
-    <string name="pick_time">עכשיו (לחצ/י לשינוי)</string>
+    <string name="pick_date">תאריך:</string>
+    <string name="pick_time">שעה:</string>
     <string name="pick_category_toast">אנא בחר קטגוריה</string>
 
 

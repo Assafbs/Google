@@ -12,107 +12,57 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="12">
 
-    <LinearLayout
-        android:id="@+id/edit_expense_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:clickable="false"
-        android:focusable="true"
-        android:layoutDirection="inherit"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/add_expense_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/add_expense"
-            android:textColor="@color/expense_view"
-            android:textSize="22sp"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/edit_expense"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="8"
-            android:clickable="true"
-            android:focusable="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_edit_30dp"
-            android:textAlignment="center"
-            android:tint="@color/divider"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/delete_expense"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="8"
-            android:clickable="true"
-            android:focusable="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_delete_30dp"
-            android:textAlignment="center"
-            android:tint="@color/divider"
-            android:visibility="gone" />
-
-
-    </LinearLayout>
-
     <EditText
         android:id="@+id/EditTextAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/zero_amount"
         android:inputType="numberDecimal"
         android:textColor="@color/expense_view"
         android:textSize="48sp" />
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/EditTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/expense_title"
+            android:inputType="textPersonName"
+            android:textColor="@color/expense_view" />
+    </android.support.design.widget.TextInputLayout>
+
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radio_expense_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
 
         <RadioButton
             android:id="@+id/radio_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/expense" />
+            android:text="@string/expense"/>
 
         <RadioButton
             android:id="@+id/radio_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/income" />
+            android:text="@string/income"/>
     </RadioGroup>
-
-    <EditText
-        android:id="@+id/EditTextTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:hint="@string/title_optional"
-        android:inputType="textPersonName"
-        android:textColor="@color/expense_view"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
         android:layoutDirection="inherit"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="4dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -121,7 +71,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/category_title"
-            android:textColor="#000"
+            android:textColor="@color/hint"
             android:textSize="20sp" />
 
         <Spinner
@@ -135,56 +85,92 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/EditTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/expense_description"
+            android:inputType="textPersonName"
+            android:textColor="@color/expense_view" />
+    </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/EditTextDate"
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:gravity="center"
-            android:hint="@string/pick_date"
-            android:inputType="date"
-            android:textColor="@color/expense_view" />
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/EditTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="@string/pick_date"
+                android:inputType="date"
+                android:textColor="@color/expense_view" />
+        </android.support.design.widget.TextInputLayout>
 
-
-        <EditText
-            android:id="@+id/EditTextTime"
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="false"
-            android:gravity="center"
-            android:hint="@string/pick_time"
-            android:inputType="datetime"
-            android:textColor="@color/expense_view" />
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/EditTextTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="@string/pick_time"
+                android:inputType="datetime"
+                android:textColor="@color/expense_view" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/EditTextDescription"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:hint="@string/Description_optional"
-        android:inputType="textPersonName"
-        android:textColor="@color/expense_view" />
-
-    <FrameLayout
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/added_by_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/added_by_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/added_by"
+            android:inputType="textPersonName"
+            android:textColor="@color/expense_view" />
+    </android.support.design.widget.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/add_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/button_selector"
             android:text="@string/add" />
-    </FrameLayout>
+
+        <Button
+            android:id="@+id/edit_action_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/add_action_btn"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_selector"
+            android:text="@string/edit" />
+    </RelativeLayout>
 
 
 </LinearLayout>

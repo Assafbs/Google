@@ -12,6 +12,7 @@
     <color name="white">#FFFFFF</color>
     <color name="indicator">#ecd95a</color>
     <color name="divider">#BDBDBD</color>
+    <color name="hint">#a0a0a0</color>
 
     <color name="pie_red">#fa0505</color>
     <color name="pie_orange">#fa9c05</color>
