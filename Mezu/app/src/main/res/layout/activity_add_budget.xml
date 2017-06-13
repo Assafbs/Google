@@ -44,101 +44,91 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/add_a_budget"
-                android:textSize="30sp" />
+                android:textSize="36sp"
+                android:textStyle="bold"/>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/budget_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/budget_name" />
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:text="@string/budget_name" />
-
-                <EditText
-                    android:id="@+id/budget_name"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:inputType="text" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="@string/shared_with" />
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3">
-
-                    <TextView
-                        android:id="@+id/partners_list"
+                    android:layout_weight="2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+                    <AutoCompleteTextView
+                        android:id="@+id/partner_email"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/partners_list_initizal_text"
-                        android:textAlignment="inherit" />
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <AutoCompleteTextView
-                    android:id="@+id/partner_email"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="textEmailAddress"
-                    android:completionThreshold="1" />
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:inputType="textEmailAddress"
+                        android:completionThreshold="1"
+                        android:hint="partners email:"/>
+                </android.support.design.widget.TextInputLayout>
 
                 <Button
                     android:id="@+id/add_partner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/add_partner" />
+                    android:gravity="center"
+                    android:text="@string/add_partner"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_selector"/>
 
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/shared_with"
+                android:textSize="18sp"/>
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_marginStart="4dp"
+                android:layout_weight="2">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/partners_list"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center_vertical"
-                    android:text="@string/starting_balance" />
+                    android:text="@string/partners_list_initizal_text"
+                    android:textAlignment="inherit"
+                    android:textSize="18sp"/>
+             </FrameLayout>
 
-                <EditText
-                    android:id="@+id/starting_balance"
-                    android:layout_width="0dp"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/starting_balance"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:hint="@string/optional"
-                    android:inputType="numberSigned" />
+                    android:hint="@string/starting_balance"
+                    android:inputType="numberSigned"/>
+            </android.support.design.widget.TextInputLayout>
 
-            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -149,8 +139,10 @@
                     android:id="@+id/add_budget"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/add" />
+                    android:layout_gravity="end"
+                    android:text="@string/add"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_selector"/>
 
             </FrameLayout>
 
