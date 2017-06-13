@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,14 +44,20 @@ public class ExpenseFragment extends Fragment {
     EditText mEditTextTime;
     EditText mEditTextDescription;
     RadioGroup mRGIsExpense;
+    RadioButton mRBExpense;
+    RadioButton mRBIncome;
     Button mAddButton;
+    ImageView mDeleteBtn;
+    ImageView mEditBtn;
+    LinearLayout mLinearLayoutEdit;
+    TextView mTitleView;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Calendar c;
 
     private boolean incomeSelected = false;
-    private Category incomeCat = Category.CATEGORY;
-    private Category expenseCat = Category.CATEGORY;
+    private Category incomeCat = Category.OTHER;
+    private Category expenseCat = Category.OTHER;
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
 
@@ -74,7 +81,7 @@ public class ExpenseFragment extends Fragment {
         mAddButton = (Button) mView.findViewById(R.id.add_action_btn);
 
         if (isAdd) {
-            setupAddExpense();
+            setupAddOrEditExpense(true);
         } else {
             setupShowExpense();
         }
@@ -89,27 +96,33 @@ public class ExpenseFragment extends Fragment {
 
     private void setupShowExpense() {
         String titleString = expenseToShow.getTitle();
-        TextView titleView = (TextView) mView.findViewById(R.id.add_expense_title);
-        LinearLayout linearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
-        ImageView deleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
-        ImageView editBtn = (ImageView) mView.findViewById(R.id.edit_expense);
-        if (titleString == null) {
-            titleString = "General";
-        }
-        titleView.setText(titleString);
-        titleView.setVisibility(View.VISIBLE);
-        linearLayoutEdit.setVisibility(View.VISIBLE);
-        linearLayoutEdit.setClickable(true);
-        deleteBtn.setVisibility(View.VISIBLE);
-        deleteBtn.bringToFront();
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        mTitleView = (TextView) mView.findViewById(R.id.add_expense_title);
+        mLinearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
+        mDeleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
+        mEditBtn = (ImageView) mView.findViewById(R.id.edit_expense);
+
+        mTitleView.setText(titleString);
+        mTitleView.setVisibility(View.VISIBLE);
+        mLinearLayoutEdit.setVisibility(View.VISIBLE);
+        mLinearLayoutEdit.setClickable(true);
+        mDeleteBtn.setVisibility(View.VISIBLE);
+        mDeleteBtn.bringToFront();
+        mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("", "ExpenseFragment: clicked delete expense");
                 deleteExpense();
             }
         });
-        editBtn.setVisibility(View.VISIBLE);
+        mEditBtn.setVisibility(View.VISIBLE);
+        mEditBtn.bringToFront();
+        mEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("", "ExpenseFragment: clicked edit expense");
+                setupAddOrEditExpense(false);
+            }
+        });
 
         if (expenseToShow.getAmount() == 0.0) {
             mEditTextAmount.setText("0.0");
@@ -121,17 +134,17 @@ public class ExpenseFragment extends Fragment {
         categories.add(expenseToShow.getCategory().toString());
         mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
 
-        RadioButton rb_expense = (RadioButton) mView.findViewById(R.id.radio_expense);
-        RadioButton rb_income = (RadioButton) mView.findViewById(R.id.radio_income);
-        rb_expense.setClickable(false);
-        rb_income.setClickable(false);
+        mRBExpense = (RadioButton) mView.findViewById(R.id.radio_expense);
+        mRBIncome = (RadioButton) mView.findViewById(R.id.radio_income);
+        mRBExpense.setClickable(false);
+        mRBIncome.setClickable(false);
 
         if (expenseToShow.getIsExpense()) {
-            rb_expense.setChecked(true);
-            rb_income.setChecked(false);
+            mRBExpense.setChecked(true);
+            mRBIncome.setChecked(false);
         } else {
-            rb_expense.setChecked(false);
-            rb_income.setChecked(true);
+            mRBExpense.setChecked(false);
+            mRBIncome.setChecked(true);
         }
 
         mEditTextTitle.setText(getResources().getString(R.string.added_by) + " " + expenseToShow.getUserName());
@@ -155,32 +168,67 @@ public class ExpenseFragment extends Fragment {
             if (child instanceof ViewGroup)
                 disableAllFields((ViewGroup) child);
             if (child != null) {
-                if (child.getId() != R.id.delete_expense) {
+                if (child.getId() != R.id.delete_expense && child.getId() != R.id.edit_expense) {
                     child.setEnabled(false);
                 }
             }
         }
     }
 
-    private void setupAddExpense() {
-        mEditTextAmount.post(new Runnable() {
-            public void run() {
-                mEditTextAmount.requestFocusFromTouch();
-                InputMethodManager lManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                lManager.showSoftInput(mEditTextAmount, 0);
+    private void enableAllFields(ViewGroup viewGroup) {
+        for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
+            final View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup)
+                enableAllFields((ViewGroup) child);
+            if (child != null) {
+                if (child.getId() != R.id.delete_expense) {
+                    child.setEnabled(true);
+                }
             }
-        });
+        }
+    }
 
-        // Get Current Time
+    private void setupAddOrEditExpense(final boolean isAdd) {
+        if (isAdd) {
+            mEditTextAmount.post(new Runnable() {
+                public void run() {
+                    mEditTextAmount.requestFocusFromTouch();
+                    InputMethodManager lManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    lManager.showSoftInput(mEditTextAmount, 0);
+                }
+            });
+        } else {
+            mTitleView.setText(getResources().getString(R.string.edit_expense));
+            mEditTextTitle.setText(expenseToShow.getTitle());
+            mAddButton.setVisibility(View.VISIBLE);
+            mAddButton.setText(getResources().getString(R.string.save));
+            mEditBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.secondary_text));
+            ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
+            enableAllFields(viewGroup);
+            mRBExpense.setClickable(true);
+            mRBIncome.setClickable(true);
+        }
+
         c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
-        // Set Current Time to EditTexts
-        mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
-        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+        if (isAdd) {
+            // Get Current Time
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mMinute = c.get(Calendar.MINUTE);
+            // Set Current Time to EditTexts
+            mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
+            mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+        } else {
+            // Get Expense Time
+            mYear = expenseToShow.getYear();
+            mMonth = expenseToShow.getMonth();
+            mDay = expenseToShow.getDay();
+            mHour = expenseToShow.getHour();
+            mMinute = expenseToShow.getMinute();
+            c.set(mYear, mMonth, mDay, mHour, mMinute);
+        }
 
         mEditTextDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -198,6 +246,9 @@ public class ExpenseFragment extends Fragment {
         expenseAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
         incomeAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
         mCategorySpinner.setAdapter(expenseAdapter);
+        if (!isAdd) {
+            mCategorySpinner.setSelection(expenseToShow.getCategory().getValue());
+        }
 
         mRGIsExpense.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -216,10 +267,18 @@ public class ExpenseFragment extends Fragment {
             }
         });
 
+        if (!isAdd) {
+            if (expenseToShow.getDescription().equals("")) {
+                mEditTextDescription.setHint(getResources().getString(R.string.Description_optional));
+            } else {
+                mEditTextDescription.setText(expenseToShow.getDescription());
+            }
+        }
+
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View arg0) {
-                addExpense();
+                addOrEditExpense(isAdd);
             }
         });
     }
@@ -238,7 +297,6 @@ public class ExpenseFragment extends Fragment {
                             mDay = dayOfMonth;
                             c.set(mYear, mMonth, mDay, mHour, mMinute);
                             mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
-
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -268,7 +326,7 @@ public class ExpenseFragment extends Fragment {
         return false;
     }
 
-    public void addExpense() {
+    public void addOrEditExpense(boolean isAdd) {
         String title = mEditTextTitle.getText().toString();
         if (title.equals("")) {
             title = getResources().getString(R.string.general);
@@ -282,10 +340,6 @@ public class ExpenseFragment extends Fragment {
         }
 
         Category category = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
-        if (category == Category.CATEGORY) {
-            Toast.makeText(mActivity, "Pick a category", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         Double amount;
         if (mEditTextAmount.getText().toString().equals("")) {
@@ -304,7 +358,12 @@ public class ExpenseFragment extends Fragment {
                 mActivity.mSessionManager.getUserName(),
                 isExpense);
 
-        FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+        if (isAdd) {
+            FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+        } else {
+            newExpense.setId(expenseToShow.getId());
+            FirebaseBackend.getInstance().editExpense(mActivity.mCurrentBudget.getId(), newExpense);
+        }
         mActivity.tryReleaseTabs();
     }
 
@@ -325,7 +384,7 @@ public class ExpenseFragment extends Fragment {
             if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
                 Log.d("", "ExpenseFragment: deleting expense");
-                Toast.makeText(mActivity, "Expense deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted expense
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(mActivity.getPackageName());

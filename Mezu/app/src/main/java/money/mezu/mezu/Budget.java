@@ -30,6 +30,7 @@ public class Budget {
         this.mId = (String) serializedBudget.get("mId");
         this.mName = (String) serializedBudget.get("mName");
         ArrayList<Expense> expenses = new ArrayList<Expense>();
+        try{
         if (serializedBudget.containsKey("mExpenses")) {
             HashMap<String, HashMap<String, Object>> serializedExpenses = (HashMap<String, HashMap<String, Object>>) serializedBudget.get("mExpenses");
             for (HashMap<String, Object> expense : serializedExpenses.values()) {
@@ -37,6 +38,10 @@ public class Budget {
             }
             this.mExpenses = expenses;
         } else {
+            this.mExpenses = new ArrayList<>();
+        }}
+        catch(ClassCastException e){
+            Log.d("", String.format("Budget:expenses array is corrupted in budget: %s", serializedBudget.toString()));
             this.mExpenses = new ArrayList<>();
         }
         if (serializedBudget.containsKey("mInitialBalance")) {

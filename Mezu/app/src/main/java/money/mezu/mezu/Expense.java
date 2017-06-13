@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Expense implements Comparable<Expense>{
+public class Expense implements Comparable<Expense> {
 
     private String mId;
     private double mAmount; // Temporary, should probably be changed
@@ -118,6 +118,24 @@ public class Expense implements Comparable<Expense>{
         return mIsExpense;
     }
 
+    public int getMinute() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mTime);
+        return c.get(Calendar.MINUTE);
+    }
+
+    public int getHour() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mTime);
+        return c.get(Calendar.HOUR);
+    }
+
+    public int getDay() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(mTime);
+        return c.get(Calendar.DAY_OF_MONTH);
+    }
+
     public int getMonth() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
@@ -132,13 +150,11 @@ public class Expense implements Comparable<Expense>{
 
     @Override
     public int compareTo(@NonNull Expense other) {
-        if (this.mTime.after(other.mTime)){
+        if (this.mTime.after(other.mTime)) {
             return -1;
-        }
-        else if (other.mTime.after(this.mTime)) {
+        } else if (other.mTime.after(this.mTime)) {
             return 1;
-        }
-        else{
+        } else {
             return 0;
         }
     }

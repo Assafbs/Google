@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import java.util.ArrayList;
 
 public enum Category {
-    CATEGORY(0, true, true),
+    OTHER(0, true, true),
     FOOD(1, true, false),
     SHELTER(2, true, false),
     ENTERTAINMENT(3, true, false),
@@ -20,8 +20,7 @@ public enum Category {
     SUBSCRIPTIONS(12, true, false),
     DEBT_REDUCTION(13, true, false),
     DONATIONS(14, true, false),
-    PAYCHECK(15, false, true),
-    OTHER(16, true, true);
+    PAYCHECK(15, false, true);
 
 
     static ArrayList<String> incomeCats = null;
@@ -41,8 +40,6 @@ public enum Category {
     public static Category getCategoryFromString(String category) {
         Resources resources = StaticContext.mContext.getResources();
 
-        if (category.equals("Category"))
-            return Category.CATEGORY;
         if (category.equals(resources.getString(R.string.category_food)))
             return Category.FOOD;
         if (category.equals(resources.getString(R.string.category_clothing)))
@@ -79,42 +76,40 @@ public enum Category {
         return null;
     }
 
-    public String toString(){
+    public String toString() {
         Resources resources = StaticContext.mContext.getResources();
-        switch(this){
-            case  CATEGORY:
-                return resources.getString(R.string.category);
-            case  FOOD:
+        switch (this) {
+            case FOOD:
                 return resources.getString(R.string.category_food);
-            case  SHELTER:
+            case SHELTER:
                 return resources.getString(R.string.category_shelter);
-            case  ENTERTAINMENT:
+            case ENTERTAINMENT:
                 return resources.getString(R.string.category_entertainment);
-            case  EDUCATION:
+            case EDUCATION:
                 return resources.getString(R.string.category_education);
-            case  TRANSPORTATION:
+            case TRANSPORTATION:
                 return resources.getString(R.string.category_transportation);
-            case  MEDICAL:
+            case MEDICAL:
                 return resources.getString(R.string.category_medical);
-            case  INSURANCE:
+            case INSURANCE:
                 return resources.getString(R.string.category_insurance);
-            case  HOUSEHOLD_SUPPLIES:
+            case HOUSEHOLD_SUPPLIES:
                 return resources.getString(R.string.category_household);
-            case  PERSONAL:
+            case PERSONAL:
                 return resources.getString(R.string.category_personal);
-            case  CLOTHING:
+            case CLOTHING:
                 return resources.getString(R.string.category_clothing);
-            case  GIFTS:
+            case GIFTS:
                 return resources.getString(R.string.category_gifts);
-            case  SUBSCRIPTIONS:
+            case SUBSCRIPTIONS:
                 return resources.getString(R.string.category_subscriptions);
-            case  DEBT_REDUCTION:
+            case DEBT_REDUCTION:
                 return resources.getString(R.string.category_debt_reduction);
-            case  DONATIONS:
+            case DONATIONS:
                 return resources.getString(R.string.category_donations);
-            case  PAYCHECK:
+            case PAYCHECK:
                 return resources.getString(R.string.category_paycheck);
-            case  OTHER:
+            case OTHER:
                 return resources.getString(R.string.category_other);
 
         }
@@ -129,7 +124,7 @@ public enum Category {
     public int getSpinnerLocation(boolean isIncome) {
         int loc = 0;
         for (Category cat : Category.values()) {
-            if (isIncome? cat.isIncome : cat.isExpense) {
+            if (isIncome ? cat.isIncome : cat.isExpense) {
                 if (this == cat)
                     return loc;
                 else
