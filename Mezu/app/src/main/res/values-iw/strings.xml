@@ -55,6 +55,7 @@
     <string name="category_other">אחר</string>
     <string name="category">קטגוריה</string>
     <string name="categories">קטגוריות</string>
+    <string name="pick_a_category">בחר קטגוריה</string>
 
     <!--Months-->
     <string name="month_jan">ינו\'</string>

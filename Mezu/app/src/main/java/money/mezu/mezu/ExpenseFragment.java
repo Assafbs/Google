@@ -56,8 +56,8 @@ public class ExpenseFragment extends Fragment {
     private Calendar c;
 
     private boolean incomeSelected = false;
-    private Category incomeCat = Category.OTHER;
-    private Category expenseCat = Category.OTHER;
+    private Category incomeCat = Category.CATEGORY;
+    private Category expenseCat = Category.CATEGORY;
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
 
@@ -79,9 +79,15 @@ public class ExpenseFragment extends Fragment {
         mEditTextDescription = (EditText) mView.findViewById(R.id.EditTextDescription);
         mRGIsExpense = (RadioGroup) mView.findViewById(R.id.radio_expense_group);
         mAddButton = (Button) mView.findViewById(R.id.add_action_btn);
+        mTitleView = (TextView) mView.findViewById(R.id.add_expense_title);
+        mLinearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
+        mDeleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
+        mEditBtn = (ImageView) mView.findViewById(R.id.edit_expense);
+        mRBExpense = (RadioButton) mView.findViewById(R.id.radio_expense);
+        mRBIncome = (RadioButton) mView.findViewById(R.id.radio_income);
 
         if (isAdd) {
-            setupAddOrEditExpense(true);
+            setupAddExpense();
         } else {
             setupShowExpense();
         }
@@ -96,11 +102,9 @@ public class ExpenseFragment extends Fragment {
 
     private void setupShowExpense() {
         String titleString = expenseToShow.getTitle();
-        mTitleView = (TextView) mView.findViewById(R.id.add_expense_title);
-        mLinearLayoutEdit = (LinearLayout) mView.findViewById(R.id.edit_expense_layout);
-        mDeleteBtn = (ImageView) mView.findViewById(R.id.delete_expense);
-        mEditBtn = (ImageView) mView.findViewById(R.id.edit_expense);
-
+        if (titleString == null) {
+            titleString = "General";
+        }
         mTitleView.setText(titleString);
         mTitleView.setVisibility(View.VISIBLE);
         mLinearLayoutEdit.setVisibility(View.VISIBLE);
@@ -120,7 +124,7 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("", "ExpenseFragment: clicked edit expense");
-                setupAddOrEditExpense(false);
+                setupEditExpense();
             }
         });
 
@@ -134,8 +138,6 @@ public class ExpenseFragment extends Fragment {
         categories.add(expenseToShow.getCategory().toString());
         mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
 
-        mRBExpense = (RadioButton) mView.findViewById(R.id.radio_expense);
-        mRBIncome = (RadioButton) mView.findViewById(R.id.radio_income);
         mRBExpense.setClickable(false);
         mRBIncome.setClickable(false);
 
@@ -147,6 +149,7 @@ public class ExpenseFragment extends Fragment {
             mRBIncome.setChecked(true);
         }
 
+        mEditTextTitle.setText("Added by: " + expenseToShow.getUserName());
         mEditTextTitle.setText(getResources().getString(R.string.added_by) + " " + expenseToShow.getUserName());
         mEditTextTitle.setHint("");
 
@@ -188,48 +191,79 @@ public class ExpenseFragment extends Fragment {
         }
     }
 
-    private void setupAddOrEditExpense(final boolean isAdd) {
-        if (isAdd) {
-            mEditTextAmount.post(new Runnable() {
-                public void run() {
-                    mEditTextAmount.requestFocusFromTouch();
-                    InputMethodManager lManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    lManager.showSoftInput(mEditTextAmount, 0);
-                }
-            });
-        } else {
-            mTitleView.setText(getResources().getString(R.string.edit_expense));
-            mEditTextTitle.setText(expenseToShow.getTitle());
-            mAddButton.setVisibility(View.VISIBLE);
-            mAddButton.setText(getResources().getString(R.string.save));
-            mEditBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.secondary_text));
-            ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
-            enableAllFields(viewGroup);
-            mRBExpense.setClickable(true);
-            mRBIncome.setClickable(true);
-        }
+    private void setupAddExpense() {
+        mEditTextAmount.post(new Runnable() {
+            public void run() {
+                mEditTextAmount.requestFocusFromTouch();
+                InputMethodManager lManager = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                lManager.showSoftInput(mEditTextAmount, 0);
+            }
+        });
+
+        // Get Current Time
+        c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+        // Set Current Time to EditTexts
+        mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
+        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+
+        setupTimeAndDateOnTouchListeners();
+
+        setupRadioButtonsAndSpinner(true);
+
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View arg0) {
+                addExpense();
+            }
+        });
+    }
+
+    private void setupEditExpense() {
+        mTitleView.setText(getResources().getString(R.string.edit_expense));
+        mEditTextTitle.setText(expenseToShow.getTitle());
+        mAddButton.setVisibility(View.VISIBLE);
+        mAddButton.setText(getResources().getString(R.string.save));
+        mEditBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.secondary_text));
+        ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
+        enableAllFields(viewGroup);
+        mRBExpense.setClickable(true);
+        mRBIncome.setClickable(true);
 
         c = Calendar.getInstance();
-        if (isAdd) {
-            // Get Current Time
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-            mHour = c.get(Calendar.HOUR_OF_DAY);
-            mMinute = c.get(Calendar.MINUTE);
-            // Set Current Time to EditTexts
-            mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
-            mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+        // Get Expense Time
+        mYear = expenseToShow.getYear();
+        mMonth = expenseToShow.getMonth();
+        mDay = expenseToShow.getDay();
+        mHour = expenseToShow.getHour();
+        mMinute = expenseToShow.getMinute();
+        c.set(mYear, mMonth, mDay, mHour, mMinute);
+
+        setupTimeAndDateOnTouchListeners();
+
+        setupRadioButtonsAndSpinner(expenseToShow.getIsExpense());
+
+        mCategorySpinner.setSelection(expenseToShow.getCategory().getSpinnerLocation(!expenseToShow.getIsExpense()));
+
+        if (expenseToShow.getDescription().equals("")) {
+            mEditTextDescription.setHint(getResources().getString(R.string.Description_optional));
         } else {
-            // Get Expense Time
-            mYear = expenseToShow.getYear();
-            mMonth = expenseToShow.getMonth();
-            mDay = expenseToShow.getDay();
-            mHour = expenseToShow.getHour();
-            mMinute = expenseToShow.getMinute();
-            c.set(mYear, mMonth, mDay, mHour, mMinute);
+            mEditTextDescription.setText(expenseToShow.getDescription());
         }
 
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View arg0) {
+                editExpense();
+            }
+        });
+    }
+
+    private void setupTimeAndDateOnTouchListeners() {
         mEditTextDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View arg1, MotionEvent event) {
@@ -242,13 +276,13 @@ public class ExpenseFragment extends Fragment {
                 return pickTime(event);
             }
         });
+    }
 
-        expenseAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
-        incomeAdapter = new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
-        mCategorySpinner.setAdapter(expenseAdapter);
-        if (!isAdd) {
-            mCategorySpinner.setSelection(expenseToShow.getCategory().getValue());
-        }
+    private void setupRadioButtonsAndSpinner(boolean isExpense) {
+        expenseAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
+        incomeAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
+        mCategorySpinner.setAdapter(isExpense ? expenseAdapter : incomeAdapter);
+        mCategorySpinner.setSelection(0);
 
         mRGIsExpense.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -264,21 +298,6 @@ public class ExpenseFragment extends Fragment {
                     mCategorySpinner.setSelection(expenseCat.getSpinnerLocation(false));
                     incomeSelected = false;
                 }
-            }
-        });
-
-        if (!isAdd) {
-            if (expenseToShow.getDescription().equals("")) {
-                mEditTextDescription.setHint(getResources().getString(R.string.Description_optional));
-            } else {
-                mEditTextDescription.setText(expenseToShow.getDescription());
-            }
-        }
-
-        mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View arg0) {
-                addOrEditExpense(isAdd);
             }
         });
     }
@@ -297,6 +316,7 @@ public class ExpenseFragment extends Fragment {
                             mDay = dayOfMonth;
                             c.set(mYear, mMonth, mDay, mHour, mMinute);
                             mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
+
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -326,7 +346,27 @@ public class ExpenseFragment extends Fragment {
         return false;
     }
 
-    public void addOrEditExpense(boolean isAdd) {
+    public void addExpense() {
+        Expense newExpense = createExpenseFromFields();
+        if (newExpense == null)
+            return;
+
+        FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+        mActivity.tryReleaseTabs();
+    }
+
+    public void editExpense() {
+        Expense newExpense = createExpenseFromFields();
+        if (newExpense == null)
+            return;
+
+        newExpense.setId(expenseToShow.getId());
+        FirebaseBackend.getInstance().editExpense(mActivity.mCurrentBudget.getId(), newExpense);
+
+        mActivity.tryReleaseTabs();
+    }
+
+    private Expense createExpenseFromFields() {
         String title = mEditTextTitle.getText().toString();
         if (title.equals("")) {
             title = getResources().getString(R.string.general);
@@ -340,6 +380,10 @@ public class ExpenseFragment extends Fragment {
         }
 
         Category category = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
+        if (category == Category.CATEGORY) {
+            Toast.makeText(mActivity, "Pick a category", Toast.LENGTH_SHORT).show();
+            return null;
+        }
 
         Double amount;
         if (mEditTextAmount.getText().toString().equals("")) {
@@ -347,7 +391,8 @@ public class ExpenseFragment extends Fragment {
         } else {
             amount = Double.parseDouble(mEditTextAmount.getText().toString());
         }
-        //CREATE EXPENSE
+
+        // Create expense
         Expense newExpense = new Expense("",
                 amount,
                 title,
@@ -358,13 +403,7 @@ public class ExpenseFragment extends Fragment {
                 mActivity.mSessionManager.getUserName(),
                 isExpense);
 
-        if (isAdd) {
-            FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
-        } else {
-            newExpense.setId(expenseToShow.getId());
-            FirebaseBackend.getInstance().editExpense(mActivity.mCurrentBudget.getId(), newExpense);
-        }
-        mActivity.tryReleaseTabs();
+        return newExpense;
     }
 
     public void deleteExpense() {
@@ -391,7 +430,6 @@ public class ExpenseFragment extends Fragment {
                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mActivity.mSessionManager.goToLastBudget();
                 startActivity(restartIntent);
-
             }
         }
     }

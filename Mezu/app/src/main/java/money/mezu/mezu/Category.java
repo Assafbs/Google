@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import java.util.ArrayList;
 
 public enum Category {
-    OTHER(0, true, true),
+    CATEGORY(0, true, true),
     FOOD(1, true, false),
     SHELTER(2, true, false),
     ENTERTAINMENT(3, true, false),
@@ -20,7 +20,8 @@ public enum Category {
     SUBSCRIPTIONS(12, true, false),
     DEBT_REDUCTION(13, true, false),
     DONATIONS(14, true, false),
-    PAYCHECK(15, false, true);
+    PAYCHECK(15, false, true),
+    OTHER (16, true, true);
 
 
     static ArrayList<String> incomeCats = null;
@@ -73,12 +74,14 @@ public enum Category {
         if (category.equals(resources.getString(R.string.category_other)))
             return Category.OTHER;
 
-        return null;
+        return CATEGORY;
     }
 
     public String toString() {
         Resources resources = StaticContext.mContext.getResources();
         switch (this) {
+            case CATEGORY:
+                return resources.getString(R.string.pick_a_category);
             case FOOD:
                 return resources.getString(R.string.category_food);
             case SHELTER:

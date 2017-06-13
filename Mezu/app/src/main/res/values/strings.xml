@@ -59,6 +59,7 @@
     <string name="category_other">Other</string>
     <string name="category">Category</string>
     <string name="categories">Categories</string>
+    <string name="pick_a_category">Pick a category</string>
 
     <!--Months-->
     <string name="month_jan">Jan</string>
