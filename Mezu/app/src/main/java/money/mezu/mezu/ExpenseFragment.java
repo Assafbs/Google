@@ -61,7 +61,7 @@ public class ExpenseFragment extends Fragment {
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
 
-    private Expense expenseToShow;
+    private Expense expenseToShow = null;
 
     public boolean isAdd;
 
@@ -388,8 +388,12 @@ public class ExpenseFragment extends Fragment {
                 mEditTextDescription.getText().toString(),
                 category,
                 c.getTime(),
-                mActivity.mSessionManager.getUserId(),
-                mActivity.mSessionManager.getUserName(),
+                expenseToShow == null ?
+                        mActivity.mSessionManager.getUserId() :
+                        expenseToShow.getUserID(),
+                expenseToShow == null ?
+                        mActivity.mSessionManager.getUserName() :
+                        expenseToShow.getUserName(),
                 isExpense);
 
         return newExpense;
