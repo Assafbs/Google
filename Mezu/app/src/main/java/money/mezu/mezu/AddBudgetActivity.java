@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -65,7 +64,6 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
                     Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("","AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
                     ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails;

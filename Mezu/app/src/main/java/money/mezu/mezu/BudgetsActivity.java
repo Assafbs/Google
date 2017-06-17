@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Log.d("","BudgetsActivity::onCreate start");
         setLanguage();
         super.onCreate(savedInstanceState);
         StaticContext.mContext = getApplicationContext();
@@ -68,7 +66,6 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget)
     {
-        Log.d("",String.format("BudgetsActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         super.budgetUpdatedCallback(budget);
         ListView listView = (ListView) findViewById(R.id.budgets_list_large);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));

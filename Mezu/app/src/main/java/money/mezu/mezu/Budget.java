@@ -1,8 +1,5 @@
 package money.mezu.mezu;
 
-import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,7 +23,6 @@ public class Budget {
     //************************************************************************************************************************************************
     public Budget(HashMap<String, Object> serializedBudget) {
         super();
-        Log.d("", String.format("Budget:Budget creating budget from serialized budget: %s", serializedBudget.toString()));
         this.mId = (String) serializedBudget.get("mId");
         this.mName = (String) serializedBudget.get("mName");
         ArrayList<Expense> expenses = new ArrayList<Expense>();
@@ -41,7 +37,6 @@ public class Budget {
             this.mExpenses = new ArrayList<>();
         }}
         catch(ClassCastException e){
-            Log.d("", String.format("Budget:expenses array is corrupted in budget: %s", serializedBudget.toString()));
             this.mExpenses = new ArrayList<>();
         }
         if (serializedBudget.containsKey("mInitialBalance")) {

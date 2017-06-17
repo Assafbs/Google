@@ -1,8 +1,5 @@
 package money.mezu.mezu;
 
-import android.util.Log;
-
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**

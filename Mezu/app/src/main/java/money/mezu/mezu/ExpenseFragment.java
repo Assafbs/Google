@@ -6,12 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,12 +18,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -110,7 +104,6 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("", "ExpenseFragment: clicked delete expense");
                 deleteExpense();
             }
         });
@@ -118,7 +111,6 @@ public class ExpenseFragment extends Fragment {
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("", "ExpenseFragment: clicked edit expense");
                 setupEditExpense();
             }
         });
@@ -415,7 +407,6 @@ public class ExpenseFragment extends Fragment {
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
-                Log.d("", "ExpenseFragment: deleting expense");
                 Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted expense
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()

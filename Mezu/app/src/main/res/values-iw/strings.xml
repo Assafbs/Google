@@ -4,6 +4,7 @@
     <string name="welcome_message">ברוכים הבאים לMezu!!</string>
     <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות</string>
     <string name="title_activity_login">כניסה</string>
+    <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
 
 
     <!--Budgets Activity Strings-->
