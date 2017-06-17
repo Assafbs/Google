@@ -42,8 +42,8 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         setContentView(R.layout.activity_add_budget);
 
         partnersEmails = new ArrayList<>();
-        partnersChipsContainer = (FlowLayout)findViewById(R.id.partners_chips_container);
-        addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
+        partnersChipsContainer = (FlowLayout) findViewById(R.id.partners_chips_container);
+        addPartnerEmailTextView = (AutoCompleteTextView) findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();
 
@@ -65,7 +65,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
                     Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("","AddBudgetActivity: adding budget to db");
+                    Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
                     ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails;
@@ -84,13 +84,13 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         addPartnerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText partnerEmailView = (EditText)findViewById(R.id.partner_email);
+                EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString();
                 if (partnerEmail.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
-                } else if (!isValidEmail(partnerEmail)){
+                } else if (!isValidEmail(partnerEmail)) {
                     Toast.makeText(AddBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
-                } else if (partnersEmails.contains(partnerEmail)){
+                } else if (partnersEmails.contains(partnerEmail)) {
                     Toast.makeText(AddBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
@@ -108,11 +108,12 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     partnersChipsContainer.addView(chip);
                     partnerEmailView.setText("");
                     mDrawerLayout.invalidate();
+                }
             }
         });
     }
 
-    private boolean isValidEmail(String email){
+    private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 

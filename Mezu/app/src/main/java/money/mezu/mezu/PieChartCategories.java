@@ -117,6 +117,8 @@ public class PieChartCategories implements GraphInterface {
         PieData data = new PieData(mPieDataSet);
         data.setValueTextSize(15);
         mPieChart.setData(data);
+//        mPieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+//        mPieChart.setEntryLabelColor(getColor(R.color.accent_dark));
 
         double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
@@ -132,6 +134,7 @@ public class PieChartCategories implements GraphInterface {
         mPieChart.setEntryLabelTextSize(15);
         mPieChart.setCenterTextSize(15);
         mPieChart.getDescription().setEnabled(false);
+
         customizeLegend();
         if (!large) {
             mPieChart.getLegend().setEnabled(false);
