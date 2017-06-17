@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.robertlevonyan.views.chip.Chip;
+import com.robertlevonyan.views.chip.OnCloseClickListener;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +37,8 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
 
     protected Budget mCurrentBudget;
     List<String> partnersEmails;
-    TextView partnersList;
+    FlowLayout partnersChipsContainer;
     AutoCompleteTextView addPartnerEmailTextView;
-    String currentPartners;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -58,14 +61,15 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             initialBalanceEditText.setText(String.valueOf(curBalance));
         }
 
-        currentPartners = mCurrentBudget.getEmails().toString();
-        currentPartners = currentPartners.substring(1,currentPartners.length()-1);
-
         partnersEmails = new ArrayList<>();
-        partnersList = (TextView)findViewById(R.id.partners_list);
-        partnersList.setText(currentPartners);
-        partnersList.setMovementMethod(new ScrollingMovementMethod());
+        partnersChipsContainer = (FlowLayout)findViewById(R.id.partners_chips_container);
         addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
+
+        for (String partnerEmail : mCurrentBudget.getEmails()){
+            Chip chip = new Chip(EditBudgetActivity.this);
+            chip.setChipText(partnerEmail);
+            partnersChipsContainer.addView(chip);
+        }
 
         tryInitializingContactEmails();
 
@@ -104,24 +108,29 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     Toast.makeText(EditBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)){
                     Toast.makeText(EditBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                } else if (!isValidEmail(partnerEmail)){
+                    Toast.makeText(EditBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                } else if (partnersEmails.contains(partnerEmail) || mCurrentBudget.getEmails().contains(partnerEmail)){
+                    Toast.makeText(EditBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
-                    String emailsList = partnersEmails.toString();
-                    partnersList.setText(currentPartners + commaIfNeeded() + emailsList.substring(1,emailsList.length()-1));// to delete brackets
+                    Chip chip = new Chip(EditBudgetActivity.this);
+                    chip.setChipText(partnerEmail);
+                    chip.setClosable(true);
+                    chip.setOnCloseClickListener(new OnCloseClickListener() {
+                        @Override
+                        public void onCloseClick(View v) {
+                            Chip c = (Chip) v.getParent();
+                            partnersEmails.remove(c.getChipText());
+                            partnersChipsContainer.removeView(c);
+                        }
+                    });
+                    partnersChipsContainer.addView(chip);
                     partnerEmailView.setText("");
-                    findViewById(R.id.add_budget_layout).invalidate();
+                    mDrawerLayout.invalidate();
                 }
             }
         });
-    }
-
-    private String commaIfNeeded() {
-        if (currentPartners.isEmpty()){
-            return "";
-        }
-        else {
-            return ", ";
-        }
     }
 
     @Override
