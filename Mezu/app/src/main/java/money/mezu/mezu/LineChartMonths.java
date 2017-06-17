@@ -140,6 +140,7 @@ public class LineChartMonths implements GraphInterface {
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setXEntrySpace(5f);
         legend.setYEntrySpace(5f);
+        legend.setWordWrapEnabled(true);
     }
 
     public void customizeAxis() {

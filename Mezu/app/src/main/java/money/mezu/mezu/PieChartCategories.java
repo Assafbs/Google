@@ -83,6 +83,7 @@ public class PieChartCategories implements GraphInterface {
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setXEntrySpace(5f);
         legend.setYEntrySpace(5f);
+        legend.setWordWrapEnabled(true);
     }
 
     @Override
