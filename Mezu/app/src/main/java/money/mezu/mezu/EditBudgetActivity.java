@@ -34,6 +34,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
     List<String> partnersEmails;
     TextView partnersList;
     AutoCompleteTextView addPartnerEmailTextView;
+    String currentPartners;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -56,8 +57,12 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             initialBalanceEditText.setText(String.valueOf(curBalance));
         }
 
+        currentPartners = mCurrentBudget.getEmails().toString();
+        currentPartners = currentPartners.substring(1,currentPartners.length()-1);
+
         partnersEmails = new ArrayList<>();
         partnersList = (TextView)findViewById(R.id.partners_list);
+        partnersList.setText(currentPartners);
         addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();
@@ -100,12 +105,21 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
                     String emailsList = partnersEmails.toString();
-                    partnersList.setText(emailsList.substring(1,emailsList.length()-1));// to delete brackets
+                    partnersList.setText(currentPartners + commaIfNeeded() + emailsList.substring(1,emailsList.length()-1));// to delete brackets
                     partnerEmailView.setText("");
                     findViewById(R.id.add_budget_layout).invalidate();
                 }
             }
         });
+    }
+
+    private String commaIfNeeded() {
+        if (currentPartners.isEmpty()){
+            return "";
+        }
+        else {
+            return ", ";
+        }
     }
 
     @Override
