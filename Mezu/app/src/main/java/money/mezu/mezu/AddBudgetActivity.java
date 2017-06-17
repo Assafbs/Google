@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -41,6 +42,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
         partnersEmails = new ArrayList<>();
         partnersList = (TextView)findViewById(R.id.partners_list);
+        partnersList.setMovementMethod(new ScrollingMovementMethod());
         addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();

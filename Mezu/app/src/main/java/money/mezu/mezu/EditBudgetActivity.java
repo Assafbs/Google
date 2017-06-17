@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +64,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         partnersEmails = new ArrayList<>();
         partnersList = (TextView)findViewById(R.id.partners_list);
         partnersList.setText(currentPartners);
+        partnersList.setMovementMethod(new ScrollingMovementMethod());
         addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();

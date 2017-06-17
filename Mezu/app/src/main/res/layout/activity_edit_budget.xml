@@ -111,7 +111,9 @@
                     android:layout_height="match_parent"
                     android:text="@string/partner_list_edit_text"
                     android:textAlignment="inherit"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:scrollbars="vertical"
+                    android:maxLines="100"/>
             </FrameLayout>
 
             <android.support.design.widget.TextInputLayout
