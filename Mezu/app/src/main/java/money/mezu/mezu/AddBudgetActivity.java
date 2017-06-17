@@ -29,7 +29,7 @@ import org.apmem.tools.layouts.FlowLayout;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
 
-    List<String> partnersEmails;
+    ArrayList<String> partnersEmails;
     FlowLayout partnersChipsContainer;
     AutoCompleteTextView addPartnerEmailTextView;
 
@@ -68,7 +68,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
-                    ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails;
+                    ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails.clone();
                     partnerEmailsIncludingMe.add(sessionManager.getUserEmail());
                     Budget newBudget = new Budget(BudgetName, startingBalance, partnerEmailsIncludingMe);
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);

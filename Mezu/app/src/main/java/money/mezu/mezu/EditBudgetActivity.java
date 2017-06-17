@@ -36,7 +36,7 @@ import java.util.List;
 public class EditBudgetActivity extends BaseNavDrawerActivity {
 
     protected Budget mCurrentBudget;
-    List<String> partnersEmails;
+    ArrayList<String> partnersEmails;
     FlowLayout partnersChipsContainer;
     AutoCompleteTextView addPartnerEmailTextView;
 
@@ -86,9 +86,13 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     startingBalance = Double.parseDouble(startingBalanceString);
                 }
                 if (!(budgetName.equals(mCurrentBudget.getName()) &&
-                        startingBalance == mCurrentBudget.getInitialBalance())) { // Something changed
+                        startingBalance == mCurrentBudget.getInitialBalance()) || !partnersEmails.isEmpty()) { // Something changed
                     mCurrentBudget.setName(budgetName);
                     mCurrentBudget.setInitialBalance(startingBalance);
+                    mCurrentBudget.addNewEmails(partnersEmails);
+                    for (String mail : partnersEmails) {
+                        Log.d("", String.format("EditBudgetActivity:onCreate: current mail is :%s", mail));
+                    }
                     FirebaseBackend.getInstance().editBudget(mCurrentBudget);
                 }
                 for (String email : partnersEmails) {
