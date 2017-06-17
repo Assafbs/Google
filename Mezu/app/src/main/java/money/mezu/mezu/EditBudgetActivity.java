@@ -66,6 +66,9 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
         for (String partnerEmail : mCurrentBudget.getEmails()){
+            if (partnerEmail.equals(mSessionManager.getUserEmail())){
+                continue; // don't show the user himself on the list
+            }
             Chip chip = new Chip(EditBudgetActivity.this);
             chip.setChipText(partnerEmail);
             partnersChipsContainer.addView(chip);
