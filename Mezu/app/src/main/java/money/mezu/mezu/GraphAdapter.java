@@ -54,7 +54,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         info3.setText(graph.getInfoValue());
         if (LanguageUtils.isRTL() &&
                 graph.getTitle().equals(resources.getString(R.string.expenses_by_users)) &&
-                !mActivity.mCurrentBudget.getExpenses().isEmpty()) {
+                mActivity.mCurrentBudget.getTotalExpenses() != 0) {
             info3.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         }
 
@@ -79,8 +79,10 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
             }
         });
 
-        if (mActivity.mCurrentBudget.getExpenses().isEmpty()) {
-            graphRow.setClickable(false);
+        if (mActivity.mCurrentBudget.getTotalExpenses() == 0) {
+            if (!graph.getTitle().equals(resources.getString(R.string.expenses_by_months)) || mActivity.mCurrentBudget.getTotalIncomes() == 0) {
+                graphRow.setClickable(false);
+            }
         }
 
         // Return the completed view to render on screen

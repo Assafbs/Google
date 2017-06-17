@@ -39,7 +39,7 @@ public class LineChartMonths implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_months);
         mInfoLine = resources.getString(R.string.most_expensive_month);
         mBudget = budget;
-        mInfoValue = mBudget.getExpenses().isEmpty() ? resources.getString(R.string.not_enough_data) :
+        mInfoValue = mBudget.getTotalExpenses() == 0 ? resources.getString(R.string.not_enough_data) :
                 resources.getStringArray(R.array.months_list)[budget.getMostExpensiveMonthPerYear(Calendar.getInstance().get(Calendar.YEAR))];
     }
 

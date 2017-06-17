@@ -36,7 +36,7 @@ public class BarChartUsers implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_users);
         mInfoLine = resources.getString(R.string.most_expensive_user);
         mBudget = budget;
-        mInfoValue = mBudget.getExpenses().isEmpty() ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveUser();
+        mInfoValue = mBudget.getTotalExpenses() == 0 ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveUser();
     }
 
     public void setBarChart(BarChart barChart) {
