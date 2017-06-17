@@ -217,7 +217,7 @@ public class FirebaseBackend {
     {
         Log.d("","FirebaseBackend:addBudgetToUser: adding budget to user");
         String newBid = createBudget(budget);
-        connectBudgetAndUser(newBid, uid.getId().toString());
+        connectBudgetAndUser(newBid, uid.getId().toString(), null);
     }
     //************************************************************************************************************************************************
     private String createBudget(Budget budget)
@@ -238,11 +238,14 @@ public class FirebaseBackend {
         Log.d("", "FirebaseBackend:addBudgetToUser: added budget");
     }
     //************************************************************************************************************************************************
-    public void addUserToBudget(String bid, String uid)
+    public void addUserToBudget(String bid, String uid, String email)
     {
         // TODO - make sure user entry always exists in DB in this stage
         //mDatabase.child("users").push().setValue(uid.getId().toString());
         mDatabase.child("budgets").child(bid).child("users").child(uid).setValue(uid);
+        if (email != null) {
+            mDatabase.child("budgets").child(bid).child("budget").child("mEmails").push().setValue(email);
+        }
     }
     //************************************************************************************************************************************************
     public void addExpenseToBudget(Budget budget, Expense expense)
@@ -317,10 +320,10 @@ public class FirebaseBackend {
         mDatabase.child("users").child(uid.getId().toString()).child("notificationToken").setValue(refreshedToken);
     }
     //************************************************************************************************************************************************
-    private void connectBudgetAndUser(String bid, String uid)
+    private void connectBudgetAndUser(String bid, String uid, String email)
     {
         addBudgetToUser(bid, uid);
-        addUserToBudget(bid, uid);
+        addUserToBudget(bid, uid, email);
     }
     //************************************************************************************************************************************************
     public void connectBudgetAndUserByEmail(Budget budget, String email)
@@ -344,7 +347,7 @@ public class FirebaseBackend {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
                                 Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
-                                connectBudgetAndUser(bid, uidAsString);
+                                connectBudgetAndUser(bid, uidAsString, emailHash);
                             }
                             else {
                                 Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
