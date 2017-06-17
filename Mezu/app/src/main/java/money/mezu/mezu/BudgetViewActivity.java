@@ -53,7 +53,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         mExpensesTabFragment = new ExpensesTabFragment();
         mGraphsTabFragment = new GraphsTabFragment();
 
-        mViewPagerAdapter.setupTabsFragments(isRTL(), mExpensesTabFragment, mGraphsTabFragment);
+        mViewPagerAdapter.setupTabsFragments(LanguageUtils.isRTL(), mExpensesTabFragment, mGraphsTabFragment);
     }
     //************************************************************************************************************************************************
     public void expenseUpdatedCallback() {
@@ -114,7 +114,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         graphsTab.setText(R.string.graphs_tab_title);
         reviewTab.setText(R.string.review_tab_title);
 
-        if (isRTL()) {
+        if (LanguageUtils.isRTL()) {
             mTabLayout.addTab(reviewTab, 0);
             mTabLayout.addTab(graphsTab, 1);
             mTabLayout.addTab(expensesTab, 2);
@@ -148,20 +148,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             }
         });
 
-        if (isRTL()) {
+        if (LanguageUtils.isRTL()) {
             mTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
             mViewPager.setCurrentItem(2);
         }
-    }
-    //************************************************************************************************************************************************
-    public static boolean isRTL() {
-        return isRTL(Locale.getDefault());
-    }
-    //************************************************************************************************************************************************
-    private static boolean isRTL(Locale locale) {
-        final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
-        return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
-                directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
     //************************************************************************************************************************************************
     private void showAddExpenseFragment() {
@@ -171,7 +161,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
 
     public void setExpenseFragment(ExpenseFragment expenseFragment) {
-        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(isRTL()? 2 : 0);
+        TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(LanguageUtils.isRTL()? 2 : 0);
         ExpensesTab.select();
         expenseShown = true;
         mViewPagerAdapter.onSwitchToExpense(expenseFragment);
@@ -205,9 +195,12 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     //************************************************************************************************************************************************
     private void showBalanceInToolbar() {
         double balance = mCurrentBudget.getCurrentBalance();
-        String balanceString = String.valueOf(balance);
+        String balanceString = String.valueOf(Math.abs(balance));
         if (balance > 0) {
-            balanceString = "+" + balanceString;
+            balanceString = LanguageUtils.isRTL() ? balanceString + "+" : "+" + balanceString;
+        }
+        if (balance < 0) {
+            balanceString = LanguageUtils.isRTL() ? balanceString + "-" : "-" + balanceString;
         }
         mToolbar.setSubtitle(balanceString);
     }

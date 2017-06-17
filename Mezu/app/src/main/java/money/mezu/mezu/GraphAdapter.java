@@ -52,7 +52,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mLineChart = (LineChart) convertView.findViewById(R.id.line_chart_small);
         info2.setText(graph.getInfoLine());
         info3.setText(graph.getInfoValue());
-        if (BudgetViewActivity.isRTL() &&
+        if (LanguageUtils.isRTL() &&
                 graph.getTitle().equals(resources.getString(R.string.expenses_by_users)) &&
                 !mActivity.mCurrentBudget.getExpenses().isEmpty()) {
             info3.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);

@@ -53,11 +53,17 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
         } else {
             category.setText(R.string.category_other);
         }
-        amount.setText(Double.toString(expense.getAmount()));
+        char sign;
         if (!expense.getIsExpense()) {
-            amount.setText(Double.toString(expense.getAmount()) + "+");
-            amount.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            sign = '+';
+            amount.setTextColor(ContextCompat.getColor(mContext, R.color.income_green));
+        } else {
+            sign = '-';
+            amount.setTextColor(ContextCompat.getColor(mContext, R.color.expense_red));
         }
+        String expAmount = Double.toString(expense.getAmount());
+        amount.setText(LanguageUtils.isRTL() ? expAmount + sign : sign + expAmount);
+
         String t_title = expense.getTitle();
         if (t_title == null) {
             title.setText(R.string.general);

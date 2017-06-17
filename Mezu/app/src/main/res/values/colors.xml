@@ -14,6 +14,9 @@
     <color name="divider">#BDBDBD</color>
     <color name="hint">#a0a0a0</color>
 
+    <color name="expense_red">#d32f2f</color>
+    <color name="income_green">#43a047</color>
+
     <color name="pie_red">#fa0505</color>
     <color name="pie_orange">#fa9c05</color>
     <color name="pie_yellow">#faee05</color>

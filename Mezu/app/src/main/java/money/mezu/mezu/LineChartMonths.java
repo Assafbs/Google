@@ -126,7 +126,7 @@ public class LineChartMonths implements GraphInterface {
     @Override
     public void customizeLegend() {
         Legend legend = mLineChart.getLegend();
-        if (BudgetViewActivity.isRTL()) {
+        if (LanguageUtils.isRTL()) {
             legend.setDirection(Legend.LegendDirection.RIGHT_TO_LEFT);
             legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         } else {
