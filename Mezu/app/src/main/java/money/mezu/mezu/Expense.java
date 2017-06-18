@@ -106,6 +106,10 @@ public class Expense implements Comparable<Expense> {
         return mTime;
     }
 
+    public void setTime(Date c) {
+        mTime = c;
+    }
+
     public UserIdentifier getUserID() {
         return mUserID;
     }

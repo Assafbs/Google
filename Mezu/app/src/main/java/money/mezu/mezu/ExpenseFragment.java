@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -50,6 +53,8 @@ public class ExpenseFragment extends Fragment {
     Button mAddButton;
     Button mEditButton;
     EditText mEditTextAddedBy;
+    ImageView mRepeatAction;
+    int mRepeatChoice;
     android.support.design.widget.TextInputLayout mAddedByLayout;
 
 
@@ -82,9 +87,12 @@ public class ExpenseFragment extends Fragment {
         mAddButton = (Button) mView.findViewById(R.id.add_action_btn);
         mRBExpense = (RadioButton) mView.findViewById(R.id.radio_expense);
         mRBIncome = (RadioButton) mView.findViewById(R.id.radio_income);
-        mEditTextAddedBy= (EditText) mView.findViewById(R.id.added_by_edit_text);
+        mEditTextAddedBy = (EditText) mView.findViewById(R.id.added_by_edit_text);
         mEditButton = (Button) mView.findViewById(R.id.edit_action_btn);
+        mRepeatAction = (ImageView) mView.findViewById(R.id.repeat_action);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
+        mRepeatChoice = 0;
+
         if (isAdd) {
             setupAddExpense();
         } else {
@@ -122,6 +130,8 @@ public class ExpenseFragment extends Fragment {
                 setupEditExpense();
             }
         });
+
+        mRepeatAction.setVisibility(View.INVISIBLE);
 
         if (expenseToShow.getAmount() == 0.0) {
             mEditTextAmount.setText("0.0");
@@ -183,6 +193,13 @@ public class ExpenseFragment extends Fragment {
         mEditButton.setVisibility(View.GONE);
         mAddedByLayout.setVisibility(View.GONE);
 
+        mRepeatAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleRepeatPopup();
+            }
+        });
+
         mEditTextAmount.post(new Runnable() {
             public void run() {
                 mEditTextAmount.requestFocusFromTouch();
@@ -209,7 +226,7 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View arg0) {
-                addExpense();
+                    addExpense();
             }
         });
     }
@@ -338,22 +355,106 @@ public class ExpenseFragment extends Fragment {
 
     public void addExpense() {
         Expense newExpense = createExpenseFromFields();
-        if (newExpense == null)
+        int i;
+        if (newExpense == null) {
             return;
-
+        }
         FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+
+        switch (mRepeatChoice) {
+            case 1: //every day
+                for (i = 0; i < 364; i++) {
+                    c.add(Calendar.DATE, 1);
+                    newExpense.setTime(c.getTime());
+                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+                }
+                break;
+            case 2: //every week
+                for (i = 0; i < 51; i++) {
+                    c.add(Calendar.WEEK_OF_YEAR, 1);
+                    newExpense.setTime(c.getTime());
+                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+                }
+                break;
+            case 3: //every two weeks
+                for (i = 0; i < 25; i++) {
+                    c.add(Calendar.WEEK_OF_YEAR, 2);
+                    newExpense.setTime(c.getTime());
+                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+                }
+                break;
+            case 4: //every month
+                for (i = 0; i < 11; i++) {
+                    c.add(Calendar.MONTH, 1);
+                    newExpense.setTime(c.getTime());
+                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+                }
+                break;
+            case 5: //every two months
+                for (i = 0; i < 5; i++) {
+                    c.add(Calendar.MONTH, 2);
+                    newExpense.setTime(c.getTime());
+                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
+                }
+                break;
+        }
+
+
         mActivity.tryReleaseTabs();
     }
 
     public void editExpense() {
         Expense newExpense = createExpenseFromFields();
-        if (newExpense == null)
+        if (newExpense == null) {
             return;
+        }
 
         newExpense.setId(expenseToShow.getId());
         FirebaseBackend.getInstance().editExpense(mActivity.mCurrentBudget.getId(), newExpense);
 
         mActivity.tryReleaseTabs();
+    }
+
+    private void handleRepeatPopup() {
+        mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.white));
+        mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent_dark));
+
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(getActivity(), mRepeatAction);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.repeat_popup_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(getActivity(), getResources().getString(R.string.chosen_repeat) + " " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                switch (item.getItemId()) {
+                    case R.id.no_repeat_opt:
+                        mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.black));
+                        mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                        mRepeatChoice = 0;
+                        break;
+                    case R.id.every_day_opt:
+                        mRepeatChoice = 1;
+                        break;
+                    case R.id.every_week_opt:
+                        mRepeatChoice = 2;
+                        break;
+                    case R.id.every_two_weeks_opt:
+                        mRepeatChoice = 3;
+                        break;
+                    case R.id.every_month_opt:
+                        mRepeatChoice = 4;
+                        break;
+                    case R.id.every_two_months_opt:
+                        mRepeatChoice = 5;
+                        break;
+                }
+                return true;
+            }
+        });
+
+        popup.show();//showing popup menu
     }
 
     private Expense createExpenseFromFields() {
