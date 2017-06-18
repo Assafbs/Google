@@ -2,19 +2,16 @@ package money.mezu.mezu;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -24,11 +21,15 @@ import java.util.List;
 import android.os.Build;
 
 import com.google.gson.Gson;
+import com.robertlevonyan.views.chip.Chip;
+import com.robertlevonyan.views.chip.OnCloseClickListener;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
 
-    List<String> partnersEmails;
-    TextView partnersList;
+    ArrayList<String> partnersEmails;
+    FlowLayout partnersChipsContainer;
     AutoCompleteTextView addPartnerEmailTextView;
 
     // Request code for READ_CONTACTS. It can be any number > 0.
@@ -40,9 +41,8 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         setContentView(R.layout.activity_add_budget);
 
         partnersEmails = new ArrayList<>();
-        partnersList = (TextView)findViewById(R.id.partners_list);
-        partnersList.setMovementMethod(new ScrollingMovementMethod());
-        addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
+        partnersChipsContainer = (FlowLayout) findViewById(R.id.partners_chips_container);
+        addPartnerEmailTextView = (AutoCompleteTextView) findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();
 
@@ -66,7 +66,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 } else {
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
-                    ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails;
+                    ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails.clone();
                     partnerEmailsIncludingMe.add(sessionManager.getUserEmail());
                     Budget newBudget = new Budget(BudgetName, startingBalance, partnerEmailsIncludingMe);
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
@@ -82,24 +82,36 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         addPartnerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText partnerEmailView = (EditText)findViewById(R.id.partner_email);
+                EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString();
                 if (partnerEmail.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
-                } else if (!isValidEmail(partnerEmail)){
+                } else if (!isValidEmail(partnerEmail)) {
                     Toast.makeText(AddBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                } else if (partnersEmails.contains(partnerEmail)) {
+                    Toast.makeText(AddBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
-                    String emailsList = partnersEmails.toString();
-                    partnersList.setText(emailsList.substring(1,emailsList.length()-1));// to delete brackets
+                    Chip chip = new Chip(AddBudgetActivity.this);
+                    chip.setChipText(partnerEmail);
+                    chip.setClosable(true);
+                    chip.setOnCloseClickListener(new OnCloseClickListener() {
+                        @Override
+                        public void onCloseClick(View v) {
+                            Chip c = (Chip) v.getParent();
+                            partnersEmails.remove(c.getChipText());
+                            partnersChipsContainer.removeView(c);
+                        }
+                    });
+                    partnersChipsContainer.addView(chip);
                     partnerEmailView.setText("");
-                    findViewById(R.id.add_budget_layout).invalidate();
+                    mDrawerLayout.invalidate();
                 }
             }
         });
     }
 
-    private boolean isValidEmail(String email){
+    private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 

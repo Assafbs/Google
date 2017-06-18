@@ -21,7 +21,7 @@ public enum Category {
     DEBT_REDUCTION(13, true, false),
     DONATIONS(14, true, false),
     PAYCHECK(15, false, true),
-    OTHER (16, true, true);
+    OTHER(16, true, true);
 
 
     static ArrayList<String> incomeCats = null;
@@ -40,6 +40,9 @@ public enum Category {
 
     public static Category getCategoryFromString(String category) {
         Resources resources = StaticContext.mContext.getResources();
+        if (category.contains("\t")) {
+            category = category.split("\t")[1];
+        }
 
         if (category.equals(resources.getString(R.string.category_food)))
             return Category.FOOD;
@@ -120,6 +123,49 @@ public enum Category {
         return resources.getString(R.string.category_other);
     }
 
+    public String getEmojiWithName() {
+        Resources resources = StaticContext.mContext.getResources();
+        LanguageUtils mLU = new LanguageUtils();
+        switch (this) {
+            case CATEGORY:
+                return resources.getString(R.string.pick_a_category);
+            case FOOD:
+                return mLU.getEmojiByUnicode(0x1F355) + "\t" + this;
+            case SHELTER:
+                return mLU.getEmojiByUnicode(0x1F3E0) + "\t" + this;
+            case ENTERTAINMENT:
+                return mLU.getEmojiByUnicode(0x1F3AE) + "\t" + this;
+            case EDUCATION:
+                return mLU.getEmojiByUnicode(0x1F4DA) + "\t" + this;
+            case TRANSPORTATION:
+                return mLU.getEmojiByUnicode(0x1F68E) + "\t" + this;
+            case MEDICAL:
+                return mLU.getEmojiByUnicode(0x1F489) + "\t" + this;
+            case INSURANCE:
+                return mLU.getEmojiByUnicode(0x1F4BC) + "\t" + this;
+            case HOUSEHOLD_SUPPLIES:
+                return mLU.getEmojiByUnicode(0x1F6AA) + "\t" + this;
+            case PERSONAL:
+                return mLU.getEmojiByUnicode(0x1F64A) + "\t" + this;
+            case CLOTHING:
+                return mLU.getEmojiByUnicode(0x1F454) + "\t" + this;
+            case GIFTS:
+                return mLU.getEmojiByUnicode(0x1F381) + "\t" + this;
+            case SUBSCRIPTIONS:
+                return mLU.getEmojiByUnicode(0x1F4DC) + "\t" + this;
+            case DEBT_REDUCTION:
+                return mLU.getEmojiByUnicode(0x1F4B0) + "\t" + this;
+            case DONATIONS:
+                return mLU.getEmojiByUnicode(0x1F607) + "\t" + this;
+            case PAYCHECK:
+                return mLU.getEmojiByUnicode(0x2709) + "\t" + this;
+            case OTHER:
+                return resources.getString(R.string.category_other);
+        }
+
+        return resources.getString(R.string.category_other);
+    }
+
     public int getValue() {
         return value;
     }
@@ -143,7 +189,7 @@ public enum Category {
 
             for (Category cat : Category.values()) {
                 if (cat.isIncome) {
-                    incomeCats.add(cat.toString());
+                    incomeCats.add(cat.getEmojiWithName());
                 }
             }
         }
@@ -156,7 +202,7 @@ public enum Category {
 
             for (Category cat : Category.values()) {
                 if (cat.isExpense) {
-                    expenseCats.add(cat.toString());
+                    expenseCats.add(cat.getEmojiWithName());
                 }
             }
         }

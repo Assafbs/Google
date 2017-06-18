@@ -46,6 +46,7 @@ public class ExpenseFragment extends Fragment {
     EditText mEditTextAddedBy;
     android.support.design.widget.TextInputLayout mAddedByLayout;
 
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Calendar c;
 
@@ -78,7 +79,6 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy= (EditText) mView.findViewById(R.id.added_by_edit_text);
         mEditButton = (Button) mView.findViewById(R.id.edit_action_btn);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
-
         if (isAdd) {
             setupAddExpense();
         } else {
@@ -122,8 +122,9 @@ public class ExpenseFragment extends Fragment {
         }
 
         ArrayList<String> categories = new ArrayList<>();
+
         categories.add(expenseToShow.getCategory().toString());
-        mCategorySpinner.setAdapter(new ArrayAdapter<String>(mActivity, R.layout.category_spinner_item, categories));
+        mCategorySpinner.setAdapter(new ArrayAdapter<>(mActivity, R.layout.category_spinner_item, categories));
 
         mRBExpense.setClickable(false);
         mRBIncome.setClickable(false);
