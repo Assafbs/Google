@@ -25,9 +25,11 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/EditTextTitle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="0dp">
+
+        <EditText
+            android:id="@+id/EditTextTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/expense_title"
@@ -39,30 +41,30 @@
         android:id="@+id/radio_expense_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radio_expense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/expense"/>
+            android:text="@string/expense" />
 
         <RadioButton
             android:id="@+id/radio_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/income"/>
+            android:text="@string/income" />
     </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layoutDirection="inherit"
-        android:orientation="horizontal"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginStart="4dp">
+        android:layoutDirection="inherit"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView2"
@@ -88,9 +90,11 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/EditTextDescription"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="0dp">
+
+        <EditText
+            android:id="@+id/EditTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/expense_description"
@@ -106,10 +110,12 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/EditTextDate"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/EditTextDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
@@ -122,10 +128,12 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/EditTextTime"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/EditTextTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
@@ -140,9 +148,11 @@
         android:id="@+id/added_by_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/added_by_edit_text"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="0dp">
+
+        <EditText
+            android:id="@+id/added_by_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/added_by"
@@ -153,6 +163,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/repeat_action"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/edit_action_btn"
+            android:layout_alignEnd="@+id/edit_action_btn"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="150dp"
+            android:clickable="true"
+            android:src="@drawable/ic_repeat" />
 
         <Button
             android:id="@+id/add_action_btn"
@@ -166,8 +187,8 @@
             android:id="@+id/edit_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/add_action_btn"
             android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/add_action_btn"
             android:background="@drawable/button_selector"
             android:text="@string/edit" />
     </RelativeLayout>

@@ -33,4 +33,13 @@
         <item>@string/month_nov</item>
         <item>@string/month_dec</item>
     </string-array>
+
+    <string-array name="repeat_list">
+        <item>@string/no_repeat</item>
+        <item>@string/every_day</item>
+        <item>@string/every_week</item>
+        <item>@string/every_two_weeks</item>
+        <item>@string/every_month</item>
+        <item>@string/every_two_months</item>
+    </string-array>
 </resources>
