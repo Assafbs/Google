@@ -430,8 +430,6 @@ public class ExpenseFragment extends Fragment {
                 Toast.makeText(getActivity(), getResources().getString(R.string.chosen_repeat) + " " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 switch (item.getItemId()) {
                     case R.id.no_repeat_opt:
-                        mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.black));
-                        mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
                         mRepeatChoice = 0;
                         break;
                     case R.id.every_day_opt:
@@ -451,6 +449,16 @@ public class ExpenseFragment extends Fragment {
                         break;
                 }
                 return true;
+            }
+        });
+
+        popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                if (mRepeatChoice == 0) {
+                    mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.accent_dark));
+                    mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                }
             }
         });
 
