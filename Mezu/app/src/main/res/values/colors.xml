@@ -13,6 +13,7 @@
     <color name="indicator">#ecd95a</color>
     <color name="divider">#BDBDBD</color>
     <color name="hint">#a0a0a0</color>
+    <color name="black">#000000</color>
 
     <color name="expense_red">#d32f2f</color>
     <color name="income_green">#43a047</color>

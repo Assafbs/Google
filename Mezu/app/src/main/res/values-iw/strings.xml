@@ -33,7 +33,13 @@
     <string name="pick_date">תאריך:</string>
     <string name="pick_time">שעה:</string>
     <string name="pick_category_toast">אנא בחר קטגוריה</string>
-
+    <string name="no_repeat">ללא חזרה</string>
+    <string name="every_day">כל יום</string>
+    <string name="every_week">כל שבוע</string>
+    <string name="every_two_weeks">כל שבועיים</string>
+    <string name="every_month">כל חודש</string>
+    <string name="every_two_months">כל חודשיים</string>
+    <string name="chosen_repeat">בחרת חזרה:</string>
 
 
     <!--Categories-->

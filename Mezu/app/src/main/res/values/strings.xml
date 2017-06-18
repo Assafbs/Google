@@ -38,6 +38,14 @@
     <string name="pick_date">Date:</string>
     <string name="pick_time">Time:</string>
     <string name="pick_category_toast">Please pick a category</string>
+    <string name="no_repeat">No Repeat</string>
+    <string name="every_day">Every Day</string>
+    <string name="every_week">Every Week</string>
+    <string name="every_two_weeks">Every Two Weeks</string>
+    <string name="every_month">Every Month</string>
+    <string name="every_two_months">Every Two Months</string>
+    <string name="chosen_repeat">Chosen Repeat:</string>
+
 
 
     <!--Categories-->
