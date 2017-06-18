@@ -74,6 +74,8 @@ public class SettingsActivity extends AppCompatActivity {
             enableNotificationsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
+                    SessionManager sessionManager = new SessionManager(StaticContext.mContext);
+                    FirebaseBackend.getInstance().setShouldNotifyOnTransaction(((SwitchPreference)preference).isChecked(), sessionManager.getUserId());
                     return true;
                 }
             });
