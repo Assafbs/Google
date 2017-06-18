@@ -92,9 +92,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     mCurrentBudget.setName(budgetName);
                     mCurrentBudget.setInitialBalance(startingBalance);
                     mCurrentBudget.addNewEmails(partnersEmails);
-                    for (String mail : partnersEmails) {
-                        Log.d("", String.format("EditBudgetActivity:onCreate: current mail is :%s", mail));
-                    }
                     FirebaseBackend.getInstance().editBudget(mCurrentBudget);
                 }
                 for (String email : partnersEmails) {
