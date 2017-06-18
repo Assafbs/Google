@@ -276,24 +276,30 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void addUserIfNeeded(UserIdentifier uid, String username, String email) {
-        final String uidToAdd = uid.getId().toString();
+        final UserIdentifier lUid = uid;
         final String usernameToAdd = username;
         final String emailToAdd = email;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild(uidToAdd)) {
-                    mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
-                    mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
-                    mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
-
-                }
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+               String uidToAdd = lUid.getId().toString();
+               if (!dataSnapshot.hasChild(uidToAdd))
+               {
+                   mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
+                   mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
+                   mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
+                   setShouldNotifyOnTransaction(true, lUid);
+                   setMinimalTransactionNotificationValue(0, lUid);
+                   shouldNotifyWhenAddedToBudget(true, lUid);
+               }
             }
-
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(DatabaseError error)
+            {
+
             }
         });
     }
@@ -369,4 +375,26 @@ public class FirebaseBackend {
         }
         return "";
     }
+    //************************************************************************************************************************************************
+    public void setShouldNotifyOnTransaction(boolean shouldNotify, UserIdentifier uid)
+    {
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child("shouldNotifyOnTransaction").setValue(shouldNotify);
+    }
+    //************************************************************************************************************************************************
+    public void setMinimalTransactionNotificationValue(int minimalNotificationValue, UserIdentifier uid)
+    {
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child("minimalNotificationValue").setValue(minimalNotificationValue);
+    }
+    //************************************************************************************************************************************************
+    public void setShouldNotifyBudgetExeededThreshold(String bid, int threshold, boolean shouldNotify, UserIdentifier uid)
+    {
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("shouldNotify").setValue(shouldNotify);
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("threshold").setValue(threshold);
+    }
+    //************************************************************************************************************************************************
+    public void shouldNotifyWhenAddedToBudget(boolean shouldNotify, UserIdentifier uid)
+    {
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child("notifyWhenAddedToBudget").setValue(shouldNotify);
+    }
+
 }
