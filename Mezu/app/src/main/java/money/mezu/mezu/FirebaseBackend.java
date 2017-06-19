@@ -1,5 +1,7 @@
 package money.mezu.mezu;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -98,37 +100,28 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void leaveBudget(String bid, UserIdentifier uid, String userEmail) {
+    public void leaveBudget(String bid, UserIdentifier uid, final String userEmail) {
         final String bidToLeave = bid;
         final String uidToUpdate = uid.getId().toString();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         stopListeningOnPath("budgets/" + bid + "/budget");
         EventDispatcher.getInstance().notifyUserLeftBudgetListeners(bid);
-
-        //mDatabase.child("budgets").child(bid).child("budget").child("mEmails").child(userEmail).removeValue();
-        mDatabase.child("budgets").child(bid).child("budget").orderByChild("mEmails").equalTo(userEmail).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.getRef().setValue(null);
-                    }
-
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("TodoApp", "getUser:onCancelled", databaseError.toException());
-                    }
-                });
-
-        DatabaseReference ref = database.getReference("budgets/" + bid + "/users");
+        
+        DatabaseReference ref = database.getReference("budgets/" + bid);
         final ValueEventListener newListener = ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                ArrayList<String> emails = (ArrayList<String>) dataSnapshot.child("budget").child("mEmails").getValue();
+                emails.remove(userEmail);
+                mDatabase.child("budgets").child(bidToLeave).child("budget").child("mEmails").setValue(emails);
+                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.child("/users").getValue();
                 mDatabase.child("users").child(uidToUpdate).child("budgets").child(bidToLeave).removeValue();
                 mDatabase.child("budgets").child(bidToLeave).child("users").child(uidToUpdate).removeValue();
                 // second condition verifies that we were a member of the budget to begin with.
-                if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate)) {
+                if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate))
+                {
+                    Log.d("","FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
                 }
                 stopListeningOnPath("budgets/" + bidToLeave + "/users");
@@ -142,7 +135,9 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void editBudget(Budget budget) {
+    public void editBudget(Budget budget)
+    {
+        Log.d("","FirebaseBackend::editBudget: invoked");
         final Budget budgetToEdit = budget;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
