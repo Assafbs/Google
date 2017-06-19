@@ -84,15 +84,27 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-            SwitchPreference enableNotificationsPref = (SwitchPreference)findPreference("enable_notifications");
+            SwitchPreference enableNotificationsPref = (SwitchPreference)findPreference("enable_notifications_on_expenses");
             enableNotificationsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
-                    FirebaseBackend.getInstance().setShouldNotifyOnTransaction(((SwitchPreference)preference).isChecked(), sessionManager.getUserId());
+                    boolean isChecked = o.equals(true);
+                    FirebaseBackend.getInstance().setShouldNotifyOnTransaction(isChecked, sessionManager.getUserId());
+                    if (o.equals(true)){
+                        findPreference("minimum_amount").setEnabled(true);
+                    }
+                    else{
+                        findPreference("minimum_amount").setEnabled(false);
+                    }
                     return true;
                 }
             });
+
+            EditTextPreference minimumAmountPref = (EditTextPreference)findPreference("minimum_amount");
+            if (!enableNotificationsPref.isChecked()){
+                minimumAmountPref.setEnabled(false);
+            }
         }
     }
 

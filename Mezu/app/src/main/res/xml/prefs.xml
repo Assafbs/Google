@@ -1,34 +1,67 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="enable_notifications"
-        android:summary="@string/pref_description_allow_notifications"
-        android:title="@string/pref_title_allow_notifications" />
+    <PreferenceCategory
+        android:title="@string/notifications_options">
 
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="display_name"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name"
-        android:enabled="false"/>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_notifications_on_expenses"
+            android:summary="@string/pref_description_allow_notifications_expenses"
+            android:title="@string/pref_title_allow_notifications_expenses" />
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-    <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/pref_language_list_titles"
-        android:entryValues="@array/pref_language_list_values"
-        android:key="language"
-        android:negativeButtonText="@string/cancel"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_language" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:key="minimum_amount"
+            android:inputType="number"
+            android:title="@string/minimum_amount_to_notify"
+            android:summary="@string/pref_description_minimum_amount">
+        </EditTextPreference>
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_notifications_on_budgets"
+            android:summary="@string/pref_description_allow_notifications_budgets"
+            android:title="@string/pref_title_allow_notifications_budgets" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enable_notifications_on_deviation"
+            android:summary="@string/pref_description_allow_notifications_deviation"
+            android:title="@string/pref_title_allow_notifications_deviation" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/account">
+
+        <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+        <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_display_name"
+            android:inputType="textCapWords"
+            android:key="display_name"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_display_name"
+            android:enabled="false"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/localization">
+
+        <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+             dismiss it. -->
+        <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+        <ListPreference
+            android:defaultValue="-1"
+            android:entries="@array/pref_language_list_titles"
+            android:entryValues="@array/pref_language_list_values"
+            android:key="language"
+            android:negativeButtonText="@string/cancel"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_language" />
+
+    </PreferenceCategory>
 </PreferenceScreen>
