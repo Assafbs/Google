@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Budget {
@@ -257,5 +258,31 @@ public class Budget {
             i++;
         }
         return maxUser;
+    }
+    //************************************************************************************************************************************************
+    public boolean isEstimatedToOverSpendThisMonth()
+    {
+        double monthExpensesTotal = 0;
+        int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+        for(Expense expense : this.mExpenses)
+        {
+            if(expense.getMonth() == currentMonth)
+            {
+                // TODO: ignore expense on categorys that are recurrent by nature.
+                monthExpensesTotal += expense.getAmount();
+            }
+        }
+
+
+        monthExpensesTotal -= mInitialBalance/2;
+        double relativeBudgetLeft = mInitialBalance*(currentDay + 1)/(2*(daysInMonth + 1));
+        if (monthExpensesTotal >= relativeBudgetLeft)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

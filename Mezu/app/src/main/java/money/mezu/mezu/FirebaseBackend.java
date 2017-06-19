@@ -106,7 +106,7 @@ public class FirebaseBackend {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         stopListeningOnPath("budgets/" + bid + "/budget");
         EventDispatcher.getInstance().notifyUserLeftBudgetListeners(bid);
-        
+
         DatabaseReference ref = database.getReference("budgets/" + bid);
         final ValueEventListener newListener = ref.addValueEventListener(new ValueEventListener() {
             @Override
