@@ -173,9 +173,7 @@ public class FirebaseBackend {
                             mDatabase.child("users").child(uidAsString).child("budgets").child(bidToEdit).setValue(bidToEdit);
                             mDatabase.child("budgets").child(bidToEdit).child("users").child(uidAsString).setValue(uidAsString);
                         }
-
                     }
-
                     @Override
                     public void onCancelled(DatabaseError error) {
                     }

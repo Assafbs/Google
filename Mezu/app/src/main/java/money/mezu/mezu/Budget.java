@@ -14,6 +14,7 @@ public class Budget {
     private String mName;
     private double mInitialBalance;
     private ArrayList<String> mEmails;
+    private HashMap<Category, Double> mCategoryCeilings;
     //************************************************************************************************************************************************
     public Budget(String name, double initialBalance, ArrayList<String> emails) {
         super();
@@ -22,6 +23,7 @@ public class Budget {
         this.mExpenses = new ArrayList<>();
         this.mInitialBalance = initialBalance;
         this.mEmails = emails;
+        this.mCategoryCeilings = new HashMap<>();
         //TODO: backend to fill
     }
     //************************************************************************************************************************************************
@@ -45,12 +47,32 @@ public class Budget {
             Log.d("", String.format("Budget:expenses array is corrupted in budget: %s", serializedBudget.toString()));
             this.mExpenses = new ArrayList<>();
         }
+        this.mCategoryCeilings = new HashMap<>();
+        if (serializedBudget.containsKey("mCategoryCeilings"))
+        {
+            HashMap<String, Double> serializedCategory = (HashMap<String, Double>)serializedBudget.get("mCategoryCeilings");
+            for (String key : serializedBudget.keySet())
+            {
+                this.mCategoryCeilings.put(Category.getCategoryFromString(key), serializedCategory.get(key));
+            }
+        }
+        
         if (serializedBudget.containsKey("mInitialBalance")) {
             this.mInitialBalance = Double.parseDouble(serializedBudget.get("mInitialBalance").toString());
         } else {
             this.mInitialBalance = 0;
         }
         this.mEmails = (ArrayList<String>)serializedBudget.get("mEmails");
+    }
+    //************************************************************************************************************************************************
+    public void setCeilingForCategory(Category category, Double ceiling)
+    {
+        this.mCategoryCeilings.put(category, ceiling);
+    }
+    //************************************************************************************************************************************************
+    public HashMap<Category, Double> getCategoryCeilings()
+    {
+        return this.mCategoryCeilings;
     }
     //************************************************************************************************************************************************
     public String getId() {
@@ -101,6 +123,13 @@ public class Budget {
         serialized.put("mName", mName);
         serialized.put("mInitialBalance", mInitialBalance);
         serialized.put("mEmails", mEmails);
+        HashMap<String, Double> translatedCategoryCeilings = new HashMap<String, Double>();
+        for (Category key : this.mCategoryCeilings.keySet())
+        {
+            translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key));
+        }
+        serialized.put("mCategoryCeilings", translatedCategoryCeilings);
+
         return serialized;
     }
     //************************************************************************************************************************************************
