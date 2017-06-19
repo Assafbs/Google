@@ -3,12 +3,14 @@ package money.mezu.mezu;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 
@@ -47,7 +49,10 @@ public class SettingsActivity extends AppCompatActivity {
             if (!LanguageUtils.languageValueIsValid(curLanguage)){
                 curLanguage = LanguageUtils.getDefaultLanguage(context);
             }
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String language = sharedPref.getString("language", "");
             languagePref.setSummary(LanguageUtils.getLanguageFromValue(curLanguage, context));
+            languagePref.setValueIndex(language.equals("heb")?0:1);
             languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {

@@ -1,7 +1,9 @@
 package money.mezu.mezu;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
 import java.util.Locale;
@@ -20,6 +22,8 @@ public class LanguageUtils {
         conf.setLocale(newLocale);
         Locale.setDefault(newLocale);
         res.updateConfiguration(conf, dm);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPref.edit().putString("language", getValueFromLanguageCode(languageCode)).apply();
 
     }
 
@@ -50,6 +54,15 @@ public class LanguageUtils {
         }
         else {
             return "en";
+        }
+    }
+
+    public static String getValueFromLanguageCode(String lang){
+        if (lang.equals("he")){
+            return "heb";
+        }
+        else {
+            return "eng";
         }
     }
 
