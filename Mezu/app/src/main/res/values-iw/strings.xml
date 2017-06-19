@@ -107,11 +107,6 @@
     <string name="hebrew">עברית</string>
     <string name="english">אנגלית</string>
 
-    <string-array name="pref_language_list_values">
-        <item>עב</item>
-        <item>אנ</item>
-    </string-array>
-
     <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
     <string name="pref_title_allow_notifications">אפשר התראות</string>
 
