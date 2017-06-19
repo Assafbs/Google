@@ -166,4 +166,9 @@
     <string name="partners_email">partners email:</string>
     <string name="connection_failed">Connection Failed</string>
     <string name="login_failed">Login failed, please try again</string>
+    <string name="must_provide_budget_name">Must provide budget name!</string>
+    <string name="choose_different_budget_name">Please choose a different budget name!</string>
+    <string name="partner_email_is_empty">Partner\'s email is empty!</string>
+    <string name="email_not_valid">Email is not valid!</string>
+    <string name="email_already_in_list">Email is already in the list!</string>
 </resources>

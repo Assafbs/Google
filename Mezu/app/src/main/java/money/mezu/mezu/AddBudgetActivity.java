@@ -61,9 +61,9 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 }
 
                 if (BudgetName.equals("")) {
-                    Toast.makeText(AddBudgetActivity.this, "Must provide budget name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.must_provide_budget_name, Toast.LENGTH_SHORT).show();
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
-                    Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.choose_different_budget_name, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
@@ -87,11 +87,11 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString();
                 if (partnerEmail.equals("")) {
-                    Toast.makeText(AddBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)) {
-                    Toast.makeText(AddBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.email_not_valid, Toast.LENGTH_SHORT).show();
                 } else if (partnersEmails.contains(partnerEmail)) {
-                    Toast.makeText(AddBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
                     Chip chip = new Chip(AddBudgetActivity.this);

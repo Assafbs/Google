@@ -147,5 +147,10 @@
     <string name="partners_email">האימייל של השותפ/ה:</string>
     <string name="connection_failed">החיבור נכשל</string>
     <string name="login_failed">ההתחברות נכשלה, אנא נסה שוב</string>
+    <string name="choose_different_budget_name">נא לבחור שם אחר לתקציב</string>
+    <string name="email_already_in_list">האימייל כבר נמצא ברשימה!</string>
+    <string name="email_not_valid">האימייל אינו תקין!</string>
+    <string name="must_provide_budget_name">יש לתת שם לתקציב!</string>
+    <string name="partner_email_is_empty">כתובת האימייל ריקה!</string>
 
 </resources>

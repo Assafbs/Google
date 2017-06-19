@@ -112,13 +112,11 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                 EditText partnerEmailView = (EditText)findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString();
                 if (partnerEmail.equals("")) {
-                    Toast.makeText(EditBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)){
-                    Toast.makeText(EditBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
-                } else if (!isValidEmail(partnerEmail)){
-                    Toast.makeText(EditBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBudgetActivity.this, R.string.email_not_valid, Toast.LENGTH_SHORT).show();
                 } else if (partnersEmails.contains(partnerEmail) || mCurrentBudget.getEmails().contains(partnerEmail)){
-                    Toast.makeText(EditBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
                     Chip chip = new Chip(EditBudgetActivity.this);
