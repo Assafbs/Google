@@ -1,7 +1,9 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 import android.Manifest;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Build;
 
@@ -28,6 +29,8 @@ import com.robertlevonyan.views.chip.OnCloseClickListener;
 import org.apmem.tools.layouts.FlowLayout;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
+
+    static boolean show_permissions_dialog = true;
 
     ArrayList<String> partnersEmails;
     FlowLayout partnersChipsContainer;
@@ -119,10 +122,27 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
     public void tryInitializingContactEmails() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (show_permissions_dialog){
+                showPermissionsDialog();
+                show_permissions_dialog = false;
+            }
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
             new InitContactEmailsTask().execute(this);
         }
+    }
+
+    private void showPermissionsDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(AddBudgetActivity.this).create();
+        alertDialog.setTitle(R.string.contacts_permissions);
+        alertDialog.setMessage(getResources().getString(R.string.contacts_permissions_explanation));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getString(R.string.got_it),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
