@@ -49,7 +49,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         // Populate the data into the template view using the data object
         if (expense.getCategory() != null) {
-            category.setText(expense.getCategory().toString());
+            category.setText(expense.getCategory().toNiceString());
         } else {
             category.setText(R.string.category_other);
         }

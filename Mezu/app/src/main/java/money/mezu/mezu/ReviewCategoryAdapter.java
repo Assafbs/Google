@@ -45,7 +45,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         categoryRow.setTag(category);
 
         // Populate the data into the template view using the data object
-        categoryName.setText(category.toString());
+        categoryName.setText(category.toNiceString());
 
         double ceiling = tryGetCategoryCeiling(category);
         double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);

@@ -29,7 +29,7 @@ public class PieChartCategories implements GraphInterface {
         mTitle = resources.getString(R.string.expenses_by_categories);
         mInfoLine = resources.getString(R.string.most_spending_on);
         mBudget = budget;
-        mInfoValue = mBudget.getTotalExpenses() == 0 ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveCategory().toString();
+        mInfoValue = mBudget.getTotalExpenses() == 0 ? resources.getString(R.string.not_enough_data) : mBudget.getMostExpensiveCategory().toNiceString();
     }
 
     public void setPieChart(PieChart pieChart) {
@@ -61,7 +61,7 @@ public class PieChartCategories implements GraphInterface {
         for (Category category : Category.values()) {
             amountPerCategory = mBudget.getTotalExpensesPerCategory(category);
             if (amountPerCategory != 0) {
-                entries.add(new PieEntry(((float) amountPerCategory), category.toString()));
+                entries.add(new PieEntry(((float) amountPerCategory), category.toNiceString()));
             }
         }
         mPieDataSet = new PieDataSet(entries, "");

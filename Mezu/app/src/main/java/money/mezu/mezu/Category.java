@@ -83,7 +83,11 @@ public enum Category {
         return CATEGORY;
     }
 
-    public String toString() {
+    public String toString(){
+        return name();
+    }
+
+    public String toNiceString() {
         Resources resources = StaticContext.mContext.getResources();
         switch (this) {
             case CATEGORY:
@@ -120,9 +124,7 @@ public enum Category {
                 return resources.getString(R.string.category_paycheck);
             case OTHER:
                 return resources.getString(R.string.category_other);
-
         }
-
         return resources.getString(R.string.category_other);
     }
 
@@ -133,40 +135,39 @@ public enum Category {
             case CATEGORY:
                 return resources.getString(R.string.pick_a_category);
             case FOOD:
-                return mLU.getEmojiByUnicode(0x1F355) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F355) + "  \t" + toNiceString();
             case SHELTER:
-                return mLU.getEmojiByUnicode(0x1F3E0) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F3E0) + "  \t" + toNiceString();
             case ENTERTAINMENT:
-                return mLU.getEmojiByUnicode(0x1F3AE) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F3AE) + "  \t" + toNiceString();
             case EDUCATION:
-                return mLU.getEmojiByUnicode(0x1F4DA) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F4DA) + "  \t" + toNiceString();
             case TRANSPORTATION:
-                return mLU.getEmojiByUnicode(0x1F68E) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F68E) + "  \t" + toNiceString();
             case MEDICAL:
-                return mLU.getEmojiByUnicode(0x1F489) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F489) + "  \t" + toNiceString();
             case INSURANCE:
-                return mLU.getEmojiByUnicode(0x1F4BC) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F4BC) + "  \t" + toNiceString();
             case HOUSEHOLD_SUPPLIES:
-                return mLU.getEmojiByUnicode(0x1F6AA) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F6AA) + "  \t" + toNiceString();
             case PERSONAL:
-                return mLU.getEmojiByUnicode(0x1F64A) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F64A) + "  \t" + toNiceString();
             case CLOTHING:
-                return mLU.getEmojiByUnicode(0x1F454) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F454) + "  \t" + toNiceString();
             case GIFTS:
-                return mLU.getEmojiByUnicode(0x1F381) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F381) + "  \t" + toNiceString();
             case SUBSCRIPTIONS:
-                return mLU.getEmojiByUnicode(0x1F4DC) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F4DC) + "  \t" + toNiceString();
             case DEBT_REDUCTION:
-                return mLU.getEmojiByUnicode(0x1F4B0) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F4B0) + "  \t" + toNiceString();
             case DONATIONS:
-                return mLU.getEmojiByUnicode(0x1F607) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x1F607) + "  \t" + toNiceString();
             case PAYCHECK:
-                return mLU.getEmojiByUnicode(0x2709) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x2709) + "  \t" + toNiceString();
             case OTHER:
-                return mLU.getEmojiByUnicode(0x2753) + "  \t" + this;
+                return mLU.getEmojiByUnicode(0x2753) + "  \t" + toNiceString();
         }
-
-        return mLU.getEmojiByUnicode(0x2753) + "  \t" + this;
+        return mLU.getEmojiByUnicode(0x2753) + "  \t" + toNiceString();
     }
 
     public int getValue() {
