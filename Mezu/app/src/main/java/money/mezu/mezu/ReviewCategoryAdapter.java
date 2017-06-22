@@ -91,7 +91,6 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         Budget budget = mActivity.mCurrentBudget;
         budget.setCeilingForCategory(category, ceiling);
         FirebaseBackend.getInstance().editBudget(budget);
-        //((BaseAdapter)this).notifyDataSetChanged();
         double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
         handleCategoryWithCeiling(categorySum, ceiling, view);
     }

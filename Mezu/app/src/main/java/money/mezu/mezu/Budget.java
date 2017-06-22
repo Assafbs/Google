@@ -53,7 +53,7 @@ public class Budget {
             HashMap<String, Double> serializedCategory = (HashMap<String, Double>)serializedBudget.get("mCategoryCeilings");
             for (String key : serializedCategory.keySet())
             {
-                this.mCategoryCeilings.put(Category.getCategoryFromString(key), serializedCategory.get(key));
+                this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
             }
         }
         
