@@ -24,8 +24,11 @@ public enum Category {
     OTHER(16, true, true);
 
 
-    static ArrayList<String> incomeCats = null;
-    static ArrayList<String> expenseCats = null;
+    static ArrayList<String> incomeCatsStrings = null;
+    static ArrayList<String> expenseCatsStrings = null;
+
+    static ArrayList<Category> incomeCats = null;
+    static ArrayList<Category> expenseCats = null;
 
     private final int value;
     private boolean isExpense;
@@ -170,6 +173,15 @@ public enum Category {
         return value;
     }
 
+    public boolean getIsExpense() {
+        return isExpense;
+    }
+
+    public boolean getIsIncome() {
+        return isIncome;
+    }
+
+
     public int getSpinnerLocation(boolean isIncome) {
         int loc = 0;
         for (Category cat : Category.values()) {
@@ -183,29 +195,55 @@ public enum Category {
         throw new IllegalArgumentException();
     }
 
-    public static ArrayList<String> getIncomeCategoriesList() {
-        if (incomeCats == null) {
-            incomeCats = new ArrayList<>();
+    public static ArrayList<String> getIncomeCategoriesStringAndEmojiList() {
+        if (incomeCatsStrings == null) {
+            incomeCatsStrings = new ArrayList<>();
 
             for (Category cat : Category.values()) {
                 if (cat.isIncome) {
-                    incomeCats.add(cat.getEmojiWithName());
+                    incomeCatsStrings.add(cat.getEmojiWithName());
                 }
             }
         }
-        return incomeCats;
+        return incomeCatsStrings;
     }
 
-    public static ArrayList<String> getExpenseCategoriesList() {
+    public static ArrayList<String> getExpenseCategoriesStringAndEmojiList() {
+        if (expenseCatsStrings == null) {
+            expenseCatsStrings = new ArrayList<>();
+
+            for (Category cat : Category.values()) {
+                if (cat.isExpense) {
+                    expenseCatsStrings.add(cat.getEmojiWithName());
+                }
+            }
+        }
+        return expenseCatsStrings;
+    }
+
+    public static ArrayList<Category> getExpenseCategoriesList() {
         if (expenseCats == null) {
             expenseCats = new ArrayList<>();
 
             for (Category cat : Category.values()) {
-                if (cat.isExpense) {
-                    expenseCats.add(cat.getEmojiWithName());
+                if (cat.isExpense && cat.getValue() > 0) {
+                    expenseCats.add(cat);
                 }
             }
         }
         return expenseCats;
+    }
+
+    public static ArrayList<Category> getIncomeCategoriesList() {
+        if (incomeCats == null) {
+            incomeCats = new ArrayList<>();
+
+            for (Category cat : Category.values()) {
+                if (cat.isIncome && cat.getValue() > 0) {
+                    incomeCats.add(cat);
+                }
+            }
+        }
+        return incomeCats;
     }
 }

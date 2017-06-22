@@ -33,7 +33,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return mGraphsTabFragment;
             case 2:
-                return new Tab3_stub();
+                return new ReviewTabFragment();
             default:
                 throw new IllegalArgumentException();
         }

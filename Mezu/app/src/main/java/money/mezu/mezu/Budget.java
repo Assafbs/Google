@@ -201,6 +201,20 @@ public class Budget {
         return acc;
     }
     //************************************************************************************************************************************************
+    public double getTotalExpenseOrIncomePerCategoryby(Category category , boolean isExpense) {
+        return isExpense ? getTotalExpensesPerCategory(category) : getTotalIncomesPerCategory(category);
+    }
+    //************************************************************************************************************************************************
+    public double getTotalIncomesPerCategory(Category category) {
+        double acc = 0;
+        for (Expense expense : mExpenses) {
+            if (!expense.getIsExpense() && expense.getCategory().equals(category)) {
+                acc += expense.getAmount();
+            }
+        }
+        return acc;
+    }
+    //************************************************************************************************************************************************
     public double getPercentagePerCategory(Category category) {
         if (getTotalExpenses() != 0) {
             return getPercentagePerCategory(category) / getTotalExpenses();

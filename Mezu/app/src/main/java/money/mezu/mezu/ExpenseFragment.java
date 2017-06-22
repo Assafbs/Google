@@ -300,8 +300,8 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupRadioButtonsAndSpinner(boolean isExpense) {
-        expenseAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
-        incomeAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
+        expenseAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesStringAndEmojiList());
+        incomeAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesStringAndEmojiList());
         mCategorySpinner.setAdapter(isExpense ? expenseAdapter : incomeAdapter);
         mCategorySpinner.setSelection(0);
 
