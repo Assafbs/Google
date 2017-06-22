@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ReviewTabFragment extends Fragment implements ExpenseUpdatedListene
 
     private BudgetViewActivity mActivity;
     private View mView = null;
+    private ReviewCategoryAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,18 +25,19 @@ public class ReviewTabFragment extends Fragment implements ExpenseUpdatedListene
 
         ListView catList = (ListView) mView.findViewById(R.id.categories_expenses);
         ArrayList<Category> catArray = Category.getExpenseCategoriesList();
-        catList.setAdapter(new ReviewCategoryAdapter(mActivity, catArray));
+        mAdapter = new ReviewCategoryAdapter(mActivity, catArray);
+        catList.setAdapter(mAdapter);
 
         return mView;
     }
 
     @Override
     public void expenseUpdatedCallback() {
-
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void budgetUpdatedCallback(Budget newBudget) {
-
+        mAdapter.notifyDataSetChanged();
     }
 }

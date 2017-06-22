@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +32,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
     View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         Category category = getItem(position);
-        Budget budget = mActivity.mCurrentBudget;
+        final Budget budget = mActivity.mCurrentBudget;
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_category, parent, false);
@@ -42,8 +41,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
 
         TextView categoryName = (TextView) convertView.findViewById(R.id.categoryName);
         TextView sum = (TextView) convertView.findViewById(R.id.categotySum);
-        LinearLayout progress = (LinearLayout) convertView.findViewById(R.id.progressBar);
-        RelativeLayout categoryRow = (RelativeLayout) convertView.findViewById(R.id.categoryRow);
+        final RelativeLayout categoryRow = (RelativeLayout) convertView.findViewById(R.id.categoryRow);
         categoryRow.setTag(category);
 
         // Populate the data into the template view using the data object
@@ -52,9 +50,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         double ceiling = tryGetCategoryCeiling(category);
         double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
         if (ceiling != -1){
-            sum.setText(String.valueOf(categorySum) + " / " + String.valueOf(ceiling));
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)progress.getLayoutParams();
-            params.weight = (float)Math.floor((categorySum / ceiling)*1000);
+            handleCategoryWithCeiling(categorySum, ceiling, categoryRow);
         } else {
             sum.setText(String.valueOf(categorySum));
         }
@@ -63,7 +59,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
             @Override
             public void onClick(View view) {
                 Category cat = (Category) view.getTag();
-                askForNewCeiling(cat);
+                askForNewCeiling(cat, categoryRow);
             }
         });
 
@@ -71,7 +67,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         return convertView;
     }
 
-    private void askForNewCeiling (final Category category) {
+    private void askForNewCeiling (final Category category, final RelativeLayout view) {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.enter_new_ceiling)
                 .inputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER)
@@ -86,16 +82,18 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
                                     .show();
                             return;
                         }
-                        changeCeilingForCategory(category, ceiling);
+                        changeCeilingForCategory(category, ceiling, view);
                     }
                 }).show();
     }
 
-    private void changeCeilingForCategory (Category category, double ceiling) {
+    private void changeCeilingForCategory (Category category, double ceiling, RelativeLayout view) {
         Budget budget = mActivity.mCurrentBudget;
         budget.setCeilingForCategory(category, ceiling);
         FirebaseBackend.getInstance().editBudget(budget);
-        ((BaseAdapter)this).notifyDataSetChanged();
+        //((BaseAdapter)this).notifyDataSetChanged();
+        double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
+        handleCategoryWithCeiling(categorySum, ceiling, view);
     }
 
     private double tryGetCategoryCeiling (Category category) {
@@ -104,8 +102,18 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         if (categoryCeilings == null) {
             return -1;
         }
-        Double ceiling = categoryCeilings.get(category);
+        Double ceiling = categoryCeilings.get(category) == null ?
+                null :
+                ((Number) categoryCeilings.get(category)).doubleValue();
         return ceiling == null ? -1 : ceiling;
+    }
+
+    private void handleCategoryWithCeiling (double catSum, double ceiling, RelativeLayout view) {
+        LinearLayout progress = (LinearLayout) view.findViewById(R.id.progressBar);
+        TextView sum = (TextView) view.findViewById(R.id.categotySum);
+        sum.setText(String.valueOf(catSum) + " / " + String.valueOf(ceiling));
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)progress.getLayoutParams();
+        params.weight = (float)Math.floor((catSum / ceiling)*1000);
     }
 
 }
