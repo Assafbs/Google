@@ -51,7 +51,7 @@ public class Budget {
         if (serializedBudget.containsKey("mCategoryCeilings"))
         {
             HashMap<String, Double> serializedCategory = (HashMap<String, Double>)serializedBudget.get("mCategoryCeilings");
-            for (String key : serializedBudget.keySet())
+            for (String key : serializedCategory.keySet())
             {
                 this.mCategoryCeilings.put(Category.getCategoryFromString(key), serializedCategory.get(key));
             }
