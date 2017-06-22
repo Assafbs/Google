@@ -51,7 +51,7 @@ public class CategoryPredictor {
     }
 
     private Category predict(String str){
-        String[] words = str.split("\\s+");
+        String[] words = str.toLowerCase().split("\\s+");
         for (String word : words){
             if (dict.containsKey(word)){
                 return  dict.get(word);
