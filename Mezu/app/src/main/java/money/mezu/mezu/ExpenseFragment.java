@@ -6,12 +6,10 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,17 +17,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +36,9 @@ import java.util.Calendar;
 
 
 public class ExpenseFragment extends Fragment {
+    private CategoryPredictor predictor;
+    private boolean choseCategory = false;
+    private boolean clickedSpinner = false;
     private View mView;
 
     EditText mEditTextAmount;
@@ -190,8 +190,10 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupAddExpense() {
+        predictor = new CategoryPredictor(mActivity, mCategorySpinner);
         mEditButton.setVisibility(View.GONE);
         mAddedByLayout.setVisibility(View.GONE);
+        mEditTextTitle.addTextChangedListener(predictor.getWatcher());
 
         mRepeatAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +229,18 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onClick(final View arg0) {
                     addExpense();
+            }
+        });
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i>0 && ((int)adapterView.getTag())!= i){
+                    choseCategory = true;
+                    predictor.disable();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
     }
@@ -295,11 +309,15 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_income & !incomeSelected) {
+                    predictor.disable();
                     expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
                     mCategorySpinner.setAdapter(incomeAdapter);
                     mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
                     incomeSelected = true;
                 } else {
+                    if (!choseCategory){
+                        predictor.enable();
+                    }
                     incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
                     mCategorySpinner.setAdapter(expenseAdapter);
                     mCategorySpinner.setSelection(expenseCat.getSpinnerLocation(false));
