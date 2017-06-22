@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,8 +43,9 @@ public class CategoryPredictor {
         return watcher;
     }
 
-    public CategoryPredictor(Activity context, Spinner spinner) {
+    public CategoryPredictor(Activity context, Spinner spinner, Budget budget) {
         initDictFromJson(context);
+        addToDictFromBudget(budget);
         watcher = new Watcher();
         this.activity = context;
         this.catSpinner = spinner;
@@ -72,6 +74,18 @@ public class CategoryPredictor {
         Gson gson = new Gson();
         Type type = new TypeToken<HashMap<String, Category>>(){}.getType();
         dict = gson.fromJson(json, type);
+    }
+
+    private void addToDictFromBudget(Budget budget) {
+        List<Expense> expenses = budget.getExpenses();
+        for (Expense expense : expenses){
+            String title  = expense.getTitle();
+            Category category = expense.getCategory();
+            String[] words = title.toLowerCase().split("\\s+");
+            for (String word : words){
+                dict.put(word, category);
+            }
+        }
     }
 
     @NonNull

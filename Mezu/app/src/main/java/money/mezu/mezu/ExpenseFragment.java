@@ -38,7 +38,6 @@ import java.util.Calendar;
 public class ExpenseFragment extends Fragment {
     private CategoryPredictor predictor;
     private boolean choseCategory = false;
-    private boolean clickedSpinner = false;
     private View mView;
 
     EditText mEditTextAmount;
@@ -190,7 +189,7 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupAddExpense() {
-        predictor = new CategoryPredictor(mActivity, mCategorySpinner);
+        predictor = new CategoryPredictor(mActivity, mCategorySpinner, mActivity.mCurrentBudget);
         mEditButton.setVisibility(View.GONE);
         mAddedByLayout.setVisibility(View.GONE);
         mEditTextTitle.addTextChangedListener(predictor.getWatcher());
@@ -231,6 +230,7 @@ public class ExpenseFragment extends Fragment {
                     addExpense();
             }
         });
+        mCategorySpinner.setTag(0);
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
