@@ -14,8 +14,6 @@ import android.view.View;
 
 import com.google.gson.Gson;
 
-import java.util.Locale;
-
 public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
 
     protected Budget mCurrentBudget;
@@ -26,6 +24,8 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
 
     private GraphsTabFragment mGraphsTabFragment;
     private ExpensesTabFragment mExpensesTabFragment;
+    public int mMonth;
+    public int mYear;
     public boolean graphShown = false;
     public boolean expenseShown = false;
 
@@ -207,6 +207,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
     //************************************************************************************************************************************************
     public static void goToBudgetView (Context context, Budget budget, SessionManager sessionManager) {
+        ExpensesTabFragment.sDefaultDate = true;
         Intent budgetViewIntent = new Intent(context, BudgetViewActivity.class);
         budgetViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         Gson gson = new Gson();

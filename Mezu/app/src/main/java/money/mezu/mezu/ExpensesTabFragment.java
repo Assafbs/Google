@@ -21,7 +21,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private BudgetViewActivity mActivity;
     private ExpenseAdapter mExpenseAdapter = null;
     private View mView = null;
-
+    public static boolean sDefaultDate = true;
     private int mMonth;
     private int mYear;
 
@@ -31,6 +31,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         mActivity = (BudgetViewActivity) getActivity();
 
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
+
         setupMonthSelection();
         filterExpenses(mMonth, mYear);
         return mView;
@@ -46,9 +47,12 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private void setupMonthSelection() {
-        Calendar calendar = Calendar.getInstance();
-        setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
-
+        if (sDefaultDate) {
+            Calendar calendar = Calendar.getInstance();
+            setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
+        } else {
+            setMonth(mActivity.mMonth + 1, mActivity.mYear);
+        }
         ImageView nextButton = (ImageView) mView.findViewById(R.id.next_arrow);
         ImageView backButton = (ImageView) mView.findViewById(R.id.back_arrow);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +61,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
                 int month = nextMonth(mMonth);
                 int year = (month == 1) ? mYear + 1 : mYear;
                 setMonth(month, year);
+                sDefaultDate = false;
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +70,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
                 int month = previousMonth(mMonth);
                 int year = (month == 12) ? mYear - 1 : mYear;
                 setMonth(month, year);
+                sDefaultDate = true;
             }
         });
     }
@@ -72,6 +78,9 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private void setMonth(int month, int year) {
         mMonth = month;
         mYear = year;
+        mActivity.mMonth = mMonth - 1;
+        mActivity.mYear = mYear;
+
         TextView currentMonthTextView = (TextView) mView.findViewById(R.id.current_month);
         currentMonthTextView.setText(mMonth + "/" + mYear);
         filterExpenses(mMonth, mYear);
@@ -111,4 +120,5 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private int previousMonth(int month) {
         return (month == 1) ? 12 : month - 1;
     }
+
 }

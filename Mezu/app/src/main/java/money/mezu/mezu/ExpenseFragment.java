@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -211,6 +212,8 @@ public class ExpenseFragment extends Fragment {
 
         // Get Current Time
         c = Calendar.getInstance();
+        c.set(Calendar.MONTH, mActivity.mMonth);
+        c.set(Calendar.YEAR, mActivity.mYear);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -475,7 +478,7 @@ public class ExpenseFragment extends Fragment {
             public void onDismiss(PopupMenu menu) {
                 if (mRepeatChoice == 0) {
                     mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.accent_dark));
-                    mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                    mRepeatAction.setBackgroundColor(Color.TRANSPARENT);
                 }
             }
         });
