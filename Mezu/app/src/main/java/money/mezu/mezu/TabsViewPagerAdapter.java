@@ -65,6 +65,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     public void onSwitchFromExpense(ExpensesTabFragment expensesTabFragment) {
         mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
         mExpensesTabFragment = expensesTabFragment;
+        ExpensesTabFragment.sDefaultDate = false;
         notifyDataSetChanged();
     }
 
