@@ -76,6 +76,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             mCurrentBudget = budget;
             showBalanceInToolbar();
             mExpensesTabFragment.filterExpenses();
+            mSessionManager.setLastBudget(budget);
         }
     }
     //************************************************************************************************************************************************
