@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="175dp"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/reviewInfoBox"
+    android:text="@string/review_info"
+    android:elevation="2dp">
+</TextView>

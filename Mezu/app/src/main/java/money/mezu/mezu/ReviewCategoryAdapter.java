@@ -1,18 +1,19 @@
 package money.mezu.mezu;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,12 +48,12 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         // Populate the data into the template view using the data object
         categoryName.setText(category.toNiceString());
 
-        double ceiling = tryGetCategoryCeiling(category);
+        double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(category);
         double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
         if (ceiling != -1){
             handleCategoryWithCeiling(categorySum, ceiling, categoryRow);
         } else {
-            sum.setText(String.valueOf(categorySum));
+            handleCategoryWithNoCeiling(categorySum, categoryRow);
         }
 
         categoryRow.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +71,23 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
     private void askForNewCeiling (final Category category, final RelativeLayout view) {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.enter_new_ceiling)
+                .content(R.string.no_ceiling_wanted)
                 .inputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER)
                 .input(R.string.empty, R.string.empty, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         double ceiling;
+                        String number = input.toString();
                         try {
-                            ceiling = Double.parseDouble(input.toString());
+                            if (number.equals(""))
+                                ceiling = -1; //remove ceiling
+                            else if(number.equals(".")) {
+                                Toast.makeText(mActivity, mActivity.getString(R.string.not_a_valid_number), Toast.LENGTH_SHORT)
+                                        .show();
+                                return;
+                            }
+                            else
+                                ceiling = Double.parseDouble(number);
                         } catch (NumberFormatException e) {
                             Toast.makeText(mActivity, mContext.getString(R.string.number_formating_failed), Toast.LENGTH_SHORT)
                                     .show();
@@ -92,27 +103,36 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         budget.setCeilingForCategory(category, ceiling);
         FirebaseBackend.getInstance().editBudget(budget);
         double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
-        handleCategoryWithCeiling(categorySum, ceiling, view);
-    }
-
-    private double tryGetCategoryCeiling (Category category) {
-        Budget budget = mActivity.mCurrentBudget;
-        HashMap<Category, Double> categoryCeilings = budget.getCategoryCeilings();
-        if (categoryCeilings == null) {
-            return -1;
+        if (ceiling != -1){
+            handleCategoryWithCeiling(categorySum, ceiling, view);
+        } else {
+            handleCategoryWithNoCeiling(categorySum, view);
         }
-        Double ceiling = categoryCeilings.get(category) == null ?
-                null :
-                ((Number) categoryCeilings.get(category)).doubleValue();
-        return ceiling == null ? -1 : ceiling;
     }
 
     private void handleCategoryWithCeiling (double catSum, double ceiling, RelativeLayout view) {
-        LinearLayout progress = (LinearLayout) view.findViewById(R.id.progressBar);
+        RoundCornerProgressBar progress = (RoundCornerProgressBar) view.findViewById(R.id.progressBar);
         TextView sum = (TextView) view.findViewById(R.id.categotySum);
         sum.setText(String.valueOf(catSum) + " / " + String.valueOf(ceiling));
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)progress.getLayoutParams();
-        params.weight = (float)Math.floor((catSum / ceiling)*1000);
+        if (LanguageUtils.isRTL()) {
+            progress.setReverse(true);
+        }
+        float precentage = (float)(catSum/ceiling);
+        progress.setProgress(precentage < 1 ? precentage * 100 : 100);
+        if (precentage<0.6){
+            progress.setProgressColor(Color.parseColor("#888bc34a"));
+        } else if (precentage <= 1) {
+            progress.setProgressColor(Color.parseColor("#88ffc000"));
+        } else {
+            progress.setProgressColor(Color.parseColor("#88f44336"));
+        }
+    }
+
+    private void handleCategoryWithNoCeiling(double catSum, RelativeLayout view) {
+        TextView sum = (TextView) view.findViewById(R.id.categotySum);
+        sum.setText(String.valueOf(catSum));
+        RoundCornerProgressBar progress = (RoundCornerProgressBar) view.findViewById(R.id.progressBar);
+        progress.setProgress(0);
     }
 
 }

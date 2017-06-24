@@ -113,7 +113,7 @@
 
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
-    <string name="overall_graph">גרף כולל</string>
+    <string name="overall">גרף כולל</string>
     <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
     <string name="expenses_by_months">הוצאות לפי חודשים</string>
     <string name="expenses_by_users">הוצאות לפי משתמשים</string>
@@ -170,5 +170,11 @@
     <string name="enter_new_ceiling">הכנס תקרה חדשה</string>
     <string name="number_formating_failed">The ceiling is too high</string>
     <string name="signning_in">מתחבר...</string>
+    <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה</string>
+    <string name="overall_expenses">סה"כ הוצאות</string>
+    <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה</string>
+    <string name="not_a_valid_number">אנא הכנס מספר תקין</string>
+
+
 
 </resources>

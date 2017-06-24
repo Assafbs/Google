@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="mainBGColor">#c8c8c8</color>
+    <color name="reviewInfoBox">#dddddd</color>
     <color name="colorAccent">#7cb342</color>
     <color name="colorPrimary">#8bc34a</color>
     <color name="colorPrimaryDark">#689f38</color>
@@ -14,8 +15,10 @@
     <color name="divider">#BDBDBD</color>
     <color name="hint">#a0a0a0</color>
     <color name="black">#000000</color>
-    <color name="colorPrimaryOpacity">#888bc34a</color>
+    <color name="greenOpacity">#888bc34a</color>
     <color name="redOpacity">#88f44336</color>
+    <color name="orangeOpacity">#88ffc000</color>
+    <color name="transparent">#00000000</color>
 
 
     <color name="expense_red">#d32f2f</color>

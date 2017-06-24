@@ -328,4 +328,15 @@ public class Budget {
 
         return false;
     }
+
+    public double tryGetCategoryCeiling (Category category) {
+        HashMap<Category, Double> categoryCeilings = this.getCategoryCeilings();
+        if (categoryCeilings == null) {
+            return -1;
+        }
+        Double ceiling = categoryCeilings.get(category) == null ?
+                null :
+                ((Number) categoryCeilings.get(category)).doubleValue();
+        return ceiling == null ? -1 : ceiling;
+    }
 }

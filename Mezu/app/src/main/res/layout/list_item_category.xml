@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/categoryRow"
@@ -7,22 +8,22 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1000"
-            android:padding="3dp"
-            android:baselineAligned="false">
-            <LinearLayout
-                android:id="@+id/progressBar"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryOpacity"
-                android:layout_weight="500"
-                android:orientation="horizontal"/>
-        </LinearLayout>
+            app:rcProgress="0"
+            app:rcSecondaryProgress="0"
+            app:rcMax="100"
+            app:rcRadius="8dp"
+            app:rcBackgroundPadding="3dp"
+            app:rcReverse="false"
+            app:rcProgressColor="@color/greenOpacity"
+            app:rcSecondaryProgressColor="@color/mainBGColor"
+            app:rcBackgroundColor="@color/transparent" />
 
         <LinearLayout
             android:layout_width="match_parent"
