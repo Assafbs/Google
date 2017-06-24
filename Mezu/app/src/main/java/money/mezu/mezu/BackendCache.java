@@ -1,6 +1,5 @@
 package money.mezu.mezu;
 
-import android.util.Log;
 
 import java.util.HashMap;
 
@@ -23,13 +22,11 @@ public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListen
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget newBudget)
     {
-        Log.d("",String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));
         budgets.put(newBudget.getId(), newBudget);
     }
     //************************************************************************************************************************************************
     public void userLeftBudgetCallback(String bid)
     {
-        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
         budgets.remove(bid);
     }
     //************************************************************************************************************************************************

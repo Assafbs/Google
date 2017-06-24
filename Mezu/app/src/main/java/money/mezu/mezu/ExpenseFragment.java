@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -129,7 +128,6 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("", "ExpenseFragment: clicked delete expense");
                 deleteExpense();
             }
         });
@@ -137,7 +135,6 @@ public class ExpenseFragment extends Fragment {
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("", "ExpenseFragment: clicked edit expense");
                 setupEditExpense();
             }
         });
@@ -566,7 +563,6 @@ public class ExpenseFragment extends Fragment {
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
-                Log.d("", "ExpenseFragment: deleting expense");
                 Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted expense
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()

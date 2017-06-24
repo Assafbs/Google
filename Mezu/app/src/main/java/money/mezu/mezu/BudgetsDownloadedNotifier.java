@@ -1,6 +1,5 @@
 package money.mezu.mezu;
 
-import android.util.Log;
 
 import java.util.Set;
 
@@ -35,7 +34,6 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
         }
         if (0 == bidsToListen.size())
         {
-            Log.d("","BudgetsDownloadedNotifier:budgetUpdatedCallback: notifying that budgets are ready!");
             EventDispatcher.getInstance().notifyLocalCacheReady();
             EventDispatcher.getInstance().unregisterBudgetUpdatedListener(this);
         }
