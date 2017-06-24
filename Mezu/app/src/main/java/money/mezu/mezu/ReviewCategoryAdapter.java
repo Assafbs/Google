@@ -115,7 +115,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         TextView sum = (TextView) view.findViewById(R.id.categotySum);
         sum.setText(String.valueOf(catSum) + " / " + String.valueOf(ceiling));
         if (LanguageUtils.isRTL()) {
-            progress.setReverse(true);
+            progress.setReverse(false);
         }
         float precentage = (float)(catSum/ceiling);
         progress.setProgress(precentage < 1 ? precentage * 100 : 100);

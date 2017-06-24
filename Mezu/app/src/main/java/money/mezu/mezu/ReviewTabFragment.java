@@ -110,7 +110,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
         RoundCornerProgressBar progressBar = (RoundCornerProgressBar) mView.findViewById(R.id.budgetProgress);
         TextView budgetSum = (TextView) mView.findViewById(R.id.budgetSum);
         if (LanguageUtils.isRTL()) {
-            progressBar.setReverse(true);
+            progressBar.setReverse(false);
         }
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(Category.CATEGORY);
         double sum = mActivity.mCurrentBudget.getTotalExpenses();
