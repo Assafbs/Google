@@ -33,6 +33,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -68,6 +69,7 @@ public class ExpenseFragment extends Fragment {
     private Category expenseCat = Category.CATEGORY;
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
+    private DateFormat mDateFormat;
 
     private Expense expenseToShow = null;
 
@@ -95,6 +97,12 @@ public class ExpenseFragment extends Fragment {
         mReapatText = (TextView) mView.findViewById(R.id.ratio_text);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
         mRepeatChoice = 0;
+
+        if (LanguageUtils.isRTL()) {
+            mDateFormat = new SimpleDateFormat("HH:mm");
+        } else {
+            mDateFormat = new SimpleDateFormat("h:mm a");
+        }
 
         if (isAdd) {
             setupAddExpense();
@@ -161,8 +169,9 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy.setText(expenseToShow.getUserName());
         mEditTextDescription.setText(expenseToShow.getDescription());
 
+
         mEditTextDate.setText(DateFormat.getDateInstance().format(expenseToShow.getTime()));
-        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(expenseToShow.getTime()));
+        mEditTextTime.setText(mDateFormat.format(expenseToShow.getTime()));
 
         ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
         disableAllFields(viewGroup);
@@ -224,7 +233,7 @@ public class ExpenseFragment extends Fragment {
         mMinute = c.get(Calendar.MINUTE);
         // Set Current Time to EditTexts
         mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
-        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+        mEditTextTime.setText(mDateFormat.format(c.getTime()));
 
         setupTimeAndDateOnTouchListeners();
 
@@ -233,18 +242,19 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View arg0) {
-                    addExpense();
+                addExpense();
             }
         });
         mCategorySpinner.setTag(0);
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i>0 && ((int)adapterView.getTag())!= i){
+                if (i > 0 && ((int) adapterView.getTag()) != i) {
                     choseCategory = true;
                     predictor.disable();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -321,7 +331,7 @@ public class ExpenseFragment extends Fragment {
                     mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
                     incomeSelected = true;
                 } else {
-                    if (!choseCategory){
+                    if (!choseCategory) {
                         predictor.enable();
                     }
                     incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
@@ -368,7 +378,7 @@ public class ExpenseFragment extends Fragment {
                             mHour = hourOfDay;
                             mMinute = minute;
                             c.set(mYear, mMonth, mDay, mHour, mMinute);
-                            mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+                            mEditTextTime.setText(mDateFormat.format(c.getTime()));
                         }
                     }, mHour, mMinute, true);
             timePickerDialog.show();
@@ -471,10 +481,10 @@ public class ExpenseFragment extends Fragment {
                         mRepeatChoice = 5;
                         break;
                 }
-                if (mRepeatChoice == 0){
+                if (mRepeatChoice == 0) {
                     mReapatText.setVisibility(View.GONE);
                 }
-                if (mRepeatChoice != 0){
+                if (mRepeatChoice != 0) {
                     mReapatText.setVisibility(View.VISIBLE);
                     mReapatText.setText(item.getTitle());
                 }

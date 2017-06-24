@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(settingsIntent);
-
+                    ExpensesTabFragment.sDefaultDate = true;
                     return true;
                 }
             });
