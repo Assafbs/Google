@@ -171,7 +171,7 @@
     <string name="number_formating_failed">The ceiling is too high</string>
     <string name="signning_in">מתחבר...</string>
     <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה</string>
-    <string name="overall_expenses">סך הכל הוצאות</string>
+    <string name="overall_expenses">סה\"כ הוצאות</string>
     <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה</string>
     <string name="not_a_valid_number">אנא הכנס מספר תקין</string>
 
