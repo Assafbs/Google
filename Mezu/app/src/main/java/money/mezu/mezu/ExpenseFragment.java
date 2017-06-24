@@ -28,6 +28,7 @@ import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class ExpenseFragment extends Fragment {
     Button mEditButton;
     EditText mEditTextAddedBy;
     ImageView mRepeatAction;
+    TextView mReapatText;
     int mRepeatChoice;
     android.support.design.widget.TextInputLayout mAddedByLayout;
 
@@ -90,6 +92,7 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy = (EditText) mView.findViewById(R.id.added_by_edit_text);
         mEditButton = (Button) mView.findViewById(R.id.edit_action_btn);
         mRepeatAction = (ImageView) mView.findViewById(R.id.repeat_action);
+        mReapatText = (TextView) mView.findViewById(R.id.ratio_text);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
         mRepeatChoice = 0;
 
@@ -448,7 +451,6 @@ public class ExpenseFragment extends Fragment {
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.chosen_repeat) + " " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 switch (item.getItemId()) {
                     case R.id.no_repeat_opt:
                         mRepeatChoice = 0;
@@ -469,6 +471,13 @@ public class ExpenseFragment extends Fragment {
                         mRepeatChoice = 5;
                         break;
                 }
+                if (mRepeatChoice == 0){
+                    mReapatText.setVisibility(View.GONE);
+                }
+                if (mRepeatChoice != 0){
+                    mReapatText.setVisibility(View.VISIBLE);
+                    mReapatText.setText(item.getTitle());
+                }
                 return true;
             }
         });
@@ -479,6 +488,7 @@ public class ExpenseFragment extends Fragment {
                 if (mRepeatChoice == 0) {
                     mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.accent_dark));
                     mRepeatAction.setBackgroundColor(Color.TRANSPARENT);
+                    mReapatText.setVisibility(View.GONE);
                 }
             }
         });

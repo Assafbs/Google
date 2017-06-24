@@ -175,6 +175,14 @@
             android:clickable="true"
             android:src="@drawable/ic_repeat_30dp" />
 
+        <TextView
+            android:layout_below="@id/repeat_action"
+            android:id="@+id/ratio_text"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/add_action_btn"
             android:layout_width="wrap_content"
