@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ReviewTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener{
+public class ReviewTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener {
 
     private BudgetViewActivity mActivity;
     private View mView = null;

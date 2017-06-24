@@ -141,7 +141,7 @@ public class ExpenseFragment extends Fragment {
 
         ArrayList<String> categories = new ArrayList<>();
 
-        categories.add(expenseToShow.getCategory().toString());
+        categories.add(expenseToShow.getCategory().getEmojiWithName());
         mCategorySpinner.setAdapter(new ArrayAdapter<>(mActivity, R.layout.category_spinner_item, categories));
 
         mRBExpense.setClickable(false);

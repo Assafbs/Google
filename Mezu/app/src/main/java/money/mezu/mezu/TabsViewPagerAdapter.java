@@ -47,6 +47,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     public void onSwitchToGraph(GraphFragment graphFragment) {
         mFragmentManager.beginTransaction().remove(mGraphsTabFragment).commit();
         mGraphsTabFragment = graphFragment;
+        graphFragment.refreshGraphs();
         notifyDataSetChanged();
     }
 
@@ -59,6 +60,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     public void onSwitchToExpense(ExpenseFragment expenseFragment) {
         mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
         mExpensesTabFragment = expenseFragment;
+        ExpensesTabFragment.sDefaultDate = false;
         notifyDataSetChanged();
     }
 

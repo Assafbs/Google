@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class GraphsTabFragment extends Fragment {
+public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener {
 
     private View mView = null;
     private GraphAdapter mGraphAdapter = null;
@@ -23,6 +23,7 @@ public class GraphsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_graphs, container, false);
         mActivity = (BudgetViewActivity) getActivity();
+        EventDispatcher.getInstance().registerExpenseUpdateListener(this);
         // Create the adapter to convert the array to views
         mGraphAdapter = new GraphAdapter(getActivity(), getArrayOfGraphs());
         // Attach the adapter to a ListView
@@ -44,4 +45,13 @@ public class GraphsTabFragment extends Fragment {
         return graphArray;
     }
 
+    @Override
+    public void budgetUpdatedCallback(Budget newBudget) {
+        mGraphAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void expenseUpdatedCallback() {
+        mGraphAdapter.notifyDataSetChanged();
+    }
 }

@@ -96,7 +96,7 @@ public class LineChartMonths implements GraphInterface {
             entries.add(new Entry(i, (float) amountPerMonth));
         }
         mLineDataSetExpenses = new LineDataSet(entries, resources.getString(R.string.expenses));
-
+        year = c.get(Calendar.YEAR);
         for (int i = 1; i <= 12; i++) {
             startDate = new Date(getEpoch(i, year));
             month = nextMonth(i);

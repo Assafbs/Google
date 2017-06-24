@@ -49,7 +49,7 @@ public class GraphFragment extends Fragment {
             mView = inflater.inflate(R.layout.pie_chart_view, null);
         } else if (mGraph.getGraphKind().equals(GraphEnum.LINE_CHART)) {
             mView = inflater.inflate(R.layout.line_chart_view, null);
-        }else if (mGraph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
+        } else if (mGraph.getGraphKind().equals(GraphEnum.BAR_CHART)) {
             mView = inflater.inflate(R.layout.bar_chart_view, null);
         }
 
@@ -71,6 +71,14 @@ public class GraphFragment extends Fragment {
         }
 
         return mView;
+    }
+
+    public void refreshGraphs() {
+        if (mPieChart != null && mLineChart != null && mBarChart != null) {
+            mPieChart.invalidate();
+            mLineChart.invalidate();
+            mBarChart.invalidate();
+        }
     }
 
 }
