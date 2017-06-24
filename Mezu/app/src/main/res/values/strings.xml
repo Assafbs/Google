@@ -194,6 +194,9 @@
     <string name="overall_expenses">Overall Expenses</string>
     <string name="no_ceiling_wanted">Leave empty to remove ceiling</string>
     <string name="not_a_valid_number">Please enter a valid number</string>
+    <string name="export">Export</string>
+    <string name="failed_to_create_file">Failed to create file.</string>
+    <string name="external_storage_unavailable">External storage unavailable, please try again later.</string>
 
 
 

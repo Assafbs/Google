@@ -1,7 +1,11 @@
 package money.mezu.mezu;
 
+import android.*;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -15,6 +19,8 @@ import android.view.View;
 import com.google.gson.Gson;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
+
+    private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 200;
 
     protected Budget mCurrentBudget;
 
@@ -97,8 +103,28 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
             editBudgetIntent.putExtra("budget", json);
             startActivity(editBudgetIntent);
         }
+        if (id == R.id.action_export_budget)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                BudgetExporter.exportBudget(this, mCurrentBudget);
+            }
+        }
         return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted
+                BudgetExporter.exportBudget(this, mCurrentBudget);
+            }
+        }
+    }
+
     //************************************************************************************************************************************************
     private void setupTabs() {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);

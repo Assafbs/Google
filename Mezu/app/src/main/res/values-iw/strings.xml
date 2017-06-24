@@ -174,6 +174,9 @@
     <string name="overall_expenses">סה\"כ הוצאות</string>
     <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה</string>
     <string name="not_a_valid_number">אנא הכנס מספר תקין</string>
+    <string name="export">יצא</string>
+    <string name="failed_to_create_file">יצירת קובץ נכשלה.</string>
+    <string name="external_storage_unavailable">זיכרון חיצוני אינו זמין, נסה שוב מאוחר יותר.</string>
 
 
 
