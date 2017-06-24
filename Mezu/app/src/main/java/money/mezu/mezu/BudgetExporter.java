@@ -57,7 +57,6 @@ public class BudgetExporter {
                         wb.write();
                         wb.close();
                         sendEmail();
-                        file.delete();
                     } catch (Exception e) {
                         Toast.makeText(mContext, mContext.getString(R.string.failed_to_create_file), Toast.LENGTH_SHORT).show();
 
