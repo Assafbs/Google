@@ -116,9 +116,13 @@ public class PieChartCategories implements GraphInterface {
         mPieDataSet.setColors(colors);
         PieData data = new PieData(mPieDataSet);
         data.setValueTextSize(15);
+
         mPieChart.setData(data);
-//        mPieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-//        mPieChart.setEntryLabelColor(getColor(R.color.accent_dark));
+        if (mPieDataSet.getEntryCount() > 5){
+            mPieChart.setDrawEntryLabels(false);
+        }else{
+            mPieChart.setDrawEntryLabels(true);
+        }
 
         double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
