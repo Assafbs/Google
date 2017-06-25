@@ -47,7 +47,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     }
 
     private void setupMonthSelection() {
-        if (sDefaultDate) {
+        if (sDefaultDate || mActivity.mYear == 0) {
             Calendar calendar = Calendar.getInstance();
             setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
         } else {
