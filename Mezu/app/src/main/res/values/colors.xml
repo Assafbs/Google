@@ -6,8 +6,9 @@
     <color name="colorPrimary">#8bc34a</color>
     <color name="colorPrimaryDark">#689f38</color>
     <color name="primary_light">#dcedc8</color>
-    <color name="accent">#78909c</color>
-    <color name="accent_dark">#607d8b</color>
+    <color name="accent">#00796b</color>
+    <color name="accent_light_opacity">#77e0f2f1</color>
+    <color name="accent_dark">#004d40</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="white">#FFFFFF</color>
@@ -15,9 +16,11 @@
     <color name="divider">#BDBDBD</color>
     <color name="hint">#a0a0a0</color>
     <color name="black">#000000</color>
+
     <color name="greenOpacity">#888bc34a</color>
     <color name="redOpacity">#88f44336</color>
     <color name="orangeOpacity">#88ffc000</color>
+
     <color name="transparent">#00000000</color>
 
 

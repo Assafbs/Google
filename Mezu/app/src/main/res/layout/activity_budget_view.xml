@@ -66,7 +66,8 @@
             app:backgroundTint="@color/accent"
             android:clickable="true"
             app:borderWidth="0dp"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@android:drawable/ic_input_add"
+            app:rippleColor="@color/accent_light_opacity"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
