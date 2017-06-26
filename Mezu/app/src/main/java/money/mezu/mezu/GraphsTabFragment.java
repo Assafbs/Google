@@ -33,15 +33,27 @@ public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListene
     }
 
     public ArrayList<GraphInterface> getArrayOfGraphs() {
+        Budget budget = mActivity.mCurrentBudget;
         ArrayList<GraphInterface> graphArray = new ArrayList<>();
         PieChartCategories pieChartCategories = new PieChartCategories(mActivity.mCurrentBudget);
         LineChartMonths lineChartMonths = new LineChartMonths(mActivity.mCurrentBudget);
         BarChartUsers barChartUsers = new BarChartUsers(mActivity.mCurrentBudget);
 
         //ADD GRAPHS HERE! ONE PER EACH GRAPH CREATED
-        graphArray.add(pieChartCategories);
-        graphArray.add(lineChartMonths);
-        graphArray.add(barChartUsers);
+        if (mActivity.mCurrentBudget.getTotalExpenses() > 0) {
+            graphArray.add(pieChartCategories);
+        }
+        if (mActivity.mCurrentBudget.getTotalExpenses() > 0 || mActivity.mCurrentBudget.getTotalIncomes() > 0) {
+            graphArray.add(lineChartMonths);
+        }
+        if (mActivity.mCurrentBudget.getTotalExpenses() > 0) {
+            graphArray.add(barChartUsers);
+        }
+
+//            graphArray.add(pieChartCategories);
+//            graphArray.add(lineChartMonths);
+//            graphArray.add(barChartUsers);
+
         return graphArray;
     }
 

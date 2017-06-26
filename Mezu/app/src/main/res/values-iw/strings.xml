@@ -8,11 +8,14 @@
 
     <!--Budgets Activity Strings-->
     <string name="title_activity_budgets">התקציבים שלי</string>
+    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
+    <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
 
 
-    <!--Budget View Activity Strigns-->
+    <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">הצגת תקציב</string>
     <string name="general">כללי</string>
+    <string name="no_expenses_message">נראה שאין לך הוצאות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור הוצאה\\הכנסה</string>
 
 
     <!--Expenses Tab Fragment Strings-->
@@ -121,7 +124,7 @@
     <string name="expenses_sum">סך כל ההוצאות:</string>
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
-    <string name="most_expensive_user">המשתמש היקר ביותר:</string>
+    <string name="most_expensive_user">המשתמש שמוציא הכי הרבה:</string>
     <string name="not_enough_data">אין מספיק מידע!</string>
 
 
@@ -142,8 +145,6 @@
     <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק הוצאה/הכנסה זו?</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>
-    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
-    <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
     <string name="partners_email">האימייל של השותפ/ה:</string>
     <string name="connection_failed">החיבור נכשל</string>
     <string name="login_failed">ההתחברות נכשלה, אנא נסה שוב</string>
@@ -168,7 +169,7 @@
     <string name="review_expenses">הוצאות:</string>
     <string name="contacts_permissions">מדוע ביקשנו הרשאות לאנשי הקשר?</string>
     <string name="enter_new_ceiling">הכנס תקרה חדשה</string>
-    <string name="number_formating_failed">The ceiling is too high</string>
+    <string name="number_formating_failed">התקרה גבוהה מדי</string>
     <string name="signning_in">מתחבר...</string>
     <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה</string>
     <string name="overall_expenses">סה\"כ הוצאות</string>

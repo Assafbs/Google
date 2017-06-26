@@ -14,9 +14,10 @@
     <string name="no_budgets_message">"Seems you don't have any budgets!\nCreate one with the plus button below"</string>
 
 
-    <!--Budget View Activity Strigns-->
+    <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">Budget View</string>
     <string name="general">general</string>
+    <string name="no_expenses_message">"Seems you don't have any expenses!\nCreate one with the plus button below"</string>
 
 
     <!--Expenses Tab Fragment Strings-->
@@ -139,7 +140,7 @@
     <string name="expenses_sum">Expenses sum:</string>
     <string name="most_spending_on">Most spending on:</string>
     <string name="most_expensive_month">Most expensive month:</string>
-    <string name="most_expensive_user">Most expensive user:</string>
+    <string name="most_expensive_user">Most spending user:</string>
     <string name="not_enough_data">Not enough data!</string>
 
 
@@ -198,7 +199,6 @@
     <string name="failed_to_create_file">Failed to create file.</string>
     <string name="external_storage_unavailable">External storage unavailable, please try again later.</string>
     <string name="on_exit_by_back">Close Mezu?</string>
-
 
 
 
