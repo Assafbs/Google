@@ -547,6 +547,8 @@ public class ExpenseFragment extends Fragment {
                         expenseToShow.getUserName(),
                 isExpense);
 
+        mActivity.mMonth = c.get(Calendar.MONTH);
+        mActivity.mYear = c.get(Calendar.YEAR);
         return newExpense;
     }
 
