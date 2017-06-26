@@ -76,14 +76,24 @@
             android:textColor="@color/hint"
             android:textSize="20sp" />
 
-        <Spinner
-            android:id="@+id/SpinnerCategoriesType"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:prompt="@string/category"
-            android:spinnerMode="dialog"
-            android:textColor="@color/expense_view" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">\
+            <Spinner
+                android:id="@+id/SpinnerCategoriesType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:prompt="@string/category"
+                android:spinnerMode="dialog"
+                android:textColor="@color/expense_view" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 
