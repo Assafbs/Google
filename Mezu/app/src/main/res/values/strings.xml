@@ -197,6 +197,8 @@
     <string name="export">Export</string>
     <string name="failed_to_create_file">Failed to create file.</string>
     <string name="external_storage_unavailable">External storage unavailable, please try again later.</string>
+    <string name="on_exit_by_back">Close Mezu?</string>
+
 
 
 
