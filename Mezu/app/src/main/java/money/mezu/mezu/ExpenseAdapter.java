@@ -62,7 +62,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             amount.setTextColor(ContextCompat.getColor(mContext, R.color.expense_red));
         }
         String expAmount = Double.toString(expense.getAmount());
-        amount.setText(LanguageUtils.isRTL() ? expAmount + sign : sign + expAmount);
+        amount.setText(LanguageUtils.isRTL() ? expAmount + " " + sign : sign + " " + expAmount);
 
         String t_title = expense.getTitle();
         if (t_title == null) {

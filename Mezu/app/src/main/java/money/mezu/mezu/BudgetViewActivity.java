@@ -224,10 +224,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         double balance = mCurrentBudget.getCurrentBalance();
         String balanceString = String.valueOf(Math.abs(balance));
         if (balance > 0) {
-            balanceString = LanguageUtils.isRTL() ? balanceString + "+" : "+" + balanceString;
+            balanceString = LanguageUtils.isRTL() ? balanceString + " +" : "+ " + balanceString;
         }
         if (balance < 0) {
-            balanceString = LanguageUtils.isRTL() ? balanceString + "-" : "-" + balanceString;
+            balanceString = LanguageUtils.isRTL() ? balanceString + " -" : "- " + balanceString;
         }
         mToolbar.setSubtitle(balanceString);
     }
