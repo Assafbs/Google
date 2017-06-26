@@ -78,6 +78,7 @@
                         android:inputType="textEmailAddress"
                         android:completionThreshold="1"
                         android:textDirection="ltr"
+                        android:imeOptions="actionNext"
                         android:hint="@string/partners_email"/>
                 </android.support.design.widget.TextInputLayout>
 
