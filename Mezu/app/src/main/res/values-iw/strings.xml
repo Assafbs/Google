@@ -15,8 +15,9 @@
     <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">הצגת תקציב</string>
     <string name="general">כללי</string>
-    <string name="no_expenses_message">נראה שאין לך הוצאות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור הוצאה\\הכנסה</string>
-
+    <string name="no_expenses_message1">נראה שאין לך הוצאות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור הוצאה\\הכנסה</string>
+    <string name="no_expenses_message2">הוסף הוצאות כדי לראות סטטיסטיקה ונתונים גרפיים\n(נסה ללחוץ על הפלוס)</string>
+    <string name="no_expenses_message3">הוסף הוצאות ואנחנו נסקור אותם כאן עבורך!\n(נסה ללחוץ על הפלוס)</string>
 
     <!--Expenses Tab Fragment Strings-->
     <string name="expenses_tab_title">הוצאות</string>

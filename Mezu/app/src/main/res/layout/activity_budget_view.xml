@@ -46,31 +46,12 @@
                 android:background="@color/colorPrimary"
                 android:elevation="4dp" />
 
-            <ImageView
-                android:id="@+id/crying_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_below="@+id/tabs"
-                android:src="@drawable/crying_logo"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/explaining_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/crying_logo"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:text = "@string/no_expenses_message"
-                android:visibility="gone" />
-
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tabs"
-                android:background="@color/white"
-                android:visibility="visible" />
+                android:background="@color/white" />
 
         </RelativeLayout>
 

@@ -11,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
+public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener {
 
     private BudgetViewActivity mActivity;
     private ExpenseAdapter mExpenseAdapter = null;
@@ -34,6 +36,8 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
         setupMonthSelection();
         filterExpenses(mMonth, mYear);
+        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
+        setNoExpensesIndication();
         return mView;
     }
 
@@ -43,7 +47,14 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
             Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
+        setNoExpensesIndication();
         filterExpenses(mMonth, mYear);
+    }
+
+    @Override
+    public void budgetUpdatedCallback(Budget newBudget) {
+        mExpenseAdapter.notifyDataSetChanged();
+        setNoExpensesIndication();
     }
 
     private void setupMonthSelection() {
@@ -120,5 +131,21 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private int previousMonth(int month) {
         return (month == 1) ? 12 : month - 1;
     }
+
+    private void setNoExpensesIndication() {
+            if (mActivity.mCurrentBudget.getExpenses().size() == 0) {
+                mView.findViewById(R.id.months_layout).setVisibility(View.GONE);
+                mView.findViewById(R.id.expenses_list).setVisibility(View.GONE);
+                mView.findViewById(R.id.explaining_text1).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
+            }else{
+                mView.findViewById(R.id.months_layout).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.expenses_list).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.explaining_text1).setVisibility(View.GONE);
+                mView.findViewById(R.id.crying_logo).setVisibility(View.GONE);
+            }
+    }
+
+
 
 }

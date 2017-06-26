@@ -24,11 +24,13 @@ public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListene
         mView = inflater.inflate(R.layout.tab_graphs, container, false);
         mActivity = (BudgetViewActivity) getActivity();
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
+        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         // Create the adapter to convert the array to views
         mGraphAdapter = new GraphAdapter(getActivity(), getArrayOfGraphs());
         // Attach the adapter to a ListView
         ListView listView = (ListView) mView.findViewById(R.id.graphs_list);
         listView.setAdapter(mGraphAdapter);
+        setNoExpensesIndication();
         return mView;
     }
 
@@ -65,5 +67,17 @@ public class GraphsTabFragment extends Fragment implements ExpenseUpdatedListene
     @Override
     public void expenseUpdatedCallback() {
         mGraphAdapter.notifyDataSetChanged();
+    }
+
+    private void setNoExpensesIndication() {
+        if (mActivity.mCurrentBudget.getExpenses().size() == 0) {
+            mView.findViewById(R.id.graphs_list).setVisibility(View.GONE);
+            mView.findViewById(R.id.explaining_text2).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
+        }else{
+            mView.findViewById(R.id.graphs_list).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.explaining_text2).setVisibility(View.GONE);
+            mView.findViewById(R.id.crying_logo).setVisibility(View.GONE);
+        }
     }
 }

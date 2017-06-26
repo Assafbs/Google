@@ -17,7 +17,9 @@
     <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">Budget View</string>
     <string name="general">general</string>
-    <string name="no_expenses_message">"Seems you don't have any expenses!\nCreate one with the plus button below"</string>
+    <string name="no_expenses_message1">"Seems you don't have any expenses!\nCreate one with the plus button below"</string>
+    <string name="no_expenses_message2">"Create expenses and get statistics and graphic data here!\n(try the little plus button)"</string>
+    <string name="no_expenses_message3">"Create expenses we'll review them for you here!\n(try the little plus button)"</string>
 
 
     <!--Expenses Tab Fragment Strings-->

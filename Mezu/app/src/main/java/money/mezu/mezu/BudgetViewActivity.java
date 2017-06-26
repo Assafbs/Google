@@ -50,7 +50,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                allowAddExpense();
                 showAddExpenseFragment();
             }
         });
@@ -60,7 +59,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         mGraphsTabFragment = new GraphsTabFragment();
 
         mViewPagerAdapter.setupTabsFragments(LanguageUtils.isRTL(), mExpensesTabFragment, mGraphsTabFragment);
-        setNoExpensesIndication();
     }
 
     //************************************************************************************************************************************************
@@ -249,22 +247,5 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         budgetViewIntent.putExtra("budget", json);
         context.startActivity(budgetViewIntent);
         sessionManager.setLastBudget(json);
-    }
-
-    //************************************************************************************************************************************************
-    private void setNoExpensesIndication() {
-        if (mCurrentBudget != null) {
-            if (mCurrentBudget.getExpenses().size() == 0) {
-                findViewById(R.id.viewpager).setVisibility(View.GONE);
-                findViewById(R.id.explaining_text).setVisibility(View.VISIBLE);
-                findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private void allowAddExpense() {
-        findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
-        findViewById(R.id.explaining_text).setVisibility(View.GONE);
-        findViewById(R.id.crying_logo).setVisibility(View.GONE);
     }
 }

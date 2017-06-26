@@ -47,7 +47,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
             }
         });
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
-
+        setNoExpensesIndication();
         return mView;
     }
 
@@ -135,5 +135,21 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
     public void budgetUpdatedCallback(Budget newBudget) {
         mAdapter.notifyDataSetChanged();
         setupBudgetOverall();
+    }
+
+    private void setNoExpensesIndication() {
+        if (mActivity.mCurrentBudget.getExpenses().size() == 0) {
+            mView.findViewById(R.id.review_top_layout).setVisibility(View.GONE);
+            mView.findViewById(R.id.categories_expenses).setVisibility(View.GONE);
+            mView.findViewById(R.id.review_bottom_layout).setVisibility(View.GONE);
+            mView.findViewById(R.id.explaining_text3).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
+        }else{
+            mView.findViewById(R.id.review_top_layout).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.categories_expenses).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.review_bottom_layout).setVisibility(View.VISIBLE);
+            mView.findViewById(R.id.explaining_text3).setVisibility(View.GONE);
+            mView.findViewById(R.id.crying_logo).setVisibility(View.GONE);
+        }
     }
 }
