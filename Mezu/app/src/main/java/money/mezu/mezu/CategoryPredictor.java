@@ -137,7 +137,7 @@ public class CategoryPredictor {
                     @Override
                     public void run() {
                         final Category prediction = predict(str);
-                        if (prediction!=null){
+                        if (prediction!=null && prediction.getIsExpense()){
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
