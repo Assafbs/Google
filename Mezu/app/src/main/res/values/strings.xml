@@ -97,14 +97,14 @@
 
     <!--Add Budget Activity-->
     <string name="title_activity_add_budget_view">Add Budget</string>
-    <string name="add_a_budget">Add a budget</string>
+    <string name="add_a_budget">Add a Budget</string>
     <string name="budget_name">Budget name:</string>
     <string name="shared_with">Shared with:</string>
     <string name="partners_list_initizal_text">
         Add partners to your account to manage your finances together.
     </string>
-    <string name="add_partner">Add partner</string>
-    <string name="starting_balance">Starting balance:</string>
+    <string name="add_partner">Add Partner</string>
+    <string name="starting_balance">Starting Balance:</string>
     <string name="optional">(Optional)</string>
 
 
