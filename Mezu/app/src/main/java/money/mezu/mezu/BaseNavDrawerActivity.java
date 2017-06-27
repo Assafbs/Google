@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +50,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
     protected void onCreateDrawer()
     {
-        Log.d("","BaseNavDrawerActivity::onCreateDrawer start");
         instantiateSessionManager();
         mDrawerName = mSessionManager.getUserName();
         mDrawerEmail = mSessionManager.getUserEmail();
@@ -214,7 +212,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget)
     {
-        Log.d("",String.format("BaseNavDrawerActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         if (mapOfBudgets.containsKey(budget.getId()))
         {
             mapOfBudgets.get(budget.getId()).setFromBudget(budget);
@@ -231,7 +228,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     //************************************************************************************************************************************************
     public void userLeftBudgetCallback(String bid)
     {
-        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
         if (this.mapOfBudgets.containsKey(bid))
         {
             this.mapOfBudgets.remove(bid);

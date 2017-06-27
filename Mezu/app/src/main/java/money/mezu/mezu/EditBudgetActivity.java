@@ -12,8 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,7 +28,6 @@ import com.robertlevonyan.views.chip.OnCloseClickListener;
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EditBudgetActivity extends BaseNavDrawerActivity {
 
@@ -93,9 +89,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     mCurrentBudget.setName(budgetName);
                     mCurrentBudget.setInitialBalance(startingBalance);
                     mCurrentBudget.addNewEmails(partnersEmails);
-                    for (String mail : partnersEmails) {
-                        Log.d("", String.format("EditBudgetActivity:onCreate: current mail is :%s", mail));
-                    }
                     FirebaseBackend.getInstance().editBudget(mCurrentBudget);
                 }
                 for (String email : partnersEmails) {
@@ -166,7 +159,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId(), mSessionManager.getUserEmail());
-                Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()

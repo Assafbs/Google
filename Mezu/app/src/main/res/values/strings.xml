@@ -6,7 +6,7 @@
     <string name="welcome_message">Welcome to Mezu!!</string>
     <string name="second_welcome_message">Your Money Management App</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="server_client_id">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com</string>
 
 
     <!--Budgets Activity Strings-->
@@ -117,7 +117,7 @@
     <string name="hebrew">Hebrew</string>
     <string name="english">English</string>
 
-    <string-array name="pref_language_list_titles">
+    <string-array name="pref_language_list_titles" translatable="false">
         <item>@string/hebrew</item>
         <item>@string/english</item>
     </string-array>
@@ -190,7 +190,7 @@
     <string name="review_incomes">Incomes:</string>
     <string name="review_expenses">Expenses:</string>
     <string name="enter_new_ceiling">Enter a new ceiling</string>
-    <string name="empty"></string>
+    <string name="empty" translatable="false"></string>
     <string name="number_formating_failed">The ceiling is too high</string>
     <string name="signning_in">Signing in...</string>
     <string name="review_info">Click on a category to define its ceiling</string>

@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import android.util.Log;
 import android.util.Pair;
 
 /**
@@ -43,13 +42,11 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void startListeningForAllUserBudgetUpdates(UserIdentifier uid) {
-        Log.d("", "FirebaseBackend:registerForBudgetUpdates: start");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/" + uid.getId().toString() + "/budgets");
         ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("", String.format("FirebaseBackend:registerForBudgetUpdates: budgets have changed:%s", dataSnapshot.toString()));
                 HashMap<String, String> budgets = (HashMap<String, String>) dataSnapshot.getValue();
                 if (null == budgets) {
                     EventDispatcher.getInstance().notifyLocalCacheReady();
@@ -57,7 +54,6 @@ public class FirebaseBackend {
                 } else {
                     BudgetsDownloadedNotifier.handleIfFirstExecution(budgets.keySet());
                 }
-                Log.d("", String.format("FirebaseBackend:registerForBudgetUpdates: budgets have changed:%s", budgets.toString()));
                 for (String key : budgets.keySet()) {
                     boolean pathFound = false;
                     for (Pair<String, ValueEventListener> currentPair : mPathsIListenTo) {
@@ -86,9 +82,7 @@ public class FirebaseBackend {
         ValueEventListener listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("", String.format("FirebaseBackend:registerForBudgetUpdates: budget has changed: hip hip horay got the following z: %s", dataSnapshot.toString()));
                 Budget newBudget = new Budget((HashMap<String, Object>) dataSnapshot.getValue());
-                Log.d("", String.format("FirebaseBackend:registerForBudgetUpdates: deserialized budget is: %s", newBudget.toString()));
                 EventDispatcher.getInstance().notifyBudgetUpdatedListeners(newBudget);
             }
 
@@ -121,7 +115,6 @@ public class FirebaseBackend {
                 // second condition verifies that we were a member of the budget to begin with.
                 if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate))
                 {
-                    Log.d("","FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
                 }
                 stopListeningOnPath("budgets/" + bidToLeave + "/users");
@@ -137,7 +130,6 @@ public class FirebaseBackend {
     //************************************************************************************************************************************************
     public void editBudget(Budget budget)
     {
-        Log.d("","FirebaseBackend::editBudget: invoked");
         final Budget budgetToEdit = budget;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
@@ -200,27 +192,22 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void createBudgetAndAddToUser(Budget budget, UserIdentifier uid) {
-        Log.d("", "FirebaseBackend:addBudgetToUser: adding budget to user");
         String newBid = createBudget(budget);
         connectBudgetAndUser(newBid, uid.getId().toString());
     }
 
     //************************************************************************************************************************************************
     private String createBudget(Budget budget) {
-        Log.d("", "FirebaseBackend:createBudget: creating budget");
         DatabaseReference budgetRef = mDatabase.child("budgets").push();
         String bid = budgetRef.getKey();
         budget.setId(bid);
         budgetRef.child("budget").setValue(budget.serializeNoExpenses());
-        Log.d("", String.format("FirebaseBackend:createBudget: created budget with id:%s", budget.getId().toString()));
         return bid;
     }
 
     //************************************************************************************************************************************************
     private void addBudgetToUser(String bid, String uid) {
-        Log.d("", String.format("FirebaseBackend:addBudgetToUser: adding budget with id: %s", bid));
         mDatabase.child("users").child(uid).child("budgets").child(bid).setValue(bid);
-        Log.d("", "FirebaseBackend:addBudgetToUser: added budget");
     }
 
     //************************************************************************************************************************************************
@@ -241,11 +228,9 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void stopListeningOnAllPaths() {
-        Log.d("", "FirebaseBackend:stopListeningOnEvents: stopping");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         for (Pair<String, ValueEventListener> pathListener : mPathsIListenTo) {
             DatabaseReference ref = database.getReference(pathListener.first);
-            Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s", pathListener.first));
             ref.removeEventListener(pathListener.second);
         }
         mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
@@ -257,7 +242,6 @@ public class FirebaseBackend {
         for (Pair<String, ValueEventListener> currentPair : mPathsIListenTo) {
             if (currentPair.first.equals(path)) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference(currentPair.first);
-                Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s", currentPair.first));
                 ref.removeEventListener(currentPair.second);
                 pairsToDelete.add(currentPair);
             }
@@ -299,7 +283,6 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void updateUserNotificationToken(String refreshedToken, UserIdentifier uid) {
-        Log.d("", String.format("FirebaseBackend:updateUserNotificationToken: updating notification token:%s", refreshedToken));
         mDatabase.child("users").child(uid.getId().toString()).child("notificationToken").setValue(refreshedToken);
     }
 
@@ -328,10 +311,7 @@ public class FirebaseBackend {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
                                 connectBudgetAndUser(bid, uidAsString);
-                            } else {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
                             }
                         }
 
