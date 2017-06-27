@@ -117,11 +117,11 @@
     <string name="hebrew">Hebrew</string>
     <string name="english">English</string>
 
-    <string-array name="pref_language_list_titles" translatable="false">
+    <string-array name="pref_language_list_titles">
         <item>@string/hebrew</item>
         <item>@string/english</item>
     </string-array>
-    <string-array name="pref_language_list_values">
+    <string-array name="pref_language_list_values"  translatable="false">
         <item>heb</item>
         <item>eng</item>
     </string-array>
