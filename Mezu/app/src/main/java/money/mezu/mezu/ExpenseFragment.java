@@ -325,13 +325,15 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_income & !incomeSelected) {
-                    predictor.disable();
+                    if (isAdd){
+                        predictor.disable();
+                    }
                     expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
                     mCategorySpinner.setAdapter(incomeAdapter);
                     mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
                     incomeSelected = true;
                 } else {
-                    if (!choseCategory) {
+                    if (!choseCategory && isAdd) {
                         predictor.enable();
                     }
                     incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
