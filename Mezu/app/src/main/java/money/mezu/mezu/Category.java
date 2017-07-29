@@ -197,26 +197,20 @@ public enum Category {
     }
 
     public static ArrayList<String> getIncomeCategoriesStringAndEmojiList() {
-        if (incomeCatsStrings == null) {
-            incomeCatsStrings = new ArrayList<>();
-
-            for (Category cat : Category.values()) {
-                if (cat.isIncome) {
-                    incomeCatsStrings.add(cat.getEmojiWithName());
-                }
+        incomeCatsStrings = new ArrayList<>();
+        for (Category cat : Category.values()) {
+            if (cat.isIncome) {
+                incomeCatsStrings.add(cat.getEmojiWithName());
             }
         }
         return incomeCatsStrings;
     }
 
     public static ArrayList<String> getExpenseCategoriesStringAndEmojiList() {
-        if (expenseCatsStrings == null) {
-            expenseCatsStrings = new ArrayList<>();
-
-            for (Category cat : Category.values()) {
-                if (cat.isExpense) {
-                    expenseCatsStrings.add(cat.getEmojiWithName());
-                }
+        expenseCatsStrings = new ArrayList<>();
+        for (Category cat : Category.values()) {
+            if (cat.isExpense) {
+                expenseCatsStrings.add(cat.getEmojiWithName());
             }
         }
         return expenseCatsStrings;
