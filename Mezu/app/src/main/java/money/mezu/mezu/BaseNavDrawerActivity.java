@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public abstract class BaseNavDrawerActivity extends AppCompatActivity implements View.OnClickListener, BudgetUpdatedListener, UserLeftBudgetListener{
+public abstract class BaseNavDrawerActivity extends AppCompatActivity implements View.OnClickListener, BudgetUpdatedListener, UserLeftBudgetListener, LocalCacheReadyListener{
 
     private String mDrawerName;
     private String mDrawerEmail;
@@ -120,6 +120,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
         EventDispatcher.getInstance().registerUserLeftBudgetListener(this);
+        EventDispatcher.getInstance().registerLocalCacheReadyListener(this);
     }
     //************************************************************************************************************************************************
     private void setupHeader() {
@@ -231,6 +232,11 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);
+    }
+    //************************************************************************************************************************************************
+    @Override
+    public void localCacheReadyCallback() {
+        BudgetsActivity.budgetsLoadedFromDB = true;
     }
     //************************************************************************************************************************************************
     public void userLeftBudgetCallback(String bid)
