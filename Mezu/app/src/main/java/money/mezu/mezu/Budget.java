@@ -6,6 +6,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
 
 public class Budget {
 
@@ -129,7 +131,22 @@ public class Budget {
             translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key));
         }
         serialized.put("mCategoryCeilings", translatedCategoryCeilings);
-
+        return serialized;
+    }
+    //************************************************************************************************************************************************
+    public HashMap<String, Object> serialize()
+    {
+        HashMap<String, Object> serialized = this.serializeNoExpenses();
+        if (this.mExpenses.isEmpty())
+        {
+            return serialized;
+        }
+        HashMap<String, HashMap<String, Object>>  expenses = new HashMap<String, HashMap<String, Object>>();
+        for (Expense expense: mExpenses)
+        {
+            expenses.put(expense.getId(), expense.serialize());
+        }
+        serialized.put("mExpenses", expenses);
         return serialized;
     }
     //************************************************************************************************************************************************

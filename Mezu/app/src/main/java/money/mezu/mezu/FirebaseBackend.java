@@ -147,11 +147,11 @@ public class FirebaseBackend {
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
         // TODO - maybe take care of listeners hash map...
         mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
-                setValue(budgetToEdit.serializeNoExpenses());
-        for (Expense expense : budgetToEdit.getExpenses()) {
-            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
-                    child(expense.getId()).setValue(expense.serialize());
-        }
+                setValue(budgetToEdit.serialize());
+//        for (Expense expense : budgetToEdit.getExpenses()) {
+//            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
+//                    child(expense.getId()).setValue(expense.serialize());
+//        }
     }
 
     //************************************************************************************************************************************************
