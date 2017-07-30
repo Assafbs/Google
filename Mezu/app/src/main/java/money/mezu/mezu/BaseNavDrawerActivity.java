@@ -217,8 +217,12 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         Log.d("",String.format("BaseNavDrawerActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
         if (mapOfBudgets.containsKey(budget.getId()))
         {
+            boolean expensesDiffer = budget.expensesDiffer(mapOfBudgets.get(budget.getId()));
             mapOfBudgets.get(budget.getId()).setFromBudget(budget);
-            EventDispatcher.getInstance().notifyExpenseUpdatedListeners();
+            if(expensesDiffer)
+            {
+                EventDispatcher.getInstance().notifyExpenseUpdatedListeners();
+            }
         }
         else
         {

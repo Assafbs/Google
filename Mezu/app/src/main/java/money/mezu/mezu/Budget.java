@@ -339,4 +339,30 @@ public class Budget {
                 ((Number) categoryCeilings.get(category)).doubleValue();
         return ceiling == null ? -1 : ceiling;
     }
+
+    public boolean expensesDiffer(Budget budgetToCompare)
+    {
+
+        for (Expense myExpense: this.getExpenses())
+        {
+            boolean foundMatch = false;
+            for (Expense theirExpense: budgetToCompare.getExpenses())
+            {
+                if(myExpense.getId().equals(theirExpense.getId()))
+                {
+                    foundMatch = true;
+                    if(myExpense.expenseDiffers(theirExpense))
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            if(!foundMatch)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

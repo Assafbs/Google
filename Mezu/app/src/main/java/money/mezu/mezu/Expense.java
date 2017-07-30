@@ -1,6 +1,7 @@
 package money.mezu.mezu;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -161,6 +162,57 @@ public class Expense implements Comparable<Expense> {
         } else {
             return 0;
         }
+    }
+
+    public boolean expenseDiffers(Expense toCompare)
+    {
+        if(!mId.equals(toCompare.getId()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mId");
+            return true;
+        }
+        if(mAmount != toCompare.getAmount())
+        {
+//            Log.d("", "Expense::expenseDiffers: mAmount");
+            return true;
+        }
+        if(!mDescription.equals(toCompare.getDescription()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mDescription");
+            return true;
+        }
+        if (!mTitle.equals(toCompare.getTitle()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mTitle");
+            return true;
+        }
+        if(!mCategory.toNiceString().equals(toCompare.getCategory().toNiceString()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mCategory");
+            return true;
+        }
+        if(!mTime.equals(toCompare.getTime()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mTime");
+            return true;
+        }
+        if(!mUserID.getId().toString().equals(toCompare.getUserID().getId().toString()))
+        {
+//            Log.d("", String.format("Expense::expenseDiffers: mUserId, was %s is %s", mUserID.getId().toString(), toCompare.getUserID().getId().toString()));
+            return true;
+        }
+        if (!mUserName.equals(toCompare.getUserName()))
+        {
+//            Log.d("", "Expense::expenseDiffers: mUserName");
+            return true;
+        }
+        if(mIsExpense != toCompare.getIsExpense())
+        {
+//            Log.d("", "Expense::expenseDiffers: mExpense");
+            return true;
+        }
+
+        return false;
     }
 
 }
