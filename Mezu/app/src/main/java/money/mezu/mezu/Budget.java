@@ -56,7 +56,7 @@ public class Budget {
                 this.mCategoryCeilings.put(Category.getCategoryFromString(key), serializedCategory.get(key));
             }
         }
-        
+
         if (serializedBudget.containsKey("mInitialBalance")) {
             this.mInitialBalance = Double.parseDouble(serializedBudget.get("mInitialBalance").toString());
         } else {

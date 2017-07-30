@@ -112,6 +112,8 @@ public class FirebaseBackend {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                Log.d("", String.format("FirebaseBackend:leaveBudget: onDataChange:start, with bidToLeave: %s", bidToLeave));
+                stopListeningOnPath("budgets/" + bidToLeave);
                 ArrayList<String> emails = (ArrayList<String>) dataSnapshot.child("budget").child("mEmails").getValue();
                 emails.remove(userEmail);
                 mDatabase.child("budgets").child(bidToLeave).child("budget").child("mEmails").setValue(emails);
@@ -124,14 +126,16 @@ public class FirebaseBackend {
                     Log.d("","FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
                 }
-                stopListeningOnPath("budgets/" + bidToLeave + "/users");
+                // This line appears twice to handle a very unlikely race condition (which wasn't witnessed) that can occur if the first invocation
+                // occurs before the path is added to the hashmap.
+                stopListeningOnPath("budgets/" + bidToLeave);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
             }
         });
-        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave + "/users", newListener));
+        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave, newListener));
     }
 
     //************************************************************************************************************************************************
