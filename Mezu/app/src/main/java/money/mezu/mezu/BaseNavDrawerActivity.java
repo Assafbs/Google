@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import android.view.ViewStub;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -237,4 +240,28 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
             listView.setAdapter(adapter);
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        if (this.isTaskRoot()) {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.on_exit_by_back)
+                    .positiveText(R.string.yes)
+                    .negativeText(R.string.no)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            closeApp();
+                        }
+                    })
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void closeApp(){
+        super.onBackPressed();
+    }
+
 }

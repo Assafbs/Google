@@ -51,9 +51,9 @@ public class Budget {
         if (serializedBudget.containsKey("mCategoryCeilings"))
         {
             HashMap<String, Double> serializedCategory = (HashMap<String, Double>)serializedBudget.get("mCategoryCeilings");
-            for (String key : serializedBudget.keySet())
+            for (String key : serializedCategory.keySet())
             {
-                this.mCategoryCeilings.put(Category.getCategoryFromString(key), serializedCategory.get(key));
+                this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
             }
         }
 
@@ -201,6 +201,20 @@ public class Budget {
         return acc;
     }
     //************************************************************************************************************************************************
+    public double getTotalExpenseOrIncomePerCategoryby(Category category , boolean isExpense) {
+        return isExpense ? getTotalExpensesPerCategory(category) : getTotalIncomesPerCategory(category);
+    }
+    //************************************************************************************************************************************************
+    public double getTotalIncomesPerCategory(Category category) {
+        double acc = 0;
+        for (Expense expense : mExpenses) {
+            if (!expense.getIsExpense() && expense.getCategory().equals(category)) {
+                acc += expense.getAmount();
+            }
+        }
+        return acc;
+    }
+    //************************************************************************************************************************************************
     public double getPercentagePerCategory(Category category) {
         if (getTotalExpenses() != 0) {
             return getPercentagePerCategory(category) / getTotalExpenses();
@@ -313,5 +327,16 @@ public class Budget {
         }
 
         return false;
+    }
+
+    public double tryGetCategoryCeiling (Category category) {
+        HashMap<Category, Double> categoryCeilings = this.getCategoryCeilings();
+        if (categoryCeilings == null) {
+            return -1;
+        }
+        Double ceiling = categoryCeilings.get(category) == null ?
+                null :
+                ((Number) categoryCeilings.get(category)).doubleValue();
+        return ceiling == null ? -1 : ceiling;
     }
 }

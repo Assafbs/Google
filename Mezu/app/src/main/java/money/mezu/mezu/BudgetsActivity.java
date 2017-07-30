@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,11 +58,13 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
     private void setLanguage() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String language = sharedPref.getString("language", "");
-        if (!language.isEmpty()){
-            if (!LanguageUtils.getISO3CurrentLanguageCode().equals(language)){
-                String languageCode = LanguageUtils.getLanguageCodeFromValue(language);
-                LanguageUtils.setLanguage(languageCode, getApplicationContext());
-            }
+        if (language.isEmpty()){
+            language = LanguageUtils.getISO3CurrentLanguageCode();
+            sharedPref.edit().putString("language", language).apply();
+        }
+        if (!LanguageUtils.getISO3CurrentLanguageCode().equals(language)) {
+            String languageCode = LanguageUtils.getLanguageCodeFromValue(language);
+            LanguageUtils.setLanguage(languageCode, getApplicationContext());
         }
     }
 

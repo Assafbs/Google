@@ -5,6 +5,7 @@
     android:id="@+id/budget_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context="money.mezu.mezu.BudgetViewActivity">
 
     <LinearLayout
@@ -15,9 +16,28 @@
         android:paddingTop="10dp"
         android:weightSum="15">
 
+        <ImageView
+            android:id="@+id/crying_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_below="@+id/tabs"
+            android:src="@drawable/crying_logo"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/explaining_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/crying_logo"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text = "@string/no_expenses_message1"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/months_layout"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
             android:weightSum="15">

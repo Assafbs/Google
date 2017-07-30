@@ -49,7 +49,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
 
         // Populate the data into the template view using the data object
         if (expense.getCategory() != null) {
-            category.setText(expense.getCategory().toString());
+            category.setText(expense.getCategory().toNiceString());
         } else {
             category.setText(R.string.category_other);
         }
@@ -62,7 +62,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             amount.setTextColor(ContextCompat.getColor(mContext, R.color.expense_red));
         }
         String expAmount = Double.toString(expense.getAmount());
-        amount.setText(LanguageUtils.isRTL() ? expAmount + sign : sign + expAmount);
+        amount.setText(LanguageUtils.isRTL() ? expAmount + " " + sign : sign + " " + expAmount);
 
         String t_title = expense.getTitle();
         if (t_title == null) {

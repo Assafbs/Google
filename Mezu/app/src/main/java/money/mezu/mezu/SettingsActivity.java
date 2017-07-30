@@ -3,23 +3,34 @@ package money.mezu.mezu;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBarColor();
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new GeneralPreferenceFragment())
                 .commit();
+    }
+
+    private void setStatusBarColor(){
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)// TODO: change to the version we decide to support
@@ -47,7 +58,10 @@ public class SettingsActivity extends AppCompatActivity {
             if (!LanguageUtils.languageValueIsValid(curLanguage)){
                 curLanguage = LanguageUtils.getDefaultLanguage(context);
             }
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            String language = sharedPref.getString("language", "");
             languagePref.setSummary(LanguageUtils.getLanguageFromValue(curLanguage, context));
+            languagePref.setValueIndex(language.equals("heb")?0:1);
             languagePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
@@ -65,20 +79,32 @@ public class SettingsActivity extends AppCompatActivity {
 
                     Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(settingsIntent);
-
+                    ExpensesTabFragment.sDefaultDate = true;
                     return true;
                 }
             });
 
-            SwitchPreference enableNotificationsPref = (SwitchPreference)findPreference("enable_notifications");
+            SwitchPreference enableNotificationsPref = (SwitchPreference)findPreference("enable_notifications_on_expenses");
             enableNotificationsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
-                    FirebaseBackend.getInstance().setShouldNotifyOnTransaction(((SwitchPreference)preference).isChecked(), sessionManager.getUserId());
+                    boolean isChecked = o.equals(true);
+                    FirebaseBackend.getInstance().setShouldNotifyOnTransaction(isChecked, sessionManager.getUserId());
+                    if (o.equals(true)){
+                        findPreference("minimum_amount").setEnabled(true);
+                    }
+                    else{
+                        findPreference("minimum_amount").setEnabled(false);
+                    }
                     return true;
                 }
             });
+
+            EditTextPreference minimumAmountPref = (EditTextPreference)findPreference("minimum_amount");
+            if (!enableNotificationsPref.isChecked()){
+                minimumAmountPref.setEnabled(false);
+            }
         }
     }
 

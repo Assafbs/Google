@@ -33,7 +33,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return mGraphsTabFragment;
             case 2:
-                return new Tab3_stub();
+                return new ReviewTabFragment();
             default:
                 throw new IllegalArgumentException();
         }
@@ -47,6 +47,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     public void onSwitchToGraph(GraphFragment graphFragment) {
         mFragmentManager.beginTransaction().remove(mGraphsTabFragment).commit();
         mGraphsTabFragment = graphFragment;
+        graphFragment.refreshGraphs();
         notifyDataSetChanged();
     }
 
@@ -59,12 +60,14 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     public void onSwitchToExpense(ExpenseFragment expenseFragment) {
         mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
         mExpensesTabFragment = expenseFragment;
+        ExpensesTabFragment.sDefaultDate = false;
         notifyDataSetChanged();
     }
 
     public void onSwitchFromExpense(ExpensesTabFragment expensesTabFragment) {
         mFragmentManager.beginTransaction().remove(mExpensesTabFragment).commit();
         mExpensesTabFragment = expensesTabFragment;
+        ExpensesTabFragment.sDefaultDate = false;
         notifyDataSetChanged();
     }
 

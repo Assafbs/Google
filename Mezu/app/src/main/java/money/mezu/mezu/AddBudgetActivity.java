@@ -1,7 +1,9 @@
 package money.mezu.mezu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 import android.Manifest;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Build;
 
@@ -28,6 +29,8 @@ import com.robertlevonyan.views.chip.OnCloseClickListener;
 import org.apmem.tools.layouts.FlowLayout;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
+
+    static boolean show_permissions_dialog = true;
 
     ArrayList<String> partnersEmails;
     FlowLayout partnersChipsContainer;
@@ -61,9 +64,9 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 }
 
                 if (BudgetName.equals("")) {
-                    Toast.makeText(AddBudgetActivity.this, "Must provide budget name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.must_provide_budget_name, Toast.LENGTH_SHORT).show();
                 } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
-                    Toast.makeText(AddBudgetActivity.this, "Please choose a different budget name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.choose_different_budget_name, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
@@ -87,11 +90,11 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString();
                 if (partnerEmail.equals("")) {
-                    Toast.makeText(AddBudgetActivity.this, "Partner's email is empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)) {
-                    Toast.makeText(AddBudgetActivity.this, "Email is not valid!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.email_not_valid, Toast.LENGTH_SHORT).show();
                 } else if (partnersEmails.contains(partnerEmail)) {
-                    Toast.makeText(AddBudgetActivity.this, "Email is already in the list!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
                     Chip chip = new Chip(AddBudgetActivity.this);
@@ -119,10 +122,27 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
     public void tryInitializingContactEmails() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (show_permissions_dialog){
+                showPermissionsDialog();
+                show_permissions_dialog = false;
+            }
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
             new InitContactEmailsTask().execute(this);
         }
+    }
+
+    private void showPermissionsDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(AddBudgetActivity.this).create();
+        alertDialog.setTitle(R.string.contacts_permissions);
+        alertDialog.setMessage(getResources().getString(R.string.contacts_permissions_explanation));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getResources().getString(R.string.got_it),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override

@@ -6,12 +6,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,12 +18,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,11 +33,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
 public class ExpenseFragment extends Fragment {
+    private CategoryPredictor predictor;
+    private boolean choseCategory = false;
     private View mView;
 
     EditText mEditTextAmount;
@@ -54,6 +56,7 @@ public class ExpenseFragment extends Fragment {
     Button mEditButton;
     EditText mEditTextAddedBy;
     ImageView mRepeatAction;
+    TextView mReapatText;
     int mRepeatChoice;
     android.support.design.widget.TextInputLayout mAddedByLayout;
 
@@ -66,6 +69,7 @@ public class ExpenseFragment extends Fragment {
     private Category expenseCat = Category.CATEGORY;
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
+    private DateFormat mDateFormat;
 
     private Expense expenseToShow = null;
 
@@ -90,8 +94,15 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy = (EditText) mView.findViewById(R.id.added_by_edit_text);
         mEditButton = (Button) mView.findViewById(R.id.edit_action_btn);
         mRepeatAction = (ImageView) mView.findViewById(R.id.repeat_action);
+        mReapatText = (TextView) mView.findViewById(R.id.ratio_text);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
         mRepeatChoice = 0;
+
+        if (LanguageUtils.isRTL()) {
+            mDateFormat = new SimpleDateFormat("HH:mm");
+        } else {
+            mDateFormat = new SimpleDateFormat("h:mm a");
+        }
 
         if (isAdd) {
             setupAddExpense();
@@ -141,7 +152,7 @@ public class ExpenseFragment extends Fragment {
 
         ArrayList<String> categories = new ArrayList<>();
 
-        categories.add(expenseToShow.getCategory().toString());
+        categories.add(expenseToShow.getCategory().getEmojiWithName());
         mCategorySpinner.setAdapter(new ArrayAdapter<>(mActivity, R.layout.category_spinner_item, categories));
 
         mRBExpense.setClickable(false);
@@ -158,8 +169,9 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy.setText(expenseToShow.getUserName());
         mEditTextDescription.setText(expenseToShow.getDescription());
 
+
         mEditTextDate.setText(DateFormat.getDateInstance().format(expenseToShow.getTime()));
-        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(expenseToShow.getTime()));
+        mEditTextTime.setText(mDateFormat.format(expenseToShow.getTime()));
 
         ViewGroup viewGroup = (ViewGroup) mView.findViewById(R.id.activity_add_expense);
         disableAllFields(viewGroup);
@@ -190,8 +202,10 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupAddExpense() {
+        predictor = new CategoryPredictor(mActivity, mCategorySpinner, mActivity.mCurrentBudget);
         mEditButton.setVisibility(View.GONE);
         mAddedByLayout.setVisibility(View.GONE);
+        mEditTextTitle.addTextChangedListener(predictor.getWatcher());
 
         mRepeatAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +224,8 @@ public class ExpenseFragment extends Fragment {
 
         // Get Current Time
         c = Calendar.getInstance();
+        c.set(Calendar.MONTH, mActivity.mMonth);
+        c.set(Calendar.YEAR, mActivity.mYear);
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -217,7 +233,7 @@ public class ExpenseFragment extends Fragment {
         mMinute = c.get(Calendar.MINUTE);
         // Set Current Time to EditTexts
         mEditTextDate.setText(DateFormat.getDateInstance().format(c.getTime()));
-        mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+        mEditTextTime.setText(mDateFormat.format(c.getTime()));
 
         setupTimeAndDateOnTouchListeners();
 
@@ -226,7 +242,21 @@ public class ExpenseFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View arg0) {
-                    addExpense();
+                addExpense();
+            }
+        });
+        mCategorySpinner.setTag(0);
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0 && ((int) adapterView.getTag()) != i) {
+                    choseCategory = true;
+                    predictor.disable();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
     }
@@ -286,8 +316,8 @@ public class ExpenseFragment extends Fragment {
     }
 
     private void setupRadioButtonsAndSpinner(boolean isExpense) {
-        expenseAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesList());
-        incomeAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesList());
+        expenseAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getExpenseCategoriesStringAndEmojiList());
+        incomeAdapter = new SpinnerAdapter(mActivity, R.layout.category_spinner_item, Category.getIncomeCategoriesStringAndEmojiList());
         mCategorySpinner.setAdapter(isExpense ? expenseAdapter : incomeAdapter);
         mCategorySpinner.setSelection(0);
 
@@ -295,11 +325,17 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_income & !incomeSelected) {
+                    if (isAdd){
+                        predictor.disable();
+                    }
                     expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
                     mCategorySpinner.setAdapter(incomeAdapter);
                     mCategorySpinner.setSelection(incomeCat.getSpinnerLocation(true));
                     incomeSelected = true;
                 } else {
+                    if (!choseCategory && isAdd) {
+                        predictor.enable();
+                    }
                     incomeCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
                     mCategorySpinner.setAdapter(expenseAdapter);
                     mCategorySpinner.setSelection(expenseCat.getSpinnerLocation(false));
@@ -344,7 +380,7 @@ public class ExpenseFragment extends Fragment {
                             mHour = hourOfDay;
                             mMinute = minute;
                             c.set(mYear, mMonth, mDay, mHour, mMinute);
-                            mEditTextTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime()));
+                            mEditTextTime.setText(mDateFormat.format(c.getTime()));
                         }
                     }, mHour, mMinute, true);
             timePickerDialog.show();
@@ -427,7 +463,6 @@ public class ExpenseFragment extends Fragment {
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getActivity(), getResources().getString(R.string.chosen_repeat) + " " + item.getTitle(), Toast.LENGTH_SHORT).show();
                 switch (item.getItemId()) {
                     case R.id.no_repeat_opt:
                         mRepeatChoice = 0;
@@ -448,6 +483,13 @@ public class ExpenseFragment extends Fragment {
                         mRepeatChoice = 5;
                         break;
                 }
+                if (mRepeatChoice == 0) {
+                    mReapatText.setVisibility(View.GONE);
+                }
+                if (mRepeatChoice != 0) {
+                    mReapatText.setVisibility(View.VISIBLE);
+                    mReapatText.setText(item.getTitle());
+                }
                 return true;
             }
         });
@@ -457,7 +499,8 @@ public class ExpenseFragment extends Fragment {
             public void onDismiss(PopupMenu menu) {
                 if (mRepeatChoice == 0) {
                     mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.accent_dark));
-                    mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                    mRepeatAction.setBackgroundColor(Color.TRANSPARENT);
+                    mReapatText.setVisibility(View.GONE);
                 }
             }
         });
@@ -506,6 +549,8 @@ public class ExpenseFragment extends Fragment {
                         expenseToShow.getUserName(),
                 isExpense);
 
+        mActivity.mMonth = c.get(Calendar.MONTH);
+        mActivity.mYear = c.get(Calendar.YEAR);
         return newExpense;
     }
 

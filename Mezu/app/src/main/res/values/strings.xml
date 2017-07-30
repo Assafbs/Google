@@ -14,9 +14,12 @@
     <string name="no_budgets_message">"Seems you don't have any budgets!\nCreate one with the plus button below"</string>
 
 
-    <!--Budget View Activity Strigns-->
+    <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">Budget View</string>
     <string name="general">general</string>
+    <string name="no_expenses_message1">"Seems you don't have any expenses!\nCreate one with the plus button below"</string>
+    <string name="no_expenses_message2">"Create expenses and get statistics and graphic data here!\n(try the little plus button)"</string>
+    <string name="no_expenses_message3">"Create expenses and we'll review them for you here!\n(try the little plus button)"</string>
 
 
     <!--Expenses Tab Fragment Strings-->
@@ -94,14 +97,14 @@
 
     <!--Add Budget Activity-->
     <string name="title_activity_add_budget_view">Add Budget</string>
-    <string name="add_a_budget">Add a budget</string>
+    <string name="add_a_budget">Add a Budget</string>
     <string name="budget_name">Budget name:</string>
     <string name="shared_with">Shared with:</string>
     <string name="partners_list_initizal_text">
         Add partners to your account to manage your finances together.
     </string>
-    <string name="add_partner">Add partner</string>
-    <string name="starting_balance">Starting balance:</string>
+    <string name="add_partner">Add Partner</string>
+    <string name="starting_balance">Starting Balance:</string>
     <string name="optional">(Optional)</string>
 
 
@@ -123,7 +126,7 @@
         <item>eng</item>
     </string-array>
 
-    <string name="pref_description_allow_notifications">
+    <string name="pref_description_allow_notifications_expenses">
         A notification will appear every time an expense is added to one of your budgets
     </string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
@@ -131,7 +134,7 @@
 
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">Graphs</string>
-    <string name="overall_graph">Overall</string>
+    <string name="overall">Overall</string>
     <string name="expenses_by_categories">Expenses By Categories</string>
     <string name="expenses_by_months">Expenses By Months</string>
     <string name="expenses_by_users">Expenses By Users</string>
@@ -139,7 +142,7 @@
     <string name="expenses_sum">Expenses sum:</string>
     <string name="most_spending_on">Most spending on:</string>
     <string name="most_expensive_month">Most expensive month:</string>
-    <string name="most_expensive_user">Most expensive user:</string>
+    <string name="most_expensive_user">Most spending user:</string>
     <string name="not_enough_data">Not enough data!</string>
 
 
@@ -166,4 +169,39 @@
     <string name="partners_email">partners email:</string>
     <string name="connection_failed">Connection Failed</string>
     <string name="login_failed">Login failed, please try again</string>
+    <string name="notifications_options">Notifications</string>
+    <string name="must_provide_budget_name">Must provide budget name!</string>
+    <string name="choose_different_budget_name">Please choose a different budget name!</string>
+    <string name="partner_email_is_empty">Partner\'s email is empty!</string>
+    <string name="email_not_valid">Email is not valid!</string>
+    <string name="email_already_in_list">Email is already in the list!</string>
+    <string name="pref_title_allow_notifications_expenses">Allow notifications on expenses</string>
+    <string name="minimum_amount_to_notify">Minimum amount to notify</string>
+    <string name="pref_description_minimum_amount">Get notifications only for expenses that exceed the given threshold</string>
+    <string name="account">Account</string>
+    <string name="localization">Localization</string>
+    <string name="pref_description_allow_notifications_budgets">A notification will appear every time you are added to a budget</string>
+    <string name="pref_title_allow_notifications_budgets">Allow notifications on budgets</string>
+    <string name="pref_description_allow_notifications_deviation">A notification will appear every time one of your budget is about to exceed the limit you defined</string>
+    <string name="pref_title_allow_notifications_deviation">Allow notifications on deviation</string>
+    <string name="contacts_permissions">Why contacts permissions?</string>
+    <string name="contacts_permissions_explanation">With access to your contacts, we will be able to auto-complete your partners\' emails</string>
+    <string name="got_it">Got it</string>
+    <string name="review_incomes">Incomes:</string>
+    <string name="review_expenses">Expenses:</string>
+    <string name="enter_new_ceiling">Enter a new ceiling</string>
+    <string name="empty"></string>
+    <string name="number_formating_failed">The ceiling is too high</string>
+    <string name="signning_in">Signing in...</string>
+    <string name="review_info">Click on a category to define its ceiling</string>
+    <string name="overall_expenses">Overall Expenses</string>
+    <string name="no_ceiling_wanted">Leave empty to remove ceiling</string>
+    <string name="not_a_valid_number">Please enter a valid number</string>
+    <string name="export">Export</string>
+    <string name="failed_to_create_file">Failed to create file.</string>
+    <string name="external_storage_unavailable">External storage unavailable, please try again later.</string>
+    <string name="on_exit_by_back">Close Mezu?</string>
+
+
+
 </resources>

@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/categoryRow"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp">
+
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rcProgress="0"
+            app:rcSecondaryProgress="0"
+            app:rcMax="100"
+            app:rcRadius="8dp"
+            app:rcBackgroundPadding="3dp"
+            app:rcReverse="false"
+            app:rcProgressColor="@color/greenOpacity"
+            app:rcSecondaryProgressColor="@color/mainBGColor"
+            app:rcBackgroundColor="@color/transparent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/categoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:layout_weight="5"
+                android:paddingStart="16dp"/>
+
+            <TextView
+                android:id="@+id/categotySum"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="end"
+                android:paddingEnd="16dp"/>
+
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
+

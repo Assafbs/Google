@@ -11,17 +11,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener {
+public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener {
 
     private BudgetViewActivity mActivity;
     private ExpenseAdapter mExpenseAdapter = null;
     private View mView = null;
-
+    public static boolean sDefaultDate = true;
     private int mMonth;
     private int mYear;
 
@@ -31,8 +33,11 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         mActivity = (BudgetViewActivity) getActivity();
 
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
+
         setupMonthSelection();
         filterExpenses(mMonth, mYear);
+        EventDispatcher.getInstance().registerBudgetUpdateListener(this);
+        setNoExpensesIndication();
         return mView;
     }
 
@@ -42,13 +47,23 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
             Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
+        setNoExpensesIndication();
         filterExpenses(mMonth, mYear);
     }
 
-    private void setupMonthSelection() {
-        Calendar calendar = Calendar.getInstance();
-        setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
+    @Override
+    public void budgetUpdatedCallback(Budget newBudget) {
+        mExpenseAdapter.notifyDataSetChanged();
+        setNoExpensesIndication();
+    }
 
+    private void setupMonthSelection() {
+        if (sDefaultDate || mActivity.mYear == 0) {
+            Calendar calendar = Calendar.getInstance();
+            setMonth(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
+        } else {
+            setMonth(mActivity.mMonth + 1, mActivity.mYear);
+        }
         ImageView nextButton = (ImageView) mView.findViewById(R.id.next_arrow);
         ImageView backButton = (ImageView) mView.findViewById(R.id.back_arrow);
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +72,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
                 int month = nextMonth(mMonth);
                 int year = (month == 1) ? mYear + 1 : mYear;
                 setMonth(month, year);
+                sDefaultDate = false;
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +81,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
                 int month = previousMonth(mMonth);
                 int year = (month == 12) ? mYear - 1 : mYear;
                 setMonth(month, year);
+                sDefaultDate = true;
             }
         });
     }
@@ -72,6 +89,9 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private void setMonth(int month, int year) {
         mMonth = month;
         mYear = year;
+        mActivity.mMonth = mMonth - 1;
+        mActivity.mYear = mYear;
+
         TextView currentMonthTextView = (TextView) mView.findViewById(R.id.current_month);
         currentMonthTextView.setText(mMonth + "/" + mYear);
         filterExpenses(mMonth, mYear);
@@ -111,4 +131,21 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
     private int previousMonth(int month) {
         return (month == 1) ? 12 : month - 1;
     }
+
+    private void setNoExpensesIndication() {
+            if (mActivity.mCurrentBudget.getExpenses().size() == 0) {
+                mView.findViewById(R.id.months_layout).setVisibility(View.GONE);
+                mView.findViewById(R.id.expenses_list).setVisibility(View.GONE);
+                mView.findViewById(R.id.explaining_text1).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
+            }else{
+                mView.findViewById(R.id.months_layout).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.expenses_list).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.explaining_text1).setVisibility(View.GONE);
+                mView.findViewById(R.id.crying_logo).setVisibility(View.GONE);
+            }
+    }
+
+
+
 }

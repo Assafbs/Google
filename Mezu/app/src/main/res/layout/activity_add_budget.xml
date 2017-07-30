@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="7dp"
+    android:background="@drawable/background"
     tools:context="money.mezu.mezu.AddBudgetActivity">
 
     <android.support.design.widget.CoordinatorLayout
@@ -77,18 +78,18 @@
                         android:inputType="textEmailAddress"
                         android:completionThreshold="1"
                         android:textDirection="ltr"
+                        android:imeOptions="actionNext"
                         android:hint="@string/partners_email"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
+                    style="@style/Button"
                     android:id="@+id/add_partner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/add_partner"
-                    android:textColor="@color/white"
-                    android:background="@drawable/button_selector"/>
+                    android:text="@string/add_partner"/>
 
             </LinearLayout>
 
@@ -134,13 +135,12 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    style="@style/Button"
                     android:id="@+id/add_budget"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="@string/add"
-                    android:textColor="@color/white"
-                    android:background="@drawable/button_selector"/>
+                    android:text="@string/add"/>
 
             </FrameLayout>
 

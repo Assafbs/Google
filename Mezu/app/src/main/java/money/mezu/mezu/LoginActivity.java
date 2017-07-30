@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .build();
 
         mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Signing in...");
+        mConnectionProgressDialog.setMessage(getResources().getString(R.string.signning_in));
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override

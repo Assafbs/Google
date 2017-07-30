@@ -8,12 +8,16 @@
 
     <!--Budgets Activity Strings-->
     <string name="title_activity_budgets">התקציבים שלי</string>
+    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
+    <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
 
 
-    <!--Budget View Activity Strigns-->
+    <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">הצגת תקציב</string>
     <string name="general">כללי</string>
-
+    <string name="no_expenses_message1">נראה שאין לך הוצאות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור הוצאה\\הכנסה</string>
+    <string name="no_expenses_message2">הוסף הוצאות כדי לראות סטטיסטיקה ונתונים גרפיים\n(נסה ללחוץ על הפלוס)</string>
+    <string name="no_expenses_message3">הוסף הוצאות ואנחנו נסקור אותם כאן עבורך!\n(נסה ללחוץ על הפלוס)</string>
 
     <!--Expenses Tab Fragment Strings-->
     <string name="expenses_tab_title">הוצאות</string>
@@ -55,7 +59,7 @@
     <string name="category_education">חינוך</string>
     <string name="category_gifts">מתנה</string>
     <string name="category_subscriptions">מינויים</string>
-    <string name="category_debt_reduction">פדיון הלוואות</string>
+    <string name="category_debt_reduction">החזר הלוואות</string>
     <string name="category_donations">תרומות</string>
     <string name="category_paycheck">משכורת</string>
     <string name="category_other">אחר</string>
@@ -107,18 +111,13 @@
     <string name="hebrew">עברית</string>
     <string name="english">אנגלית</string>
 
-    <string-array name="pref_language_list_values">
-        <item>עב</item>
-        <item>אנ</item>
-    </string-array>
-
-    <string name="pref_description_allow_notifications">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
+    <string name="pref_description_allow_notifications_expenses">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
     <string name="pref_title_allow_notifications">אפשר התראות</string>
 
 
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
-    <string name="overall_graph">גרף כולל</string>
+    <string name="overall">גרף כולל</string>
     <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
     <string name="expenses_by_months">הוצאות לפי חודשים</string>
     <string name="expenses_by_users">הוצאות לפי משתמשים</string>
@@ -126,7 +125,7 @@
     <string name="expenses_sum">סך כל ההוצאות:</string>
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
-    <string name="most_expensive_user">המשתמש היקר ביותר:</string>
+    <string name="most_expensive_user">המשתמש שמוציא הכי הרבה:</string>
     <string name="not_enough_data">אין מספיק מידע!</string>
 
 
@@ -147,10 +146,41 @@
     <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק הוצאה/הכנסה זו?</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>
-    <string name="loading_budgets">טוען את התקציבים. נא להמתין...</string>
-    <string name="no_budgets_message">נראה שאין לך תקציבים כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור תקציב</string>
     <string name="partners_email">האימייל של השותפ/ה:</string>
     <string name="connection_failed">החיבור נכשל</string>
     <string name="login_failed">ההתחברות נכשלה, אנא נסה שוב</string>
+    <string name="choose_different_budget_name">נא לבחור שם אחר לתקציב</string>
+    <string name="email_already_in_list">האימייל כבר נמצא ברשימה!</string>
+    <string name="email_not_valid">האימייל אינו תקין!</string>
+    <string name="must_provide_budget_name">יש לתת שם לתקציב!</string>
+    <string name="partner_email_is_empty">כתובת האימייל ריקה!</string>
+    <string name="notifications_options">התראות</string>
+    <string name="account">חשבון</string>
+    <string name="localization">לוקליזציה</string>
+    <string name="minimum_amount_to_notify">סכום מינימאלי להתראה</string>
+    <string name="pref_description_allow_notifications_budgets">התראה תופיע בכל פעם שמוסיפים אותך לתקציב</string>
+    <string name="pref_description_allow_notifications_deviation">התראה תופיע בכל פעם שאחד התקציבים שלך מתקרב למכסה שהגדרת לו</string>
+    <string name="pref_description_minimum_amount">קבל התראות רק על הוצאות בסכום הגבוה מהסף שבחרת</string>
+    <string name="pref_title_allow_notifications_budgets">אפשר התראות על תקציבים</string>
+    <string name="pref_title_allow_notifications_deviation">אפשר התראות על חריגה</string>
+    <string name="pref_title_allow_notifications_expenses">אפשר התראות על הוצאות</string>
+    <string name="got_it">הבנתי</string>
+    <string name="contacts_permissions_explanation">עם גישה לאנשי הקשר שלך, נוכל לבצע השלמה אוטומטית של כתובות האימייל של שותפיך</string>
+    <string name="review_incomes">הכנסות:</string>
+    <string name="review_expenses">הוצאות:</string>
+    <string name="contacts_permissions">מדוע ביקשנו הרשאות לאנשי הקשר?</string>
+    <string name="enter_new_ceiling">הכנס תקרה חדשה</string>
+    <string name="number_formating_failed">התקרה גבוהה מדי</string>
+    <string name="signning_in">מתחבר...</string>
+    <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה</string>
+    <string name="overall_expenses">סה\"כ הוצאות</string>
+    <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה</string>
+    <string name="not_a_valid_number">אנא הכנס מספר תקין</string>
+    <string name="export">יצא</string>
+    <string name="failed_to_create_file">יצירת קובץ נכשלה.</string>
+    <string name="external_storage_unavailable">זיכרון חיצוני אינו זמין, נסה שוב מאוחר יותר.</string>
+    <string name="on_exit_by_back">לצאת מMezu?</string>
+
+
 
 </resources>

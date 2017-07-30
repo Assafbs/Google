@@ -81,20 +81,29 @@ public class LineChartMonths implements GraphInterface {
         Date startDate;
         Date endDate;
         int year = c.get(Calendar.YEAR);
+        int month;
         double amountPerMonth;
 
         for (int i = 1; i <= 12; i++) {
             startDate = new Date(getEpoch(i, year));
-            endDate = new Date(getEpoch(nextMonth(i), year));
+            month = nextMonth(i);
+            if (month == 1) {
+                year++;
+            }
+            endDate = new Date(getEpoch(month, year));
             expenses_by_months = Filter.filterExpensesByDate(mBudget.getExpenses(), startDate, endDate);
             amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, true);
             entries.add(new Entry(i, (float) amountPerMonth));
         }
         mLineDataSetExpenses = new LineDataSet(entries, resources.getString(R.string.expenses));
-
+        year = c.get(Calendar.YEAR);
         for (int i = 1; i <= 12; i++) {
             startDate = new Date(getEpoch(i, year));
-            endDate = new Date(getEpoch(nextMonth(i), year));
+            month = nextMonth(i);
+            if (month == 1) {
+                year++;
+            }
+            endDate = new Date(getEpoch(month, year));
             expenses_by_months = Filter.filterExpensesByDate(mBudget.getExpenses(), startDate, endDate);
             amountPerMonth = getTotalExpensesOrIncomesAmount(expenses_by_months, false);
             entries2.add(new Entry(i, (float) amountPerMonth));
