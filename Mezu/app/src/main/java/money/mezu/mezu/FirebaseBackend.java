@@ -244,15 +244,17 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void stopListeningOnAllPaths() {
-        Log.d("", "FirebaseBackend:stopListeningOnEvents: stopping");
+    public void resetBackend() {
+        Log.d("", "FirebaseBackend:resetBackend: stopping");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         for (Pair<String, ValueEventListener> pathListener : mPathsIListenTo) {
             DatabaseReference ref = database.getReference(pathListener.first);
-            Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s", pathListener.first));
+            Log.d("", String.format("FirebaseBackend:resetBackend: will not listen on:%s", pathListener.first));
             ref.removeEventListener(pathListener.second);
         }
         mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+        BackendCache.getInstatnce().clearCache();
+        BudgetsDownloadedNotifier.reset();
     }
 
     //************************************************************************************************************************************************
