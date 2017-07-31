@@ -6,7 +6,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-function sendNotification(uid, title, body)
+function sendNotification(uid, title, body, pBid)
 {
 	// Get notification token for user.
 	const deviceNotificationTokenPromise = admin.database().ref('/users/'+uid + '/notificationToken').once('value').then(function(snapshot) {
@@ -16,10 +16,16 @@ function sendNotification(uid, title, body)
 	    // Notification details.
 		const payload = 
 		{
+			data:
+			{
+				bid: pBid
+			},
+
 			notification: 
 			{
 				title: title,
 				body: body,
+				click_action: "ACTIVITY_OPEN_BUDGET_WHEN_READY",
 				//icon: follower.photoURL
 			}
 		};
@@ -47,7 +53,7 @@ exports.sendAddedToBudgetNotification = functions.database.ref('/users/{uid}/bud
 		const shouldNotify = snapshot.val();
 		if (shouldNotify)
 		{
-			sendNotification(uid, "You were added to a budget!", "");	
+			sendNotification(uid, "You were added to a budget!", "", bid);	
 		}
 	});
 });	
@@ -112,7 +118,7 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 					const minimalNotificationValue = snapshot.child("minimalNotificationValue").val();
 					if (expenseAmount >= minimalNotificationValue) 
 					{
-						sendNotification(luid, messageTitle, messageBody);
+						sendNotification(luid, messageTitle, messageBody, bid);
 					}
 				}
 
@@ -126,7 +132,7 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 						{
 						 	messageTitle = "Budget " + budgetName + " has gone over threshold";
 						 	messageBody = "Threshold is: " + thresholdVal + " while the budget's sum of expenses is: " + totalBudgetExpenses  + " for: " + (currentExpenseDate.getMonth() + 1) + "/"+(currentExpenseDate.getYear() - 100);
-						 	sendNotification(luid, messageTitle, messageBody);
+						 	sendNotification(luid, messageTitle, messageBody, bid);
 						}
 					}	
 				}
