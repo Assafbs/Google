@@ -274,7 +274,7 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void addUserIfNeeded(UserIdentifier uid, String username, String email) {
+    public void addUserIfNeededAndRefreshToken(UserIdentifier uid, String username, String email) {
         final UserIdentifier lUid = uid;
         final String usernameToAdd = username;
         final String emailToAdd = email;
@@ -289,11 +289,11 @@ public class FirebaseBackend {
                {
                    mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
                    mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
-                   mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
                    setShouldNotifyOnTransaction(true, lUid);
                    setMinimalTransactionNotificationValue(0, lUid);
                    shouldNotifyWhenAddedToBudget(true, lUid);
                }
+               mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
             }
             @Override
             public void onCancelled(DatabaseError error)
