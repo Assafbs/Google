@@ -316,7 +316,8 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void connectBudgetAndUserByEmail(Budget budget, String email) {
+    public void connectBudgetAndUserByEmail(Budget budget, String email)
+    {
         //TODO - maybe change DB representation in the future...
         final String emailHash = hash(email);
         final String bid = budget.getId();

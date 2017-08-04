@@ -53,7 +53,17 @@ exports.sendAddedToBudgetNotification = functions.database.ref('/users/{uid}/bud
 		const shouldNotify = snapshot.val();
 		if (shouldNotify)
 		{
-			sendNotification(uid, "You were added to a budget!", "", bid);	
+			// send notification to user only if he is not the one that created the budget.
+			const budgetPromise = admin.database().ref("/budgets/" + bid + "/budget").once('value').then(function(snapshot2)
+			{
+				if (snapshot2.hasChild("mOwner"))
+				{
+					if(snapshot2.child("mOwner").val() != uid)
+					{
+						sendNotification(uid, "You were added to a budget!", "", bid);				
+					}
+				}
+			});
 		}
 	});
 });	
@@ -78,6 +88,7 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 		const expenseAmount = snapshot.child("budget").child("mExpenses").child(eid).child("mAmount").val();
 		const isExpense = snapshot.child("budget").child("mExpenses").child(eid).child("mIsExpense").val();
 		const expenses = snapshot.child("budget").child("mExpenses").val();
+		const newExpenseAddedBy = snapshot.child("budget").child("mExpenses").child(eid).child("mUserID").val();
 		var totalBudgetExpenses = 0;
 		const currentExpenseDate = new Date(expenses[eid]["mTime"]);
 		for (var curreid in expenses)
@@ -112,16 +123,19 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 			const luid = uid;
 			const userSettingsPromise = admin.database().ref("/users/" + luid + "/settings").once('value').then(function(snapshot)
 			{
-				const shouldNotifyOnTransaction = snapshot.child("shouldNotifyOnTransaction").val();
-				if (shouldNotifyOnTransaction) 
+				if(luid != newExpenseAddedBy)
 				{
-					const minimalNotificationValue = snapshot.child("minimalNotificationValue").val();
-					if (expenseAmount >= minimalNotificationValue) 
+					const shouldNotifyOnTransaction = snapshot.child("shouldNotifyOnTransaction").val();
+					if (shouldNotifyOnTransaction) 
 					{
-						sendNotification(luid, messageTitle, messageBody, bid);
-					}
+						const minimalNotificationValue = snapshot.child("minimalNotificationValue").val();
+						if (expenseAmount >= minimalNotificationValue) 
+						{
+							sendNotification(luid, messageTitle, messageBody, bid);
+						}
+					}	
 				}
-
+				
 				if (snapshot.hasChild(bid))
 				{
 					const thresholdSettingEnabled = snapshot.child(bid).child("thresholdSettings").child("shouldNotify").val();
