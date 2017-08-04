@@ -115,7 +115,7 @@ public class FirebaseBackend {
                 Log.d("", String.format("FirebaseBackend:leaveBudget: onDataChange:start, with bidToLeave: %s", bidToLeave));
                 stopListeningOnPath("budgets/" + bidToLeave);
                 ArrayList<String> emails = (ArrayList<String>) dataSnapshot.child("budget").child("mEmails").getValue();
-                emails.remove(userEmail);
+                emails.remove(userEmail.toLowerCase());
                 mDatabase.child("budgets").child(bidToLeave).child("budget").child("mEmails").setValue(emails);
                 HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.child("/users").getValue();
                 mDatabase.child("users").child(uidToUpdate).child("budgets").child(bidToLeave).removeValue();
@@ -277,7 +277,7 @@ public class FirebaseBackend {
     public void addUserIfNeededAndRefreshToken(UserIdentifier uid, String username, String email) {
         final UserIdentifier lUid = uid;
         final String usernameToAdd = username;
-        final String emailToAdd = email;
+        final String emailToAdd = email.toLowerCase();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -319,6 +319,7 @@ public class FirebaseBackend {
     public void connectBudgetAndUserByEmail(Budget budget, String email)
     {
         //TODO - maybe change DB representation in the future...
+        email = email.toLowerCase();
         final String emailHash = hash(email);
         final String bid = budget.getId();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
