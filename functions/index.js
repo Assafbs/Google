@@ -26,7 +26,7 @@ function sendNotification(uid, title, body, pBid)
 				title: title,
 				body: body,
 				click_action: "ACTIVITY_OPEN_BUDGET_WHEN_READY",
-				//icon: follower.photoURL
+				icon: "mezu_logo"
 			}
 		};
 
