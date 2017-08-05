@@ -65,15 +65,13 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
                 if (BudgetName.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, R.string.must_provide_budget_name, Toast.LENGTH_SHORT).show();
-                } else if (false) { //TODO: replace with check that budget name is valid (change toast text accordingly)
-                    Toast.makeText(AddBudgetActivity.this, R.string.choose_different_budget_name, Toast.LENGTH_SHORT).show();
-                } else {
+                }  else {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
                     ArrayList<String> partnerEmailsIncludingMe = (ArrayList<String>) partnersEmails.clone();
                     partnerEmailsIncludingMe.add(sessionManager.getUserEmail());
-                    Budget newBudget = new Budget(BudgetName, startingBalance, partnerEmailsIncludingMe);
+                    Budget newBudget = new Budget(BudgetName, startingBalance, partnerEmailsIncludingMe, uid.getId().toString());
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
                     for (String email : partnersEmails) {
                         FirebaseBackend.getInstance().connectBudgetAndUserByEmail(newBudget, email);

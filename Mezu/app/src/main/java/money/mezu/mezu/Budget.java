@@ -6,6 +6,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
 
 public class Budget {
 
@@ -15,8 +17,9 @@ public class Budget {
     private double mInitialBalance;
     private ArrayList<String> mEmails;
     private HashMap<Category, Double> mCategoryCeilings;
+    private String mOwner;
     //************************************************************************************************************************************************
-    public Budget(String name, double initialBalance, ArrayList<String> emails) {
+    public Budget(String name, double initialBalance, ArrayList<String> emails, String owner) {
         super();
         this.mId = "";
         this.mName = name;
@@ -24,6 +27,7 @@ public class Budget {
         this.mInitialBalance = initialBalance;
         this.mEmails = emails;
         this.mCategoryCeilings = new HashMap<>();
+        this.mOwner = owner;
         //TODO: backend to fill
     }
     //************************************************************************************************************************************************
@@ -32,6 +36,14 @@ public class Budget {
         Log.d("", String.format("Budget:Budget creating budget from serialized budget: %s", serializedBudget.toString()));
         this.mId = (String) serializedBudget.get("mId");
         this.mName = (String) serializedBudget.get("mName");
+        if(serializedBudget.containsKey("mOwner"))
+        {
+            this.mOwner = (String)serializedBudget.get("mOwner");
+        }
+        else
+        {
+            this.mOwner = "";
+        }
         ArrayList<Expense> expenses = new ArrayList<Expense>();
         try{
         if (serializedBudget.containsKey("mExpenses")) {
@@ -56,7 +68,7 @@ public class Budget {
                 this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
             }
         }
-        
+
         if (serializedBudget.containsKey("mInitialBalance")) {
             this.mInitialBalance = Double.parseDouble(serializedBudget.get("mInitialBalance").toString());
         } else {
@@ -103,6 +115,11 @@ public class Budget {
         return mExpenses;
     }
     //************************************************************************************************************************************************
+    public String getOwner()
+    {
+        return this.mOwner;
+    }
+    //************************************************************************************************************************************************
     public Expense getExpenseByID(BudgetIdentifier bi) {
         for (Expense expense : mExpenses) {
             if (expense.getId().equals(bi)) {
@@ -123,13 +140,29 @@ public class Budget {
         serialized.put("mName", mName);
         serialized.put("mInitialBalance", mInitialBalance);
         serialized.put("mEmails", mEmails);
+        serialized.put("mOwner", mOwner);
         HashMap<String, Double> translatedCategoryCeilings = new HashMap<String, Double>();
         for (Category key : this.mCategoryCeilings.keySet())
         {
             translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key));
         }
         serialized.put("mCategoryCeilings", translatedCategoryCeilings);
-
+        return serialized;
+    }
+    //************************************************************************************************************************************************
+    public HashMap<String, Object> serialize()
+    {
+        HashMap<String, Object> serialized = this.serializeNoExpenses();
+        if (this.mExpenses.isEmpty())
+        {
+            return serialized;
+        }
+        HashMap<String, HashMap<String, Object>>  expenses = new HashMap<String, HashMap<String, Object>>();
+        for (Expense expense: mExpenses)
+        {
+            expenses.put(expense.getId(), expense.serialize());
+        }
+        serialized.put("mExpenses", expenses);
         return serialized;
     }
     //************************************************************************************************************************************************
@@ -139,6 +172,7 @@ public class Budget {
         this.mExpenses = budget.getExpenses();
         this.mInitialBalance = budget.getInitialBalance();
         this.mEmails = budget.getEmails();
+        this.mOwner = budget.getOwner();
     }
     //************************************************************************************************************************************************
     public double getInitialBalance() {
@@ -328,7 +362,7 @@ public class Budget {
 
         return false;
     }
-
+    //************************************************************************************************************************************************
     public double tryGetCategoryCeiling (Category category) {
         HashMap<Category, Double> categoryCeilings = this.getCategoryCeilings();
         if (categoryCeilings == null) {
@@ -338,5 +372,30 @@ public class Budget {
                 null :
                 ((Number) categoryCeilings.get(category)).doubleValue();
         return ceiling == null ? -1 : ceiling;
+    }
+    //************************************************************************************************************************************************
+    public boolean expensesDiffer(Budget budgetToCompare)
+    {
+        for (Expense myExpense: this.getExpenses())
+        {
+            boolean foundMatch = false;
+            for (Expense theirExpense: budgetToCompare.getExpenses())
+            {
+                if(myExpense.getId().equals(theirExpense.getId()))
+                {
+                    foundMatch = true;
+                    if(myExpense.expenseDiffers(theirExpense))
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            if(!foundMatch)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

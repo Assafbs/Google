@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements
             UserIdentifier userId = new UserIdentifier(uid);
 
             sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google", personEmail, personImage);
-            FirebaseBackend.getInstance().addUserIfNeeded(userId, personName, personEmail);
+            FirebaseBackend.getInstance().addUserIfNeededAndRefreshToken(userId, personName, personEmail);
             Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);

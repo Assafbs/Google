@@ -85,7 +85,7 @@ public class BudgetsActivity extends BaseNavDrawerActivity implements BudgetUpda
     }
 
     private void setNoBudgetsIndication() {
-        findViewById(R.id.loading_spinner).setVisibility(View.GONE);
+        findViewById(R.id. loading_spinner).setVisibility(View.GONE);
         if (this.mapOfBudgets.size() > 0){
             findViewById(R.id.explaining_text).setVisibility(View.GONE);
         }

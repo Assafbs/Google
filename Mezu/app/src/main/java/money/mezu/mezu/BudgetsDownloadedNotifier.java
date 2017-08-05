@@ -11,12 +11,13 @@ import java.util.Set;
 public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
     Set<String> bidsToListen;
     static boolean firstExecution = true;
+    static BudgetsDownloadedNotifier mBudgetsDownloadedNotifier;
     //************************************************************************************************************************************************
     public static void handleIfFirstExecution(Set<String> bids)
     {
         if(firstExecution )
         {
-            new BudgetsDownloadedNotifier(bids);
+            mBudgetsDownloadedNotifier = new BudgetsDownloadedNotifier(bids);
         }
         firstExecution = false;
     }
@@ -25,6 +26,12 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
     {
         bidsToListen = bids;
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
+    }
+    //************************************************************************************************************************************************
+    public static void reset()
+    {
+        EventDispatcher.getInstance().unregisterBudgetUpdatedListener(mBudgetsDownloadedNotifier);
+        firstExecution = true;
     }
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget newBudget)

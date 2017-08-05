@@ -21,6 +21,11 @@ public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListen
         return mCache;
     }
     //************************************************************************************************************************************************
+    public void clearCache()
+    {
+        mCache = null;
+    }
+    //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget newBudget)
     {
         Log.d("",String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));

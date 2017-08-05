@@ -68,6 +68,13 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".OpenBudgetViewWhenReadyActivity">
+            <intent-filter>
+                <action android:name="ACTIVITY_OPEN_BUDGET_WHEN_READY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

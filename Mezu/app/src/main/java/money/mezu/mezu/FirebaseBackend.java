@@ -112,8 +112,10 @@ public class FirebaseBackend {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
+                Log.d("", String.format("FirebaseBackend:leaveBudget: onDataChange:start, with bidToLeave: %s", bidToLeave));
+                stopListeningOnPath("budgets/" + bidToLeave);
                 ArrayList<String> emails = (ArrayList<String>) dataSnapshot.child("budget").child("mEmails").getValue();
-                emails.remove(userEmail);
+                emails.remove(userEmail.toLowerCase());
                 mDatabase.child("budgets").child(bidToLeave).child("budget").child("mEmails").setValue(emails);
                 HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.child("/users").getValue();
                 mDatabase.child("users").child(uidToUpdate).child("budgets").child(bidToLeave).removeValue();
@@ -124,14 +126,16 @@ public class FirebaseBackend {
                     Log.d("","FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
                 }
-                stopListeningOnPath("budgets/" + bidToLeave + "/users");
+                // This line appears twice to handle a very unlikely race condition (which wasn't witnessed) that can occur if the first invocation
+                // occurs before the path is added to the hashmap.
+                stopListeningOnPath("budgets/" + bidToLeave);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
             }
         });
-        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave + "/users", newListener));
+        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave, newListener));
     }
 
     //************************************************************************************************************************************************
@@ -143,11 +147,11 @@ public class FirebaseBackend {
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
         // TODO - maybe take care of listeners hash map...
         mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
-                setValue(budgetToEdit.serializeNoExpenses());
-        for (Expense expense : budgetToEdit.getExpenses()) {
-            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
-                    child(expense.getId()).setValue(expense.serialize());
-        }
+                setValue(budgetToEdit.serialize());
+//        for (Expense expense : budgetToEdit.getExpenses()) {
+//            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
+//                    child(expense.getId()).setValue(expense.serialize());
+//        }
     }
 
     //************************************************************************************************************************************************
@@ -240,15 +244,17 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void stopListeningOnAllPaths() {
-        Log.d("", "FirebaseBackend:stopListeningOnEvents: stopping");
+    public void resetBackend() {
+        Log.d("", "FirebaseBackend:resetBackend: stopping");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         for (Pair<String, ValueEventListener> pathListener : mPathsIListenTo) {
             DatabaseReference ref = database.getReference(pathListener.first);
-            Log.d("", String.format("FirebaseBackend:stopListeningOnEvents: will not listen on:%s", pathListener.first));
+            Log.d("", String.format("FirebaseBackend:resetBackend: will not listen on:%s", pathListener.first));
             ref.removeEventListener(pathListener.second);
         }
         mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+        BackendCache.getInstatnce().clearCache();
+        BudgetsDownloadedNotifier.reset();
     }
 
     //************************************************************************************************************************************************
@@ -268,10 +274,10 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void addUserIfNeeded(UserIdentifier uid, String username, String email) {
+    public void addUserIfNeededAndRefreshToken(UserIdentifier uid, String username, String email) {
         final UserIdentifier lUid = uid;
         final String usernameToAdd = username;
-        final String emailToAdd = email;
+        final String emailToAdd = email.toLowerCase();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("users/");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -283,11 +289,11 @@ public class FirebaseBackend {
                {
                    mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
                    mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
-                   mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
                    setShouldNotifyOnTransaction(true, lUid);
                    setMinimalTransactionNotificationValue(0, lUid);
                    shouldNotifyWhenAddedToBudget(true, lUid);
                }
+               mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
             }
             @Override
             public void onCancelled(DatabaseError error)
@@ -310,8 +316,10 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void connectBudgetAndUserByEmail(Budget budget, String email) {
+    public void connectBudgetAndUserByEmail(Budget budget, String email)
+    {
         //TODO - maybe change DB representation in the future...
+        email = email.toLowerCase();
         final String emailHash = hash(email);
         final String bid = budget.getId();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
