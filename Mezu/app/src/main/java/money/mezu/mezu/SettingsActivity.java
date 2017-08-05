@@ -41,13 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
             EditTextPreference displayNamePref = (EditTextPreference)findPreference("display_name");
             displayNamePref.setText(sessionManager.getUserName());
             displayNamePref.setSummary(sessionManager.getUserName());
-            displayNamePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    // TODO: update name in DB
-                    return false;
-                }
-            });
 
             Context context = getActivity();
             ListPreference languagePref = (ListPreference)findPreference("language");
