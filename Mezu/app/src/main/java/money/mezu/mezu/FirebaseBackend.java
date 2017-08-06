@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.Charset;
 import java.math.BigInteger;
+import java.util.SimpleTimeZone;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -316,44 +317,49 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void connectBudgetAndUserByEmail(Budget budget, String email)
+    public void tellServerToAddMailsToBudget(Budget budget, ArrayList<String> emailsToAdd)
     {
-        //TODO - maybe change DB representation in the future...
-        email = email.toLowerCase();
-        final String emailHash = hash(email);
-        final String bid = budget.getId();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("users/");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
-                for (final String uidAsString : uidDict.keySet()) {
-                    DatabaseReference ref2 = database.getReference("users/" + uidAsString + "/email/");
-                    if (ref2 == null)
-                        continue;
-                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
-                                connectBudgetAndUser(bid, uidAsString);
-                            } else {
-                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
-                            }
-                        }
+//        //TODO - maybe change DB representation in the future...
+//        final String bid = budget.getId();
+//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        SessionManager session = new SessionManager(StaticContext.mContext);
+//        for (int i = 0; i < emailsToAdd.size(); ++i)
+//        {
+//            emailsToAdd.set(i, emailsToAdd.get(i).toLowerCase());
+//        }
+//        mDatabase.child("budgets").child(bid).child("pending").child(session.getUserId().getId().toString()).setValue(emailsToAdd);
 
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
+//        DatabaseReference ref = database.getReference("users/");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
+//                for (final String uidAsString : uidDict.keySet()) {
+//                    DatabaseReference ref2 = database.getReference("users/" + uidAsString + "/email/");
+//                    if (ref2 == null)
+//                        continue;
+//                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
+//                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
+//                                connectBudgetAndUser(bid, uidAsString);
+//                            } else {
+//                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError error) {
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//            }
+//        });
     }
 
     //************************************************************************************************************************************************

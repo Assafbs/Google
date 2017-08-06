@@ -92,14 +92,11 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                         startingBalance == mCurrentBudget.getInitialBalance()) || !partnersEmails.isEmpty()) { // Something changed
                     mCurrentBudget.setName(budgetName);
                     mCurrentBudget.setInitialBalance(startingBalance);
-                    mCurrentBudget.addNewEmails(partnersEmails);
+                    mCurrentBudget.addNewPending(partnersEmails);
                     for (String mail : partnersEmails) {
                         Log.d("", String.format("EditBudgetActivity:onCreate: current mail is :%s", mail));
                     }
                     FirebaseBackend.getInstance().editBudget(mCurrentBudget);
-                }
-                for (String email : partnersEmails) {
-                    FirebaseBackend.getInstance().connectBudgetAndUserByEmail(mCurrentBudget, email);
                 }
                 BudgetViewActivity.goToBudgetView(EditBudgetActivity.this, mCurrentBudget, mSessionManager);
             }

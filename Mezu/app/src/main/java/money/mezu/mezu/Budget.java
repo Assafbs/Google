@@ -1,6 +1,9 @@
 package money.mezu.mezu;
 
+import android.util.Base64;
 import android.util.Log;
+
+import org.apache.poi.util.ArrayUtil;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -18,17 +21,23 @@ public class Budget {
     private ArrayList<String> mEmails;
     private HashMap<Category, Double> mCategoryCeilings;
     private String mOwner;
+    private HashMap<String, String> mPending;
     //************************************************************************************************************************************************
-    public Budget(String name, double initialBalance, ArrayList<String> emails, String owner) {
+    public Budget(String name, double initialBalance, ArrayList<String> emails, String owner, ArrayList<String> pending) {
         super();
         this.mId = "";
         this.mName = name;
         this.mExpenses = new ArrayList<>();
         this.mInitialBalance = initialBalance;
-        this.mEmails = emails;
+        this.mEmails = new ArrayList<String>();
+        for (int i = 0; i < emails.size(); ++i)
+        {
+            this.mEmails.add(emails.get(i).toLowerCase());
+        }
         this.mCategoryCeilings = new HashMap<>();
         this.mOwner = owner;
-        //TODO: backend to fill
+        this.mPending = new HashMap<String, String>();
+        this.addNewPending(pending);
     }
     //************************************************************************************************************************************************
     public Budget(HashMap<String, Object> serializedBudget) {
@@ -44,6 +53,12 @@ public class Budget {
         {
             this.mOwner = "";
         }
+        this.mPending = new HashMap<String, String>();
+        if(serializedBudget.containsKey("mPending"))
+        {
+            addNewPendingAndDecode((HashMap<String, String>) serializedBudget.get("mPending"));
+        }
+
         ArrayList<Expense> expenses = new ArrayList<Expense>();
         try{
         if (serializedBudget.containsKey("mExpenses")) {
@@ -75,6 +90,34 @@ public class Budget {
             this.mInitialBalance = 0;
         }
         this.mEmails = (ArrayList<String>)serializedBudget.get("mEmails");
+    }
+    //************************************************************************************************************************************************
+    public void addNewPendingAndDecode(HashMap<String, String> pendingToDecode)
+    {
+        for (String pending : pendingToDecode.keySet())
+        {
+            this.mPending.put(Base64.decode(pending.getBytes(),Base64.NO_WRAP).toString(), pendingToDecode.get(pending));
+        }
+    }
+    //************************************************************************************************************************************************
+    public HashMap<String, String> getEncodedPending()
+    {
+        HashMap<String, String> encodedPending = new HashMap<>();
+        for(String pending: this.mPending.keySet())
+        {
+            encodedPending.put(Base64.encodeToString(pending.getBytes(),Base64.NO_WRAP), pending);
+        }
+        return encodedPending;
+    }
+    //************************************************************************************************************************************************
+    public void addNewPending(ArrayList<String> newPending)
+    {
+        SessionManager session = new SessionManager(StaticContext.mContext);
+        String uid = session.getUserId().getId().toString();
+        for (String pending : newPending)
+        {
+            this.mPending.put(pending.toLowerCase(), pending.toLowerCase());
+        }
     }
     //************************************************************************************************************************************************
     public void setCeilingForCategory(Category category, Double ceiling)
@@ -120,6 +163,8 @@ public class Budget {
         return this.mOwner;
     }
     //************************************************************************************************************************************************
+    public HashMap<String, String> getPending() {return this.mPending;}
+    //************************************************************************************************************************************************
     public Expense getExpenseByID(BudgetIdentifier bi) {
         for (Expense expense : mExpenses) {
             if (expense.getId().equals(bi)) {
@@ -141,6 +186,8 @@ public class Budget {
         serialized.put("mInitialBalance", mInitialBalance);
         serialized.put("mEmails", mEmails);
         serialized.put("mOwner", mOwner);
+        serialized.put("mPending", this.getEncodedPending());
+        Log.d("", String.format("Budget:serializeNoExpenses this is the pending list: %s", ((HashMap<String,String>)serialized.get("mPending")).keySet().toString()));
         HashMap<String, Double> translatedCategoryCeilings = new HashMap<String, Double>();
         for (Category key : this.mCategoryCeilings.keySet())
         {
@@ -173,6 +220,7 @@ public class Budget {
         this.mInitialBalance = budget.getInitialBalance();
         this.mEmails = budget.getEmails();
         this.mOwner = budget.getOwner();
+        this.mPending = budget.getPending();
     }
     //************************************************************************************************************************************************
     public double getInitialBalance() {
