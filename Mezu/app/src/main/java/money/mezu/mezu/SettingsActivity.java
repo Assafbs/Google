@@ -1,10 +1,8 @@
 package money.mezu.mezu;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -33,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity {
         window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)// TODO: change to the version we decide to support
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -44,13 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
             EditTextPreference displayNamePref = (EditTextPreference)findPreference("display_name");
             displayNamePref.setText(sessionManager.getUserName());
             displayNamePref.setSummary(sessionManager.getUserName());
-            displayNamePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    // TODO: update name in DB
-                    return false;
-                }
-            });
 
             Context context = getActivity();
             ListPreference languagePref = (ListPreference)findPreference("language");

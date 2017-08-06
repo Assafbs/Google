@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import java.math.BigInteger;
 
 import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.getStatusCodeString;
+import static com.google.android.gms.common.api.CommonStatusCodes.INTERNAL_ERROR;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -98,7 +99,12 @@ public class LoginActivity extends AppCompatActivity implements
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);
         } else {
+            if (result.getStatus().getStatusCode() == INTERNAL_ERROR) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            } else {
                 Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
