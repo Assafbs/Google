@@ -79,8 +79,7 @@ function addToList(dictionaryList, element)
 		}
 	}
 	dictionaryList[highestIndex+1] = element;
-}
-//******************************************************************************************************************************************************
+}//******************************************************************************************************************************************************
 exports.handlePendingList = functions.database.ref('/budgets/{bid}/budget/mPending').onWrite(event => {
 	const bid = event.params.bid;
 	console.log('new pending for bid: ' + bid);
@@ -88,76 +87,103 @@ exports.handlePendingList = functions.database.ref('/budgets/{bid}/budget/mPendi
 	{
 		const pendingEmails = snapshot.val()["budget"]["mPending"];
 		console.log('pending users are ' + JSON.stringify(pendingEmails));
-		const usersPromise = admin.database().ref("/users").once('value').then(function(snapshot2)
+		for(var pendingEmailEncoded in pendingEmails)
 		{
-			for(var pendingEmailEncoded in pendingEmails)
+			const lPendingEmailEncoded = pendingEmailEncoded;
+			const lPendingEmail = pendingEmails[pendingEmailEncoded];
+			const uidPromise = admin.database().ref('/mails/'+ pendingEmailEncoded + "/uid").once('value').then(function(snapshot2)
 			{
-				var pendingEmail = pendingEmails[pendingEmailEncoded];
-				for (var user in snapshot2.val())
+				const uid = snapshot2.val();
+				if (null == uid)
 				{
-					if(snapshot2.val()[user]["email"] == pendingEmail)
+					const uidPromise = admin.database().ref('/mails/'+ pendingEmailEncoded + "/pendingBudgets").once('value').then(function(snapshot3)
 					{
-						console.log('found user ' + user);
-						var budgetUsers = snapshot.val()["users"];
-						budgetUsers[user] = user;
-						admin.database().ref("/budgets/" + bid + "/users").set(budgetUsers);
-						
-						var budgetEmails = snapshot.val()["budget"]["mEmails"];
-						addToList(budgetEmails, pendingEmail);
-						admin.database().ref("/budgets/" + bid + "/budget/mEmails").set(budgetEmails);
-
-						var userBudgets = snapshot2.val()[user]["budgets"];
-						if(null == userBudgets)
+						var pendingBudgets = snapshot3.val();
+						if (null == pendingBudgets)
 						{
-							userBudgets = {};
+							pendingBudgets = {};
 						}
-						userBudgets[bid] = bid;
-						admin.database().ref("/users/" + user +"/budgets" ).set(userBudgets);
-						admin.database().ref("/budgets/" + bid + "/budget/mPending/" + pendingEmailEncoded).set(null)
-						break;
-					}
+						pendingBudgets[bid] = bid;
+						admin.database().ref('/mails/'+ pendingEmailEncoded + "/pendingBudgets").set(pendingBudgets);
+					});
 				}
-			}
-		});
-	});
-});
-//******************************************************************************************************************************************************
-exports.connectNewUserToPendingBudgets = functions.database.ref('/users/{uid}').onCreate(event => {
-	const uid = event.params.uid;
-	// try adding the user to all its pending budgets.
-	const budgetsPromise = admin.database().ref('/budgets/').once('value').then(function(snapshot)
-	{
-		const userPromise = admin.database().ref('/users/' + uid).once('value').then(function(snapshot2)
-		{
-			var newUserEmail = snapshot2.val()["email"];
-			var pendingEmailEncoded = Buffer.from(newUserEmail).toString('base64');
-			console.log("connecting new user with mail: " + newUserEmail + " base64 is: " + pendingEmailEncoded);
-			for(bid in snapshot.val())
-			{
-				if("mPending" in snapshot.val()[bid]["budget"])
+				else
 				{
-					if( pendingEmailEncoded in snapshot.val()[bid]["budget"]["mPending"])
+					const uidPromise = admin.database().ref('/users/'+ uid).once('value').then(function(snapshot3)
 					{
-						console.log('adding new user to bid ' + bid + " because it was pending");
-						var budgetUsers = snapshot.val()[bid]["users"];
+						var budgetUsers = snapshot.val()["users"];
 						budgetUsers[uid] = uid;
 						admin.database().ref("/budgets/" + bid + "/users").set(budgetUsers);
 						
-						var budgetEmails = snapshot.val()[bid]["budget"]["mEmails"];
-						addToList(budgetEmails, newUserEmail);
+						var budgetEmails = snapshot.val()["budget"]["mEmails"];
+						addToList(budgetEmails, lPendingEmail);
 						admin.database().ref("/budgets/" + bid + "/budget/mEmails").set(budgetEmails);
 
-						var userBudgets = snapshot2.val()["budgets"];
+						var userBudgets = snapshot3.val()["budgets"];
 						if(null == userBudgets)
 						{
 							userBudgets = {};
 						}
 						userBudgets[bid] = bid;
-						admin.database().ref("/users/" + uid +"/budgets" ).set(userBudgets);
-						admin.database().ref("/budgets/" + bid + "/budget/mPending/" + pendingEmailEncoded).set(null)
-					}
+						admin.database().ref("/users/" + uid + "/budgets" ).set(userBudgets);
+						admin.database().ref("/budgets/" + bid + "/budget/mPending/" + lPendingEmailEncoded).set(null)
+					});
 				}
-			}	
+			});
+		}
+	});
+});
+
+//******************************************************************************************************************************************************
+exports.connectNewUserToPendingBudgets = functions.database.ref('/users/{uid}').onCreate(event => {
+	const uid = event.params.uid;
+	var bidsToAddToUserBudget = {};
+	// check if user has any pending budgets
+	const userPromise = admin.database().ref('/users/' + uid).once('value').then(function(snapshot)
+	{
+		const newUserMail = snapshot.val()["email"];
+		const newUserMailEncoded  = Buffer.from(newUserMail).toString('base64');
+		const pendingBudgetsPromise = admin.database().ref('/mails/' +  newUserMailEncoded + '/pendingBudgets').once('value').then(function(snapshot2)
+		{
+			var pendingBudgets = snapshot2.val();
+			if (null != pendingBudgets)
+			{
+				for(var bid in pendingBudgets)
+				{
+					const lBid = bid;
+					const budgetPromise = admin.database().ref('/budgets/' + lBid).once('value').then(function(snapshot3)
+					{
+						var budget = snapshot3.val();
+						if (null != budget)
+						{
+							console.log('adding new user to bid ' + lBid + " because it was pending");
+							var budgetUsers = snapshot3.val()["users"];
+							budgetUsers[uid] = uid;
+							admin.database().ref("/budgets/" + lBid + "/users").set(budgetUsers);
+							
+							var budgetEmails = snapshot3.val()["budget"]["mEmails"];
+							addToList(budgetEmails, newUserMail);
+							admin.database().ref("/budgets/" + lBid + "/budget/mEmails").set(budgetEmails);
+
+							// this is done in such a convoluted way we need to keep who we already added in every loop.
+							var userBudgets = snapshot.val()["budgets"];
+							bidsToAddToUserBudget[lBid] = lBid;
+							if (null == userBudgets) 
+							{
+								userBudgets = {};
+							}
+							for(var bidToAdd in bidsToAddToUserBudget)
+							{
+								userBudgets[bidToAdd] = bidToAdd;
+							}
+							admin.database().ref("/users/" + uid +"/budgets" ).set(userBudgets);
+
+							admin.database().ref("/budgets/" + lBid + "/budget/mPending/" + newUserMailEncoded).set(null)
+						}
+						admin.database().ref('/mails/' +  newUserMailEncoded + '/pendingBudgets/' + lBid).set(null);
+					});				
+				}
+			}
 		});
 	});
 });
@@ -248,6 +274,23 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 	});
 });	
 
+
+// exports.createList = functions.database.ref('/budgets/-KqsLHcVfXsoabDz2cbm').onWrite(event => {
+// 	const pendingPromise = admin.database().ref('/users/').once('value').then(function(snapshot)
+// 	{
+// 		var newTable = {};
+// 		for(var uid in snapshot.val())
+// 		{
+// 			var entry = {};
+// 			entry["uid"] = uid;
+// 			if(null != snapshot.val()[uid]["email"])
+// 			{
+// 				newTable[Buffer.from(snapshot.val()[uid]["email"]).toString('base64')] = entry;	
+// 			}
+// 		}
+// 		admin.database().ref("/mails").set(newTable);
+// 	});
+// });
 
 
 

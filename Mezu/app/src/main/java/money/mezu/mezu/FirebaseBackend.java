@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
@@ -275,7 +276,7 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void addUserIfNeededAndRefreshToken(UserIdentifier uid, String username, String email) {
+    public void addUserIfNeededAndRefreshToken(UserIdentifier uid, String username, final String email) {
         final UserIdentifier lUid = uid;
         final String usernameToAdd = username;
         final String emailToAdd = email.toLowerCase();
@@ -290,6 +291,7 @@ public class FirebaseBackend {
                {
                    mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
                    mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
+                   mDatabase.child("mails").child(Base64.encodeToString(emailToAdd.getBytes(), Base64.NO_WRAP)).child("uid").setValue(uidToAdd);
                    setShouldNotifyOnTransaction(true, lUid);
                    setMinimalTransactionNotificationValue(0, lUid);
                    shouldNotifyWhenAddedToBudget(true, lUid);
