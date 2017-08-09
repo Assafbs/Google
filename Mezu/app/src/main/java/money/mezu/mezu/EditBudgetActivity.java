@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.robertlevonyan.views.chip.Chip;
 import com.robertlevonyan.views.chip.OnCloseClickListener;
 
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
@@ -71,6 +72,31 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             }
             Chip chip = new Chip(EditBudgetActivity.this);
             chip.setChipText(partnerEmail);
+            partnersChipsContainer.addView(chip);
+        }
+        for (String pendingPartnerEmail : mCurrentBudget.getPending().values()){
+            Chip chip = new Chip(EditBudgetActivity.this);
+            chip.setChipText(pendingPartnerEmail);
+            chip.setTextColor(getResources().getColor(R.color.expense_red));
+            chip.setHasIcon(true);
+            chip.setChipIcon(getResources().getDrawable(R.drawable.mail));
+            chip.setClickable(true);
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent sendEmailIntent = new Intent(Intent.ACTION_SEND);
+                    sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{((Chip)view).getChipText()});
+                    sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join our budget - " + mCurrentBudget.getName());
+                    sendEmailIntent.putExtra(Intent.EXTRA_TEXT, mSessionManager.getUserName() +
+                            " would like you to join the budget \"" + mCurrentBudget.getName() + "\",\n" +
+                            "but it seems like you don't have the Mezu app!\n\n" +
+                            "Go to https://play.google.com/store/apps/details?id=money.mezu.mezu " +
+                            "and get it today!\n\n" +
+                            "Sent By Mezu");
+                    sendEmailIntent.setType("message/rfc822");
+                    startActivity(sendEmailIntent);
+                }
+            });
             partnersChipsContainer.addView(chip);
         }
 
