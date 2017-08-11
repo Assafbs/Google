@@ -31,14 +31,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.Objects;
+
 
 public class ExpenseFragment extends Fragment {
     private CategoryPredictor predictor;
@@ -448,6 +447,7 @@ public class ExpenseFragment extends Fragment {
                 }
                 break;
         }
+
         mActivity.tryReleaseTabs();
     }
 

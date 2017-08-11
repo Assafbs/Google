@@ -144,7 +144,8 @@
     <string name="expense_deleted">הפעולה נמחקה</string>
     
     <string name="delete_confirmation_budget">האם הנך בטוח/ה שברצונך למחוק תקציב זה?</string>
-    <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק פעולה זו?</string>
+    <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק פעולה זו (בחירת \"הכל\" תמחק את גם את כל המופעים העתידיים של פעולה זו)?</string>
+    <string name="delete_recurring">הכל</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>
     <string name="partners_email">האימייל של השותפ/ה:</string>
