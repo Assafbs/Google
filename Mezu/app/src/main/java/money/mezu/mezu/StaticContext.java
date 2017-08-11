@@ -7,5 +7,6 @@ import android.content.Context;
  */
 
 public class StaticContext {
-    static public Context mContext;
+    static Context mContext;
+
 }

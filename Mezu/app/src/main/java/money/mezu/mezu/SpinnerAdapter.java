@@ -1,6 +1,7 @@
 package money.mezu.mezu;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,8 +16,8 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View v = null;
+    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+        View v;
         if (position == 0) {
             TextView tv = new TextView(getContext());
             tv.setHeight(0);

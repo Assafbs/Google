@@ -6,7 +6,12 @@ public enum GraphEnum {
     LINE_CHART(2);
 
     private final int value;
-    private GraphEnum(int value) {
+
+    GraphEnum(int value) {
         this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

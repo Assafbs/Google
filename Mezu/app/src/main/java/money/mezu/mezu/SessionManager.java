@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -12,7 +13,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 
 import java.math.BigInteger;
-import android.net.Uri;
 
 public class SessionManager {
     private SharedPreferences pref;
@@ -31,7 +31,7 @@ public class SessionManager {
     private static final String KEY_LAST_BUDGET = "lastBudget";
 
 
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, 0);
         editor = pref.edit();
@@ -44,7 +44,7 @@ public class SessionManager {
                 .build();
     }
 
-    public void createLoginSession(String name, UserIdentifier id, String logInType, String email, Uri image){
+    public void createLoginSession(String name, UserIdentifier id, String logInType, String email, Uri image) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_ID, id.getId().toString());
@@ -55,8 +55,8 @@ public class SessionManager {
         editor.commit();
     }
 
-    public boolean checkLogin(){
-        if(!this.isLoggedIn()){
+    public boolean checkLogin() {
+        if (!this.isLoggedIn()) {
             Intent i = new Intent(_context, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             _context.startActivity(i);
@@ -65,7 +65,7 @@ public class SessionManager {
         return true;
     }
 
-    public UserIdentifier getUserId(){
+    public UserIdentifier getUserId() {
         String id = pref.getString(KEY_ID, null);
         if (id == null)
             return null;
@@ -76,14 +76,15 @@ public class SessionManager {
         return pref.getString(KEY_LOGIN_TYPE, null);
     }
 
-    public String getUserName(){
+    public String getUserName() {
         return pref.getString(KEY_NAME, null);
     }
 
-    public String getUserEmail(){ return pref.getString(KEY_EMAIL, null); }
+    public String getUserEmail() {
+        return pref.getString(KEY_EMAIL, null);
+    }
 
-    public Uri getUserImage()
-    {
+    public Uri getUserImage() {
         Uri image = null;
         String imageString = pref.getString(KEY_IMAGE, null);
         if (imageString != null) {
@@ -92,27 +93,27 @@ public class SessionManager {
         return image;
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         editor.clear();
         editor.commit();
         FirebaseBackend.getInstance().resetBackend();
         Intent i = new Intent(_context, LoginActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         _context.startActivity(i);
-        ((Activity)_context).overridePendingTransition(0, 0);
+        ((Activity) _context).overridePendingTransition(0, 0);
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 
-    public void setLastBudget (Budget budget) {
+    public void setLastBudget(Budget budget) {
         Gson gson = new Gson();
         String json = gson.toJson(budget);
         setLastBudget(json);
     }
 
-    public void setLastBudget (String json) {
+    public void setLastBudget(String json) {
         editor.putString(KEY_LAST_BUDGET, json);
         editor.commit();
     }
@@ -125,7 +126,7 @@ public class SessionManager {
         i.putExtra("budget", json);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         _context.startActivity(i);
-        ((Activity)_context).overridePendingTransition(0, 0);
+        ((Activity) _context).overridePendingTransition(0, 0);
         return true;
     }
 }

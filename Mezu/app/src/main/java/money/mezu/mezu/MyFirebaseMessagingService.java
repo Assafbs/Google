@@ -14,10 +14,8 @@ import com.google.firebase.messaging.RemoteMessage;
  * Created by JB on 6/12/17.
  */
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService
-{
-    public void onMessageReceived(RemoteMessage remoteMessage)
-    {
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         // If the application is in the foreground we handle notification messages here.
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: From: " + remoteMessage.getFrom());
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: Notification Message Body: " + remoteMessage.getNotification().getBody());

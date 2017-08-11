@@ -2,7 +2,7 @@
 
     <!-- Login Activity Strings-->
     <string name="welcome_message">ברוכים הבאים לMezu!!</string>
-    <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות</string>
+    <string name="second_welcome_message">האפליקציה שלכם לניהול הוצאות והכנסות</string>
     <string name="title_activity_login">כניסה</string>
 
 
@@ -15,19 +15,19 @@
     <!--Budget View Activity Strings-->
     <string name="title_activity_budget_view">הצגת תקציב</string>
     <string name="general">כללי</string>
-    <string name="no_expenses_message1">נראה שאין לך הוצאות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור הוצאה\\הכנסה</string>
-    <string name="no_expenses_message2">הוסף הוצאות כדי לראות סטטיסטיקה ונתונים גרפיים\n(נסה ללחוץ על הפלוס)</string>
-    <string name="no_expenses_message3">הוסף הוצאות ואנחנו נסקור אותם כאן עבורך!\n(נסה ללחוץ על הפלוס)</string>
+    <string name="no_expenses_message1">נראה שאין לך פעולות כלל!\nיש ללחוץ על כפתור הפלוס למטה על מנת ליצור פעולה חדשה</string>
+    <string name="no_expenses_message2">הוסף פעולות כדי לראות סטטיסטיקה ונתונים גרפיים\n(נסה ללחוץ על הפלוס)</string>
+    <string name="no_expenses_message3">הוסף פעולות ואנחנו נסקור אותם כאן עבורך!\n(נסה ללחוץ על הפלוס)</string>
 
     <!--Expenses Tab Fragment Strings-->
-    <string name="expenses_tab_title">הוצאות</string>
-    <string name="recent_expenses">הוצאות אחרונות</string>
+    <string name="expenses_tab_title">פעולות</string>
+    <string name="recent_expenses">פעולות אחרונות</string>
 
 
     <!--Add Expense PopUp Strings-->
     <string name="add">הוספה</string>
     <string name="cancel">ביטול</string>
-    <string name="add_expense">הוסף הוצאה</string>
+    <string name="add_expense">הוסף פעולה</string>
     <string name="expense_title">כותרת:</string>
     <string name="expense_description">תיאור:</string>
     <string name="expense">הוצאה</string>
@@ -111,18 +111,18 @@
     <string name="hebrew">עברית</string>
     <string name="english">אנגלית</string>
 
-    <string name="pref_description_allow_notifications_expenses">התראה תופיע בכל פעם שהוצאה מתווספת לאחד התקציבים שלך</string>
+    <string name="pref_description_allow_notifications_expenses">התראה תופיע בכל פעם שפעולה מתווספת לאחד התקציבים שלך</string>
     <string name="pref_title_allow_notifications">אפשר התראות</string>
 
 
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">גרפים</string>
     <string name="overall">גרף כולל</string>
-    <string name="expenses_by_categories">הוצאות לפי קטגוריות</string>
-    <string name="expenses_by_months">הוצאות לפי חודשים</string>
-    <string name="expenses_by_users">הוצאות לפי משתמשים</string>
+    <string name="expenses_by_categories">פעולות לפי קטגוריות</string>
+    <string name="expenses_by_months">פעולות לפי חודשים</string>
+    <string name="expenses_by_users">פעולות לפי משתמשים</string>
     <string name="no_data_chart">החל לבזבז כדי להציג נתונים!</string>
-    <string name="expenses_sum">סך כל ההוצאות:</string>
+    <string name="expenses_sum">סך כל הפעולות:</string>
     <string name="most_spending_on">הקטגוריה היקרה ביותר:</string>
     <string name="most_expensive_month">החודש היקר ביותר:</string>
     <string name="most_expensive_user">המשתמש שמוציא הכי הרבה:</string>
@@ -133,7 +133,7 @@
     <string name="review_tab_title">סקירה</string>
     <string name="edit">עריכה</string>
     <string name="edit_budget">עריכת תקציב</string>
-    <string name="edit_expense">עריכת הוצאה</string>
+    <string name="edit_expense">עריכת פעולה</string>
     <string name="save">שמירה</string>
     <string name="title_activity_edit_budget_view">עריכת תקציב</string>
     <string name="added_by">נוסף על ידי:</string>
@@ -142,9 +142,9 @@
     <string name="confirm_delete">אישור מחיקה</string>
     <string name="delete">מחיקה</string>
     <string name="expense_deleted">הפעולה נמחקה</string>
-    <string name="delete_confirmation_budget">האם הנך בטוח/ה שברצונך למחוק תקציב זה (בחירת הכל תמחק גם את כל המופעים העתידיים)?</string>
-    <string name="delete_recurring">הכל</string>
-    <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק הוצאה/הכנסה זו?</string>
+    
+    <string name="delete_confirmation_budget">האם הנך בטוח/ה שברצונך למחוק תקציב זה?</string>
+    <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק פעולה זו?</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>
     <string name="partners_email">האימייל של השותפ/ה:</string>

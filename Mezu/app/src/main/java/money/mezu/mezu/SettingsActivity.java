@@ -11,8 +11,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
@@ -70,7 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(settingsIntent);
                     ExpensesTabFragment.sDefaultDate = true;
-                    return true;
+                    return false;
                 }
             });
 
@@ -81,13 +83,13 @@ public class SettingsActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
                     boolean isChecked = o.equals(true);
                     FirebaseBackend.getInstance().setShouldNotifyOnTransaction(isChecked, sessionManager.getUserId());
-                    if (o.equals(true)){
+                    if (isChecked){
                         findPreference("minimum_amount").setEnabled(true);
                     }
                     else{
                         findPreference("minimum_amount").setEnabled(false);
                     }
-                    return true;
+                    return false;
                 }
             });
 
@@ -95,6 +97,26 @@ public class SettingsActivity extends AppCompatActivity {
             if (!enableNotificationsPref.isChecked()){
                 minimumAmountPref.setEnabled(false);
             }
+            minimumAmountPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SessionManager sessionManager = new SessionManager(StaticContext.mContext);
+                    FirebaseBackend.getInstance().setMinimalTransactionNotificationValue(Integer.parseInt((String)o), sessionManager.getUserId());
+                    return false;
+                }
+            });
+
+            SwitchPreference enableNotificationsOnBudgets = (SwitchPreference)findPreference("enable_notifications_on_budgets");
+            enableNotificationsOnBudgets.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SessionManager sessionManager = new SessionManager(StaticContext.mContext);
+                    boolean isChecked = o.equals(true);
+                    FirebaseBackend.getInstance().setShouldNotifyWhenAddedToBudget(isChecked, sessionManager.getUserId());
+                    return false;
+                }
+            });
+            
         }
     }
 

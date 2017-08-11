@@ -115,7 +115,7 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
                 .build();
 
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
-        this.mapOfBudgets = BackendCache.getInstatnce().getBudgets();
+        this.mapOfBudgets = BackendCache.getInstance().getBudgets();
         ListView listView = (ListView) mDrawerView.findViewById(R.id.budgets_list);
         BudgetAdapter adapter = new BudgetAdapter(this, new ArrayList<Budget>(this.mapOfBudgets.values()));
         listView.setAdapter(adapter);

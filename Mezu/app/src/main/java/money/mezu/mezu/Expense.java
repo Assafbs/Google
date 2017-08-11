@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Expense implements Comparable<Expense> {
 
     private String mId;
-    private double mAmount; // Temporary, should probably be changed
+    private double mAmount;
     private String mDescription;
     private String mTitle;
     private Category mCategory;
@@ -48,17 +48,15 @@ public class Expense implements Comparable<Expense> {
         this.mAmount = Double.parseDouble(serializedExpense.get("mAmount").toString());
         this.mTitle = (String) serializedExpense.get("mTitle");
         this.mDescription = (String) serializedExpense.get("mDescription");
-        //CAN BE DELETED BEFORE RELEASE
         try {
             this.mCategory = Category.values()[Integer.parseInt(serializedExpense.get("mCategory").toString())];
         } catch (NumberFormatException e) {
-            this.mCategory = (Category) Category.getCategoryFromString(serializedExpense.get("mCategory").toString());
+            this.mCategory = Category.getCategoryFromString(serializedExpense.get("mCategory").toString());
         }
 
         this.mTime = new Date((long) serializedExpense.get("mTime"));
         this.mUserID = new UserIdentifier((new BigInteger((String) serializedExpense.get("mUserID"))));
         this.mUserName = (String) serializedExpense.get("mUserName");
-        //CAN BE DELETED BEFORE RELEASE
         try {
             this.mIsExpense = (boolean) serializedExpense.get("mIsExpense");
         } catch (NullPointerException e) {
@@ -108,99 +106,82 @@ public class Expense implements Comparable<Expense> {
     }
     //************************************************************************************************************************************************
 
-    public String getId()
-    {
+    public String getId() {
         return mId;
     }
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         mId = id;
     }
 
-    public Category getCategory()
-    {
+    public Category getCategory() {
         return mCategory;
     }
 
-    public double getAmount()
-    {
+    public double getAmount() {
         return mAmount;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
-    public Date getTime()
-    {
+    public Date getTime() {
         return mTime;
     }
 
-    public void setTime(Date c)
-    {
+    public void setTime(Date c) {
         mTime = c;
     }
 
-    public UserIdentifier getUserID()
-    {
+    public UserIdentifier getUserID() {
         return mUserID;
     }
 
-    public String getUserName()
-    {
+    public String getUserName() {
         return mUserName;
     }
 
-    public boolean getIsExpense()
-    {
+    public boolean getIsExpense() {
         return mIsExpense;
     }
 
-    public int getMinute()
-    {
+    public int getMinute() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
         return c.get(Calendar.MINUTE);
     }
 
-    public int getHour()
-    {
+    public int getHour() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
         return c.get(Calendar.HOUR);
     }
 
-    public int getDay()
-    {
+    public int getDay() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
         return c.get(Calendar.DAY_OF_MONTH);
     }
 
-    public int getMonth()
-    {
+    public int getMonth() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
         return c.get(Calendar.MONTH);
     }
 
-    public int getYear()
-    {
+    public int getYear() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
         return c.get(Calendar.YEAR);
     }
 
     @Override
-    public int compareTo(@NonNull Expense other)
-    {
+    public int compareTo(@NonNull Expense other) {
         if (this.mTime.after(other.mTime)) {
             return -1;
         } else if (other.mTime.after(this.mTime)) {

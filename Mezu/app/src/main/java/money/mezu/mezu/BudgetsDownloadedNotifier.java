@@ -8,45 +8,38 @@ import java.util.Set;
  * Created by JB on 6/10/17.
  */
 
-public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
-    Set<String> bidsToListen;
-    static boolean firstExecution = true;
-    static BudgetsDownloadedNotifier mBudgetsDownloadedNotifier;
+public class BudgetsDownloadedNotifier implements BudgetUpdatedListener {
+    private Set<String> bidsToListen;
+    private static boolean firstExecution = true;
+    private static BudgetsDownloadedNotifier mBudgetsDownloadedNotifier;
 
     //************************************************************************************************************************************************
-    public static void handleIfFirstExecution(Set<String> bids)
-    {
-        if(firstExecution )
-        {
+    public static void handleIfFirstExecution(Set<String> bids) {
+        if (firstExecution) {
             mBudgetsDownloadedNotifier = new BudgetsDownloadedNotifier(bids);
         }
         firstExecution = false;
     }
 
     //************************************************************************************************************************************************
-    private BudgetsDownloadedNotifier(Set<String> bids)
-    {
+    private BudgetsDownloadedNotifier(Set<String> bids) {
         bidsToListen = bids;
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
     }
 
     //************************************************************************************************************************************************
-    public static void reset()
-    {
+    public static void reset() {
         EventDispatcher.getInstance().unregisterBudgetUpdatedListener(mBudgetsDownloadedNotifier);
         firstExecution = true;
     }
 
     //************************************************************************************************************************************************
-    public void budgetUpdatedCallback(Budget newBudget)
-    {
-        if(bidsToListen.contains(newBudget.getId()))
-        {
+    public void budgetUpdatedCallback(Budget newBudget) {
+        if (bidsToListen.contains(newBudget.getId())) {
             bidsToListen.remove(newBudget.getId());
         }
-        if (0 == bidsToListen.size())
-        {
-            Log.d("","BudgetsDownloadedNotifier:budgetUpdatedCallback: notifying that budgets are ready!");
+        if (0 == bidsToListen.size()) {
+            Log.d("", "BudgetsDownloadedNotifier:budgetUpdatedCallback: notifying that budgets are ready!");
             EventDispatcher.getInstance().notifyLocalCacheReady();
             EventDispatcher.getInstance().unregisterBudgetUpdatedListener(this);
         }

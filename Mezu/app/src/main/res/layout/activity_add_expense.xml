@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_expense"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -78,9 +77,10 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:orientation="vertical">\
+
             <Spinner
                 android:id="@+id/SpinnerCategoriesType"
                 android:layout_width="match_parent"
@@ -88,10 +88,11 @@
                 android:prompt="@string/category"
                 android:spinnerMode="dialog"
                 android:textColor="@color/expense_view" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/primary_text"/>
+                android:background="@color/primary_text" />
         </LinearLayout>
 
 
@@ -186,24 +187,24 @@
             android:src="@drawable/ic_repeat_30dp" />
 
         <TextView
-            android:layout_below="@id/repeat_action"
             android:id="@+id/ratio_text"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_below="@id/repeat_action"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <Button
-            style="@style/Button"
             android:id="@+id/add_action_btn"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:text="@string/add" />
 
         <Button
-            style="@style/Button"
             android:id="@+id/edit_action_btn"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

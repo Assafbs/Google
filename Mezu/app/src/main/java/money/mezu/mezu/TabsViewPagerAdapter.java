@@ -16,7 +16,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
         mFragmentManager = fm;
     }
 
-    public void setupTabsFragments (boolean isRtl, ExpensesTabFragment expenseTabFragment, GraphsTabFragment graphsTabFragment) {
+    public void setupTabsFragments(boolean isRtl, ExpensesTabFragment expenseTabFragment, GraphsTabFragment graphsTabFragment) {
         mIsRtl = isRtl;
         this.mExpensesTabFragment = expenseTabFragment;
         this.mGraphsTabFragment = graphsTabFragment;
@@ -72,8 +72,7 @@ public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object)
-    {
+    public int getItemPosition(Object object) {
         if (object instanceof GraphsTabFragment && mGraphsTabFragment instanceof GraphFragment)
             return POSITION_NONE;
         if (object instanceof GraphFragment && mGraphsTabFragment instanceof GraphsTabFragment)

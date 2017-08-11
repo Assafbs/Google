@@ -2,27 +2,22 @@ package money.mezu.mezu;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-import android.net.Uri;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 
 import java.math.BigInteger;
 
-import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.getStatusCodeString;
 import static com.google.android.gms.common.api.CommonStatusCodes.INTERNAL_ERROR;
 
 public class LoginActivity extends AppCompatActivity implements
@@ -57,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 mConnectionProgressDialog.show();
+                mConnectionProgressDialog.show();
 
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -88,14 +83,13 @@ public class LoginActivity extends AppCompatActivity implements
             String personName = acct.getDisplayName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            String authCode = acct.getServerAuthCode();
             BigInteger uid = new BigInteger(personId);
             Uri personImage = acct.getPhotoUrl();
             UserIdentifier userId = new UserIdentifier(uid);
 
             sessionManager.createLoginSession(personName, new UserIdentifier(uid), "Google", personEmail, personImage);
             FirebaseBackend.getInstance().addUserIfNeededAndRefreshToken(userId, personName, personEmail.toLowerCase());
-            Intent budgetsIntent = new Intent(LoginActivity.this,BudgetsActivity.class);
+            Intent budgetsIntent = new Intent(LoginActivity.this, BudgetsActivity.class);
             budgetsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(budgetsIntent);
         } else {

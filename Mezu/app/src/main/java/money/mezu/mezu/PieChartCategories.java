@@ -105,7 +105,6 @@ public class PieChartCategories implements GraphInterface {
     public void GenerateGraph(View view, boolean large) {
         calculateDataSet();
 
-        //I MADE IT WORK
         final int[] MY_COLORS = {getColor(R.color.pie_red), getColor(R.color.pie_orange), getColor(R.color.pie_yellow), getColor(R.color.pie_green),
                 getColor(R.color.pie_turquoise), getColor(R.color.pie_sky_blue), getColor(R.color.pie_blue), getColor(R.color.pie_dark_blue),
                 getColor(R.color.pie_purple), getColor(R.color.pie_pink), getColor(R.color.pie_fuchsia), getColor(R.color.pie_dark_red),
@@ -118,15 +117,15 @@ public class PieChartCategories implements GraphInterface {
         data.setValueTextSize(15);
 
         mPieChart.setData(data);
-        if (mPieDataSet.getEntryCount() > 5){
+        if (mPieDataSet.getEntryCount() > 5) {
             mPieChart.setDrawEntryLabels(false);
-        }else{
+        } else {
             mPieChart.setDrawEntryLabels(true);
         }
 
         double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
-        mPieChart.setVisibility(View.INVISIBLE);
+            mPieChart.setVisibility(View.INVISIBLE);
         } else {
             mPieChart.setCenterText(resources.getString(R.string.expenses_sum) + "\n" + String.valueOf(totalExpenses));
         }
@@ -148,7 +147,7 @@ public class PieChartCategories implements GraphInterface {
         mPieChart.invalidate(); // refresh
     }
 
-    public void setSmallChart(PieData data) {
+    private void setSmallChart(PieData data) {
         data.setValueTextSize(0);
         mPieChart.setNoDataText("");
         mPieChart.setCenterText("");
@@ -162,7 +161,7 @@ public class PieChartCategories implements GraphInterface {
     }
 
 
-    public int getColor(int color) {
+    private int getColor(int color) {
         return ContextCompat.getColor(StaticContext.mContext, color);
     }
 }

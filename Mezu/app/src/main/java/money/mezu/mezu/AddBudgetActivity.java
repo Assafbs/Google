@@ -1,5 +1,6 @@
 package money.mezu.mezu;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -7,8 +8,9 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +19,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.Manifest;
 
-import java.util.ArrayList;
-
-import android.os.Build;
-
-import com.google.gson.Gson;
 import com.robertlevonyan.views.chip.Chip;
 import com.robertlevonyan.views.chip.OnCloseClickListener;
 
 import org.apmem.tools.layouts.FlowLayout;
+
+import java.util.ArrayList;
 
 public class AddBudgetActivity extends BaseNavDrawerActivity {
 
@@ -66,7 +64,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
                 if (BudgetName.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, R.string.must_provide_budget_name, Toast.LENGTH_SHORT).show();
-                }  else {
+                } else {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
@@ -127,7 +125,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
 
     public void tryInitializingContactEmails() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            if (show_permissions_dialog){
+            if (show_permissions_dialog) {
                 showPermissionsDialog();
                 show_permissions_dialog = false;
             }
@@ -137,7 +135,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         }
     }
 
-    private void showPermissionsDialog(){
+    private void showPermissionsDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(AddBudgetActivity.this).create();
         alertDialog.setTitle(R.string.contacts_permissions);
         alertDialog.setMessage(getResources().getString(R.string.contacts_permissions_explanation));
@@ -157,8 +155,6 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 new InitContactEmailsTask().execute(this);
-            } else {
-                //Toast.makeText(this, "Until you grant the permission, there will be no autocomplete for emails", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -176,6 +172,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
             contactEmails = new ArrayList<>();
             ContentResolver cr = getContentResolver();
             Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            assert cursor != null;
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 Cursor emailCur = cr.query(
@@ -183,6 +180,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                         null,
                         ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
                         new String[]{id}, null);
+                assert emailCur != null;
                 while (emailCur.moveToNext()) {
                     String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                     contactEmails.add(email);

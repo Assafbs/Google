@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -191,6 +190,7 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
 
     public void setExpenseFragment(ExpenseFragment expenseFragment) {
         TabLayout.Tab ExpensesTab = mTabLayout.getTabAt(LanguageUtils.isRTL() ? 2 : 0);
+        assert ExpensesTab != null;
         ExpensesTab.select();
         expenseShown = true;
         mViewPagerAdapter.onSwitchToExpense(expenseFragment);
