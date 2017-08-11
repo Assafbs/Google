@@ -435,11 +435,9 @@ public class Budget {
         {
             if(expense.getMonth() == currentMonth)
             {
-                // TODO: ignore expense on categorys that are recurrent by nature.
                 monthExpensesTotal += expense.getAmount();
             }
         }
-
 
         monthExpensesTotal -= mInitialBalance/2;
         double relativeBudgetLeft = mInitialBalance*(currentDay + 1)/(2*(daysInMonth + 1));

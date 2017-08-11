@@ -192,7 +192,7 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void addUserToBudget(String bid, String uid)
+    private void addUserToBudget(String bid, String uid)
     {
         mDatabase.child("budgets").child(bid).child("users").child(uid).setValue(uid);
     }
@@ -223,7 +223,7 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void stopListeningOnPath(String path)
+    private void stopListeningOnPath(String path)
     {
         HashSet<Pair<String, ValueEventListener>> pairsToDelete = new HashSet<>();
         for (Pair<String, ValueEventListener> currentPair : mPathsIListenTo) {
