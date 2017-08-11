@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -133,7 +134,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             @Override
             public void onClick(View view) {
                 EditText partnerEmailView = (EditText)findViewById(R.id.partner_email);
-                String partnerEmail = partnerEmailView.getText().toString();
+                String partnerEmail = partnerEmailView.getText().toString().toLowerCase();
                 if (partnerEmail.equals("")) {
                     Toast.makeText(EditBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)){
@@ -142,7 +143,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     Toast.makeText(EditBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
-                    Chip chip = new Chip(EditBudgetActivity.this);
+                    final Chip chip = new Chip(EditBudgetActivity.this);
                     chip.setChipText(partnerEmail);
                     chip.setClosable(true);
                     chip.setOnCloseClickListener(new OnCloseClickListener() {
@@ -153,8 +154,17 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                             partnersChipsContainer.removeView(c);
                         }
                     });
-                    partnersChipsContainer.addView(chip);
+                    chip.setLayoutParams(new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    partnersChipsContainer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            partnersChipsContainer.addView(chip);
+                        }
+                    });
                     partnerEmailView.setText("");
+                    findViewById(R.id.starting_balance).requestFocus();
                     mDrawerLayout.invalidate();
                 }
             }
@@ -188,7 +198,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if(i==DialogInterface.BUTTON_POSITIVE) {
-                FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId(), mSessionManager.getUserEmail());
+                FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId(), mSessionManager.getUserEmail().toLowerCase());
                 Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget

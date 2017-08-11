@@ -25,10 +25,13 @@ public class Budget {
         this.mName = name;
         this.mExpenses = new ArrayList<>();
         this.mInitialBalance = initialBalance;
-        this.mEmails = new ArrayList<>();
-        for (int i = 0; i < emails.size(); ++i)
+        if (emails != null)
         {
-            this.mEmails.add(emails.get(i).toLowerCase());
+            this.mEmails = emails;
+        }
+        else
+        {
+            this.mEmails = new ArrayList<>();
         }
         this.mCategoryCeilings = new HashMap<>();
         this.mOwner = owner;
@@ -94,7 +97,7 @@ public class Budget {
     {
         for (String pending : pendingToDecode.keySet())
         {
-            this.mPending.put(Base64.decode(pending.getBytes(),Base64.NO_WRAP).toString(), pendingToDecode.get(pending));
+            this.mPending.put(new String(Base64.decode(pending.getBytes(),Base64.NO_WRAP)), pendingToDecode.get(pending));
         }
     }
 
@@ -114,7 +117,7 @@ public class Budget {
     {
         for (String pending : newPending)
         {
-            this.mPending.put(pending.toLowerCase(), pending.toLowerCase());
+            this.mPending.put(pending, pending);
         }
     }
 

@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -69,8 +70,8 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     Log.d("", "AddBudgetActivity: adding budget to db");
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     UserIdentifier uid = sessionManager.getUserId();
-                    ArrayList<String> myEmail = new ArrayList<String>();
-                    myEmail.add(sessionManager.getUserEmail());
+                    ArrayList<String> myEmail = new ArrayList<>();
+                    myEmail.add(sessionManager.getUserEmail().toLowerCase());
                     Budget newBudget = new Budget(BudgetName, startingBalance, myEmail, uid.getId().toString(), partnersEmails);
                     FirebaseBackend.getInstance().createBudgetAndAddToUser(newBudget, uid);
                     BudgetViewActivity.goToBudgetView(AddBudgetActivity.this, newBudget, mSessionManager);
@@ -83,7 +84,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
             @Override
             public void onClick(View view) {
                 EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
-                String partnerEmail = partnerEmailView.getText().toString();
+                String partnerEmail = partnerEmailView.getText().toString().toLowerCase();
                 if (partnerEmail.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
                 } else if (!isValidEmail(partnerEmail)) {
@@ -92,7 +93,7 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                     Toast.makeText(AddBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
-                    Chip chip = new Chip(AddBudgetActivity.this);
+                    final Chip chip = new Chip(AddBudgetActivity.this);
                     chip.setChipText(partnerEmail);
                     chip.setClosable(true);
                     chip.setOnCloseClickListener(new OnCloseClickListener() {
@@ -103,8 +104,17 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                             partnersChipsContainer.removeView(c);
                         }
                     });
-                    partnersChipsContainer.addView(chip);
+                    chip.setLayoutParams(new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    partnersChipsContainer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            partnersChipsContainer.addView(chip);
+                        }
+                    });
                     partnerEmailView.setText("");
+                    findViewById(R.id.starting_balance).requestFocus();
                     mDrawerLayout.invalidate();
                 }
             }
