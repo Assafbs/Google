@@ -180,7 +180,7 @@
     <string name="failed_to_create_file">יצירת קובץ נכשלה.</string>
     <string name="external_storage_unavailable">זיכרון חיצוני אינו זמין, נסה שוב מאוחר יותר.</string>
     <string name="on_exit_by_back">לצאת מMezu?</string>
-
+    <string name="failed_to_send_email">שליחת האימייל נכשלה!</string>
 
 
 </resources>
