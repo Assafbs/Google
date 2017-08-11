@@ -18,6 +18,7 @@ public class Expense implements Comparable<Expense> {
     private UserIdentifier mUserID;
     private String mUserName;
     private boolean mIsExpense;
+    private HashMap<String, Object> mPeriodic;
 
     public Expense(String id,
                    double amount,
@@ -38,6 +39,7 @@ public class Expense implements Comparable<Expense> {
         this.mUserID = uid;
         this.mUserName = userName;
         this.mIsExpense = isExpense;
+        this.mPeriodic = null;
     }
 
     public Expense(HashMap<String, Object> serializedExpense) {
@@ -62,6 +64,10 @@ public class Expense implements Comparable<Expense> {
         } catch (NullPointerException e) {
             this.mIsExpense = true;
         }
+        if (serializedExpense.containsKey("mPeriodic"))
+        {
+            this.mPeriodic = (HashMap<String, Object>) serializedExpense.get("mPeriodic");
+        }
     }
 
     public HashMap<String, Object> serialize() {
@@ -75,8 +81,32 @@ public class Expense implements Comparable<Expense> {
         serialized.put("mUserID", mUserID.getId().toString());
         serialized.put("mUserName", mUserName);
         serialized.put("mIsExpense", mIsExpense);
+        if (null != this.mPeriodic)
+        {
+            serialized.put("mPeriodic", this.mPeriodic);
+        }
         return serialized;
     }
+    //************************************************************************************************************************************************
+    public String getExpensePeriod()
+    {
+        if (null == this.mPeriodic)
+        {
+            return null;
+        }
+        return (String)this.mPeriodic.get("recurrenceTime");
+    }
+    //************************************************************************************************************************************************
+    public boolean isRecurrent()
+    {
+        return (this.mPeriodic != null);
+    }
+    //************************************************************************************************************************************************
+    public void setRecurrence(HashMap<String, Object> period)
+    {
+        this.mPeriodic = period;
+    }
+    //************************************************************************************************************************************************
 
     public String getId()
     {

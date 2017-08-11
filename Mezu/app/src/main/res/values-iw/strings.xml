@@ -142,7 +142,8 @@
     <string name="confirm_delete">אישור מחיקה</string>
     <string name="delete">מחיקה</string>
     <string name="expense_deleted">הפעולה נמחקה</string>
-    <string name="delete_confirmation_budget">האם הנך בטוח/ה שברצונך למחוק תקציב זה?</string>
+    <string name="delete_confirmation_budget">האם הנך בטוח/ה שברצונך למחוק תקציב זה (בחירת הכל תמחק גם את כל המופעים העתידיים)?</string>
+    <string name="delete_recurring">הכל</string>
     <string name="delete_confirmation_expense">האם הנך בטוח/ה שברצונך למחוק הוצאה/הכנסה זו?</string>
     <string name="partner_list_edit_text">ניתן להוסיף שותפים חדשים לתקציב זה</string>
     <string name="category_title">קטגוריה:</string>

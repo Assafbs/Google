@@ -32,10 +32,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Objects;
 
 
 public class ExpenseFragment extends Fragment {
@@ -395,13 +398,34 @@ public class ExpenseFragment extends Fragment {
         if (newExpense == null) {
             return;
         }
+        HashMap<String,Object> period = new HashMap<>();
+        period.put("isFirst", true);
+        switch (mRepeatChoice) {
+            case 1: //every day
+                period.put("recurrenceTime", "daily");
+                break;
+            case 2: //every week
+                period.put("recurrenceTime", "weekly");
+                break;
+            case 3: //every two weeks
+                period.put("recurrenceTime", "biweekly");
+                break;
+            case 4: //every month
+                period.put("recurrenceTime", "monthly");
+                break;
+            case 5: //every two months
+                period.put("recurrenceTime", "bimonthly");
+                break;
+        }
+        newExpense.setRecurrence(period);
         FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
-
+        period.put("isFirst", false);
         switch (mRepeatChoice) {
             case 1: //every day
                 for (i = 0; i < 364; i++) {
                     c.add(Calendar.DATE, 1);
                     newExpense.setTime(c.getTime());
+                    newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
                 }
                 break;
@@ -409,6 +433,7 @@ public class ExpenseFragment extends Fragment {
                 for (i = 0; i < 51; i++) {
                     c.add(Calendar.WEEK_OF_YEAR, 1);
                     newExpense.setTime(c.getTime());
+                    newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
                 }
                 break;
@@ -416,6 +441,7 @@ public class ExpenseFragment extends Fragment {
                 for (i = 0; i < 25; i++) {
                     c.add(Calendar.WEEK_OF_YEAR, 2);
                     newExpense.setTime(c.getTime());
+                    newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
                 }
                 break;
@@ -423,6 +449,7 @@ public class ExpenseFragment extends Fragment {
                 for (i = 0; i < 11; i++) {
                     c.add(Calendar.MONTH, 1);
                     newExpense.setTime(c.getTime());
+                    newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
                 }
                 break;
@@ -430,11 +457,11 @@ public class ExpenseFragment extends Fragment {
                 for (i = 0; i < 5; i++) {
                     c.add(Calendar.MONTH, 2);
                     newExpense.setTime(c.getTime());
+                    newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
                 }
                 break;
         }
-
 
         mActivity.tryReleaseTabs();
     }
@@ -561,6 +588,10 @@ public class ExpenseFragment extends Fragment {
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.yes, new ExpenseFragment.DeleteDialogListener());
         builder.setNegativeButton(R.string.no, new ExpenseFragment.DeleteDialogListener());
+        if (expenseToShow.isRecurrent())
+        {
+            builder.setNeutralButton(R.string.delete_recurring, new ExpenseFragment.DeleteDialogListener());
+        }
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -570,6 +601,41 @@ public class ExpenseFragment extends Fragment {
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
+                Log.d("", "ExpenseFragment: deleting expense");
+                Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
+                // restart app, so won't go back to the deleted expense
+                Intent restartIntent = mActivity.getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage(mActivity.getPackageName());
+                restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mActivity.mSessionManager.goToLastBudget();
+                startActivity(restartIntent);
+            }
+            // should remove all future occurrenses.
+            if (i == DialogInterface.BUTTON_NEUTRAL)
+            {
+                ArrayList<Expense> expensesInBudget = mActivity.mCurrentBudget.getExpenses();
+                ArrayList<String> idsToDelete = new ArrayList<>();
+                for (Expense currentExpense : expensesInBudget)
+                {
+                    long diff = currentExpense.getTime().getTime() - expenseToShow.getTime().getTime();
+                    if(diff < 0)
+                    {
+                        continue;
+                    }
+                    long diffSeconds = diff / 1000 % 60;
+                    long diffMinutes = diff / (60 * 1000) % 60;
+                    if(diffSeconds == 0 && diffMinutes == 0 && currentExpense.getTitle().equals(expenseToShow.getTitle()))
+                    {
+                        idsToDelete.add(currentExpense.getId());
+                        Log.d("", String.format("adding %s", currentExpense.getId()));
+                    }
+                }
+                for (String idToDelete : idsToDelete)
+                {
+                    FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), idToDelete);
+                    Log.d("", String.format("deleting %s", idToDelete));
+                }
+
                 Log.d("", "ExpenseFragment: deleting expense");
                 Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted expense

@@ -160,7 +160,8 @@
     <string name="confirm_delete">Confirm delete</string>
     <string name="expense_deleted">Expense deleted</string>
     <string name="delete_confirmation_budget">Are you sure you want to delete this budget?</string>
-    <string name="delete_confirmation_expense">Are you sure you want to delete this expense\income?</string>
+    <string name="delete_confirmation_expense">Are you sure you want to delete this expense\income (choosing All will also delete future occurrenses)?</string>
+    <string name="delete_recurring">All</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="partner_list_edit_text">Add more partners to share this budget with</string>
