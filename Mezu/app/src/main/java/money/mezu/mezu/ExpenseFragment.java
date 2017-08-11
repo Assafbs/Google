@@ -379,6 +379,7 @@ public class ExpenseFragment extends Fragment {
     }
 
     public void addExpense() {
+        int originalDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
         Expense newExpense = createExpenseFromFields();
         int i;
         if (newExpense == null) {
@@ -434,6 +435,12 @@ public class ExpenseFragment extends Fragment {
             case 4: //every month
                 for (i = 0; i < 11; i++) {
                     c.add(Calendar.MONTH, 1);
+                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    if (max > currentDay && originalDayOfMonth > currentDay) {
+                        currentDay = max > originalDayOfMonth ? originalDayOfMonth : max;
+                        c.set(Calendar.DAY_OF_MONTH, currentDay);
+                    }
                     newExpense.setTime(c.getTime());
                     newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
@@ -442,6 +449,12 @@ public class ExpenseFragment extends Fragment {
             case 5: //every two months
                 for (i = 0; i < 5; i++) {
                     c.add(Calendar.MONTH, 2);
+                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    if (max > currentDay && originalDayOfMonth > currentDay) {
+                        currentDay = max > originalDayOfMonth ? originalDayOfMonth : max;
+                        c.set(Calendar.DAY_OF_MONTH, currentDay);
+                    }
                     newExpense.setTime(c.getTime());
                     newExpense.setRecurrence(period);
                     FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);

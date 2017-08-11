@@ -10,11 +10,10 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
@@ -30,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void setStatusBarColor(){
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(StaticContext.mContext,R.color.colorPrimaryDark));
     }
 
     public static class GeneralPreferenceFragment extends PreferenceFragment {
