@@ -116,6 +116,7 @@ public class FirebaseBackend {
                 Log.d("", String.format("FirebaseBackend:leaveBudget: onDataChange:start, with bidToLeave: %s", bidToLeave));
                 stopListeningOnPath("budgets/" + bidToLeave);
                 ArrayList<String> emails = (ArrayList<String>) dataSnapshot.child("budget").child("mEmails").getValue();
+                HashMap<String, String> pendingUsers = (HashMap<String, String>) dataSnapshot.child("budget").child("mPending").getValue();
                 emails.remove(emailToRemove);
                 mDatabase.child("budgets").child(bidToLeave).child("budget").child("mEmails").setValue(emails);
                 HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.child("/users").getValue();
@@ -126,6 +127,12 @@ public class FirebaseBackend {
                 {
                     Log.d("","FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
+                    // remove pending references
+                    for(String pendingBase64 : pendingUsers.keySet())
+                    {
+                        Log.d("",String.format("FirebaseBackend::leaveBudget: removing pending user: %s from budget %s ", pendingBase64, bidToLeave));
+                        mDatabase.child("mails").child(pendingBase64).child("pendingBudgets").child(bidToLeave).removeValue();
+                    }
                 }
                 // This line appears twice to handle a very unlikely race condition (which wasn't witnessed) that can occur if the first invocation
                 // occurs before the path is added to the hashmap.
