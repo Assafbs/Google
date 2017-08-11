@@ -12,6 +12,7 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
     Set<String> bidsToListen;
     static boolean firstExecution = true;
     static BudgetsDownloadedNotifier mBudgetsDownloadedNotifier;
+
     //************************************************************************************************************************************************
     public static void handleIfFirstExecution(Set<String> bids)
     {
@@ -21,18 +22,21 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
         }
         firstExecution = false;
     }
+
     //************************************************************************************************************************************************
     private BudgetsDownloadedNotifier(Set<String> bids)
     {
         bidsToListen = bids;
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
     }
+
     //************************************************************************************************************************************************
     public static void reset()
     {
         EventDispatcher.getInstance().unregisterBudgetUpdatedListener(mBudgetsDownloadedNotifier);
         firstExecution = true;
     }
+
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget newBudget)
     {
@@ -47,4 +51,5 @@ public class BudgetsDownloadedNotifier implements  BudgetUpdatedListener{
             EventDispatcher.getInstance().unregisterBudgetUpdatedListener(this);
         }
     }
+
 }

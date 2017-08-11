@@ -18,14 +18,14 @@ public class EventDispatcher
     private static EventDispatcher mInstance = null;
     private EventDispatcher()
     {
-        mBudgetUpdatedListeners = new HashSet<BudgetUpdatedListener>();
-        mExpenseUpdatedListeners = new HashSet<ExpenseUpdatedListener>();
-        mUserLeftBudgetListeners = new  HashSet<UserLeftBudgetListener>();
-        mLocalCacheReadyListeners = new HashSet<LocalCacheReadyListener>();
+        mBudgetUpdatedListeners = new HashSet<>();
+        mExpenseUpdatedListeners = new HashSet<>();
+        mUserLeftBudgetListeners = new  HashSet<>();
+        mLocalCacheReadyListeners = new HashSet<>();
 
     }
-    //************************************************************************************************************************************************
 
+    //************************************************************************************************************************************************
     public static EventDispatcher getInstance()
     {
         if (null == mInstance)
@@ -34,6 +34,7 @@ public class EventDispatcher
         }
         return mInstance;
     }
+
     //************************************************************************************************************************************************
     public void registerBudgetUpdateListener(BudgetUpdatedListener newListener)
     {
@@ -43,26 +44,31 @@ public class EventDispatcher
         }
         mBudgetUpdatedListeners.add(newListener);
     }
+
     //************************************************************************************************************************************************
     public void unregisterBudgetUpdatedListener(BudgetUpdatedListener listener)
     {
         mBudgetUpdatedListeners.remove(listener);
     }
+
     //************************************************************************************************************************************************
     public void registerExpenseUpdateListener(ExpenseUpdatedListener newListener)
     {
         mExpenseUpdatedListeners.add(newListener);
     }
+
     //************************************************************************************************************************************************
     public void registerUserLeftBudgetListener(UserLeftBudgetListener newListener)
     {
         mUserLeftBudgetListeners.add(newListener);
     }
+
     //************************************************************************************************************************************************
     public void registerLocalCacheReadyListener(LocalCacheReadyListener newListener)
     {
         mLocalCacheReadyListeners.add(newListener);
     }
+
     //************************************************************************************************************************************************
     public void notifyUserLeftBudgetListeners(String bid)
     {
@@ -71,6 +77,7 @@ public class EventDispatcher
             listener.userLeftBudgetCallback(bid);
         }
     }
+
     //************************************************************************************************************************************************
     public void notifyBudgetUpdatedListeners(Budget newBudget)
     {
@@ -82,6 +89,7 @@ public class EventDispatcher
             listener.budgetUpdatedCallback(newBudget);
         }
     }
+
     //************************************************************************************************************************************************
     public void notifyExpenseUpdatedListeners()
     {
@@ -95,13 +103,14 @@ public class EventDispatcher
             listener.expenseUpdatedCallback();
         }
     }
+
     //************************************************************************************************************************************************
     public void notifyLocalCacheReady()
     {
-
         for (LocalCacheReadyListener listener : mLocalCacheReadyListeners)
         {
             listener.localCacheReadyCallback();
         }
     }
+
 }

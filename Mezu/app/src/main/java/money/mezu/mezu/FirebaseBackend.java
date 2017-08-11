@@ -1,15 +1,8 @@
 package money.mezu.mezu;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.nio.charset.Charset;
-import java.math.BigInteger;
-import java.util.SimpleTimeZone;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +22,7 @@ import android.util.Pair;
 public class FirebaseBackend {
     private DatabaseReference mDatabase;
     private static FirebaseBackend mInstance = null;
-    private static HashSet<Pair<String, ValueEventListener>> mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+    private static HashSet<Pair<String, ValueEventListener>> mPathsIListenTo = new HashSet<>();
 
     private FirebaseBackend() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -137,7 +130,7 @@ public class FirebaseBackend {
             public void onCancelled(DatabaseError error) {
             }
         });
-        mPathsIListenTo.add(new Pair<String, ValueEventListener>("budgets/" + bidToLeave, newListener));
+        mPathsIListenTo.add(new Pair<>("budgets/" + bidToLeave, newListener));
     }
 
     //************************************************************************************************************************************************
@@ -147,49 +140,8 @@ public class FirebaseBackend {
         final Budget budgetToEdit = budget;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("budgets/" + budget.getId() + "/budget");
-        // TODO - maybe take care of listeners hash map...
         mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").
                 setValue(budgetToEdit.serialize());
-//        for (Expense expense : budgetToEdit.getExpenses()) {
-//            mDatabase.child("budgets").child(budgetToEdit.getId()).child("budget").child("mExpenses").
-//                    child(expense.getId()).setValue(expense.serialize());
-//        }
-    }
-
-    //************************************************************************************************************************************************
-    public void editBudgetUsers(String bid, List<UserIdentifier> uids) {
-        final String bidToEdit = bid;
-        final List<UserIdentifier> uidsToEdit = uids;
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("budgets/" + bid);
-        // TODO - maybe take care of listeners hash map...
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DatabaseReference ref2 = mDatabase.child("budgets").child(bidToEdit).child("users");
-                ref2.addValueEventListener(new ValueEventListener() {
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
-                        for (String uidAsString : uidDict.keySet()) {
-                            mDatabase.child("users").child(uidAsString).child("budgets").child(bidToEdit).removeValue();
-                            mDatabase.child("budgets").child(bidToEdit).child("users").child(uidAsString).removeValue();
-                        }
-                        for (UserIdentifier uid : uidsToEdit) {
-                            String uidAsString = uid.getId().toString();
-                            mDatabase.child("users").child(uidAsString).child("budgets").child(bidToEdit).setValue(bidToEdit);
-                            mDatabase.child("budgets").child(bidToEdit).child("users").child(uidAsString).setValue(uidAsString);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
     }
 
     //************************************************************************************************************************************************
@@ -231,8 +183,6 @@ public class FirebaseBackend {
 
     //************************************************************************************************************************************************
     public void addUserToBudget(String bid, String uid) {
-        // TODO - make sure user entry always exists in DB in this stage
-        //mDatabase.child("users").push().setValue(uid.getId().toString());
         mDatabase.child("budgets").child(bid).child("users").child(uid).setValue(uid);
     }
 
@@ -254,14 +204,14 @@ public class FirebaseBackend {
             Log.d("", String.format("FirebaseBackend:resetBackend: will not listen on:%s", pathListener.first));
             ref.removeEventListener(pathListener.second);
         }
-        mPathsIListenTo = new HashSet<Pair<String, ValueEventListener>>();
+        mPathsIListenTo = new HashSet<>();
         BackendCache.getInstatnce().clearCache();
         BudgetsDownloadedNotifier.reset();
     }
 
     //************************************************************************************************************************************************
     public void stopListeningOnPath(String path) {
-        HashSet<Pair<String, ValueEventListener>> pairsToDelete = new HashSet<Pair<String, ValueEventListener>>();
+        HashSet<Pair<String, ValueEventListener>> pairsToDelete = new HashSet<>();
         for (Pair<String, ValueEventListener> currentPair : mPathsIListenTo) {
             if (currentPair.first.equals(path)) {
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference(currentPair.first);
@@ -289,8 +239,8 @@ public class FirebaseBackend {
                String uidToAdd = lUid.getId().toString();
                if (!dataSnapshot.hasChild(uidToAdd))
                {
-                   mDatabase.child("users").child(uidToAdd).child("username").setValue(hash(usernameToAdd));
-                   mDatabase.child("users").child(uidToAdd).child("email").setValue(hash(emailToAdd));
+                   mDatabase.child("users").child(uidToAdd).child("username").setValue(usernameToAdd);
+                   mDatabase.child("users").child(uidToAdd).child("email").setValue(emailToAdd);
                    mDatabase.child("mails").child(Base64.encodeToString(emailToAdd.getBytes(), Base64.NO_WRAP)).child("uid").setValue(uidToAdd);
                    setShouldNotifyOnTransaction(true, lUid);
                    setMinimalTransactionNotificationValue(0, lUid);
@@ -319,91 +269,27 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void tellServerToAddMailsToBudget(Budget budget, ArrayList<String> emailsToAdd)
-    {
-//        //TODO - maybe change DB representation in the future...
-//        final String bid = budget.getId();
-//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        SessionManager session = new SessionManager(StaticContext.mContext);
-//        for (int i = 0; i < emailsToAdd.size(); ++i)
-//        {
-//            emailsToAdd.set(i, emailsToAdd.get(i).toLowerCase());
-//        }
-//        mDatabase.child("budgets").child(bid).child("pending").child(session.getUserId().getId().toString()).setValue(emailsToAdd);
-
-//        DatabaseReference ref = database.getReference("users/");
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap<String, Object> uidDict = (HashMap<String, Object>) dataSnapshot.getValue();
-//                for (final String uidAsString : uidDict.keySet()) {
-//                    DatabaseReference ref2 = database.getReference("users/" + uidAsString + "/email/");
-//                    if (ref2 == null)
-//                        continue;
-//                    ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            if (dataSnapshot.getValue() != null && (dataSnapshot.getValue()).equals(emailHash)) {
-//                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: value: %s, address: %s", dataSnapshot.getValue(), emailHash));
-//                                connectBudgetAndUser(bid, uidAsString);
-//                            } else {
-//                                Log.d("", String.format("FirebaseBackend:connectBudgetAndUserByEmail: uid is: %s, value: is null, address: %s", uidAsString, emailHash));
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError error) {
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//            }
-//        });
-    }
-
-    //************************************************************************************************************************************************
-    private static String hash(String s) {
-        //return md5(s);
-        return s;
-    }
-
-    private static String md5(String s) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes(Charset.forName("US-ASCII")), 0, s.length());
-            byte[] magnitude = digest.digest();
-            BigInteger bi = new BigInteger(1, magnitude);
-            String hash = String.format("%0" + (magnitude.length << 1) + "x", bi);
-            return hash;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-    //************************************************************************************************************************************************
     public void setShouldNotifyOnTransaction(boolean shouldNotify, UserIdentifier uid)
     {
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child("shouldNotifyOnTransaction").setValue(shouldNotify);
     }
+
     //************************************************************************************************************************************************
     public void setMinimalTransactionNotificationValue(int minimalNotificationValue, UserIdentifier uid)
     {
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child("minimalNotificationValue").setValue(minimalNotificationValue);
     }
+
     //************************************************************************************************************************************************
-    public void setShouldNotifyBudgetExeededThreshold(String bid, int threshold, boolean shouldNotify, UserIdentifier uid)
+    public void setShouldNotifyBudgetExceededThreshold(String bid, int threshold, boolean shouldNotify, UserIdentifier uid)
     {
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("shouldNotify").setValue(shouldNotify);
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("threshold").setValue(threshold);
     }
+
     //************************************************************************************************************************************************
     public void shouldNotifyWhenAddedToBudget(boolean shouldNotify, UserIdentifier uid)
     {
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child("notifyWhenAddedToBudget").setValue(shouldNotify);
     }
-
 }

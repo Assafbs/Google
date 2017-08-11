@@ -10,7 +10,8 @@ import java.util.HashMap;
 
 public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListener {
     private static BackendCache mCache= null;
-    private HashMap<String, Budget> budgets = new HashMap<String, Budget> ();
+    private HashMap<String, Budget> budgets = new HashMap<> ();
+
     //************************************************************************************************************************************************
     public static BackendCache getInstatnce()
     {
@@ -20,23 +21,7 @@ public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListen
         }
         return mCache;
     }
-    //************************************************************************************************************************************************
-    public void clearCache()
-    {
-        mCache = null;
-    }
-    //************************************************************************************************************************************************
-    public void budgetUpdatedCallback(Budget newBudget)
-    {
-        Log.d("",String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));
-        budgets.put(newBudget.getId(), newBudget);
-    }
-    //************************************************************************************************************************************************
-    public void userLeftBudgetCallback(String bid)
-    {
-        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
-        budgets.remove(bid);
-    }
+
     //************************************************************************************************************************************************
     private BackendCache()
     {
@@ -44,6 +29,27 @@ public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListen
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         EventDispatcher.getInstance().registerUserLeftBudgetListener(this);
     }
+
+    //************************************************************************************************************************************************
+    public void clearCache()
+    {
+        mCache = null;
+    }
+
+    //************************************************************************************************************************************************
+    public void budgetUpdatedCallback(Budget newBudget)
+    {
+        Log.d("",String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));
+        budgets.put(newBudget.getId(), newBudget);
+    }
+
+    //************************************************************************************************************************************************
+    public void userLeftBudgetCallback(String bid)
+    {
+        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
+        budgets.remove(bid);
+    }
+
     //************************************************************************************************************************************************
     public HashMap<String, Budget> getBudgets()
     {

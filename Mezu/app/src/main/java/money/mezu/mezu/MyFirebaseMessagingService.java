@@ -3,8 +3,6 @@ package money.mezu.mezu;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -20,16 +18,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
 {
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
-        // TODO: Handle FCM messages here.
-        // If the application is in the foreground handle both data and notification messages here.
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated.
+        // If the application is in the foreground we handle notification messages here.
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: From: " + remoteMessage.getFrom());
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: Notification Message Body: " + remoteMessage.getNotification().getBody());
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: Notification Data: " + remoteMessage.getData());
         Log.d("", "MyFirebaseMessagingService::onMessageReceived: Notification Title: " + remoteMessage.getNotification().getTitle());
 
-        // Creates an explicit intent for an Activity in your app
+        // Creates an explicit intent for an Activity in the app
         Intent notificationIntent = new Intent(this, OpenBudgetViewWhenReadyActivity.class);
         notificationIntent.putExtra("bid", remoteMessage.getData().get("bid"));
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), notificationIntent, 0);
