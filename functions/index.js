@@ -71,17 +71,43 @@ exports.sendAddedToBudgetNotification = functions.database.ref('/users/{uid}/bud
 function addToList(dictionaryList, element)
 {
 	var highestIndex = 0;
+	var indexAsInt = 0;
 	for(var index in dictionaryList)
 	{
-		if(highestIndex < index)
+		indexAsInt = parseInt(index);
+		if(highestIndex < indexAsInt)
 		{
-			highestIndex = index;
+			highestIndex = indexAsInt;
 		}
-	}
+	}	
 	dictionaryList[highestIndex+1] = element;
-}//******************************************************************************************************************************************************
+}
+//******************************************************************************************************************************************************
+function addToListFromHashSet(dictionaryList, hashSet)
+{
+	var highestIndex = 0;
+	var indexAsInt = 0;
+	for(var index in dictionaryList)
+	{
+		indexAsInt = parseInt(index);
+		if(highestIndex < indexAsInt)
+		{
+			highestIndex = indexAsInt;
+		}
+	}	
+	var indexToAdd = highestIndex + 1;
+	for(var element in hashSet)
+	{
+		dictionaryList[indexToAdd] = element;	
+		indexToAdd = indexToAdd + 1;
+	}
+	
+}
+//******************************************************************************************************************************************************
 exports.handlePendingList = functions.database.ref('/budgets/{bid}/budget/mPending').onWrite(event => {
 	const bid = event.params.bid;
+	var emailsToAdd = {};
+	var uidsToAdd = {};
 	console.log('new pending for bid: ' + bid);
 	const pendingPromise = admin.database().ref('/budgets/'+ bid).once('value').then(function(snapshot)
 	{
@@ -112,11 +138,17 @@ exports.handlePendingList = functions.database.ref('/budgets/{bid}/budget/mPendi
 					const uidPromise = admin.database().ref('/users/'+ uid).once('value').then(function(snapshot3)
 					{
 						var budgetUsers = snapshot.val()["users"];
+						uidsToAdd[uid] = uid;
+						for(user in uidsToAdd)
+						{
+							budgetUsers[user] = user;
+						}
 						budgetUsers[uid] = uid;
 						admin.database().ref("/budgets/" + bid + "/users").set(budgetUsers);
 						
 						var budgetEmails = snapshot.val()["budget"]["mEmails"];
-						addToList(budgetEmails, lPendingEmail);
+						emailsToAdd[lPendingEmail] = lPendingEmail;
+						addToListFromHashSet(budgetEmails, emailsToAdd);
 						admin.database().ref("/budgets/" + bid + "/budget/mEmails").set(budgetEmails);
 
 						var userBudgets = snapshot3.val()["budgets"];
@@ -273,25 +305,3 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 		}
 	});
 });	
-
-
-// exports.createList = functions.database.ref('/budgets/-KqsLHcVfXsoabDz2cbm').onWrite(event => {
-// 	const pendingPromise = admin.database().ref('/users/').once('value').then(function(snapshot)
-// 	{
-// 		var newTable = {};
-// 		for(var uid in snapshot.val())
-// 		{
-// 			var entry = {};
-// 			entry["uid"] = uid;
-// 			if(null != snapshot.val()[uid]["email"])
-// 			{
-// 				newTable[Buffer.from(snapshot.val()[uid]["email"]).toString('base64')] = entry;	
-// 			}
-// 		}
-// 		admin.database().ref("/mails").set(newTable);
-// 	});
-// });
-
-
-
-
