@@ -95,7 +95,13 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                             "and get it today!\n\n" +
                             "Sent By Mezu");
                     sendEmailIntent.setType("message/rfc822");
-                    startActivity(sendEmailIntent);
+                    try {
+                        startActivity(sendEmailIntent);
+                    }
+                    catch (Exception e){
+                        Toast.makeText(EditBudgetActivity.this, R.string.failed_to_send_email, Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
             partnersChipsContainer.addView(chip);
