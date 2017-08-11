@@ -245,7 +245,7 @@ public class FirebaseBackend {
                     mDatabase.child("mails").child(Base64.encodeToString(emailToAdd.getBytes(), Base64.NO_WRAP)).child("uid").setValue(uidToAdd);
                     setShouldNotifyOnTransaction(true, lUid);
                     setMinimalTransactionNotificationValue(0, lUid);
-                    shouldNotifyWhenAddedToBudget(true, lUid);
+                    setShouldNotifyWhenAddedToBudget(true, lUid);
                 }
                 mDatabase.child("users").child(uidToAdd).child("notificationToken").setValue(FirebaseInstanceId.getInstance().getToken());
             }
@@ -286,7 +286,7 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void shouldNotifyWhenAddedToBudget(boolean shouldNotify, UserIdentifier uid) {
+    public void setShouldNotifyWhenAddedToBudget(boolean shouldNotify, UserIdentifier uid) {
         mDatabase.child("users").child(uid.getId().toString()).child("settings").child("notifyWhenAddedToBudget").setValue(shouldNotify);
     }
 }
