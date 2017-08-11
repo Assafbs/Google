@@ -31,15 +31,15 @@ public class CategoryPredictor {
     private Activity activity;
     private boolean enabled;
 
-    public void enable(){
+    public void enable() {
         enabled = true;
     }
 
-    public void disable(){
+    public void disable() {
         enabled = false;
     }
 
-    public Watcher getWatcher(){
+    public Watcher getWatcher() {
         return watcher;
     }
 
@@ -52,17 +52,17 @@ public class CategoryPredictor {
         enabled = true;
     }
 
-    private Category predict(String str){
+    private Category predict(String str) {
         String[] words = str.toLowerCase().split("\\s+");
-        for (String word : words){
-            if (dict.containsKey(word)){
-                return  dict.get(word);
+        for (String word : words) {
+            if (dict.containsKey(word)) {
+                return dict.get(word);
             }
         }
         return null; // no prediction
     }
 
-    private void initDictFromJson(Activity context){
+    private void initDictFromJson(Activity context) {
         InputStream stream = null;
         try {
             stream = context.getAssets().open("strings_to_categories.json");
@@ -72,17 +72,18 @@ public class CategoryPredictor {
         }
         String json = convertStreamToString(stream);
         Gson gson = new Gson();
-        Type type = new TypeToken<HashMap<String, Category>>(){}.getType();
+        Type type = new TypeToken<HashMap<String, Category>>() {
+        }.getType();
         dict = gson.fromJson(json, type);
     }
 
     private void addToDictFromBudget(Budget budget) {
         List<Expense> expenses = budget.getExpenses();
-        for (Expense expense : expenses){
-            String title  = expense.getTitle();
+        for (Expense expense : expenses) {
+            String title = expense.getTitle();
             Category category = expense.getCategory();
             String[] words = title.toLowerCase().split("\\s+");
-            for (String word : words){
+            for (String word : words) {
                 dict.put(word, category);
             }
         }
@@ -92,7 +93,7 @@ public class CategoryPredictor {
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
-        String line = null;
+        String line;
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
@@ -121,13 +122,13 @@ public class CategoryPredictor {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(timer != null)
+            if (timer != null)
                 timer.cancel();
         }
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!enabled){
+            if (!enabled) {
                 return;
             }
             final String str = s.toString();
@@ -137,7 +138,7 @@ public class CategoryPredictor {
                     @Override
                     public void run() {
                         final Category prediction = predict(str);
-                        if (prediction!=null && prediction.getIsExpense()){
+                        if (prediction != null && prediction.getIsExpense()) {
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -147,11 +148,9 @@ public class CategoryPredictor {
                                 }
                             });
                         }
-
                     }
                 }, DELAY);
             }
         }
-
     }
 }

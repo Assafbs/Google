@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -20,7 +19,7 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
 
-public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener{
+public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener {
 
     private BudgetViewActivity mActivity;
     private View mView = null;
@@ -62,15 +61,18 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
                         double ceiling;
                         String number = input.toString();
                         try {
-                            if (number.equals(""))
-                                ceiling = -1; //remove ceiling
-                            else if(number.equals(".")) {
-                                Toast.makeText(mActivity, mActivity.getString(R.string.not_a_valid_number), Toast.LENGTH_SHORT)
-                                        .show();
-                                return;
+                            switch (number) {
+                                case "":
+                                    ceiling = -1; //remove ceiling
+                                    break;
+                                case ".":
+                                    Toast.makeText(mActivity, mActivity.getString(R.string.not_a_valid_number), Toast.LENGTH_SHORT)
+                                            .show();
+                                    return;
+                                default:
+                                    ceiling = Double.parseDouble(number);
+                                    break;
                             }
-                            else
-                                ceiling = Double.parseDouble(number);
                         } catch (NumberFormatException e) {
                             Toast.makeText(mActivity, mActivity.getString(R.string.number_formating_failed), Toast.LENGTH_SHORT)
                                     .show();
@@ -88,7 +90,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
         setupBudgetOverall();
     }
 
-    private void setupInfoButton () {
+    private void setupInfoButton() {
         final ImageView info = (ImageView) mView.findViewById(R.id.info);
 
         info.setOnClickListener(new View.OnClickListener() {
@@ -114,11 +116,11 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
         }
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(Category.CATEGORY);
         double sum = mActivity.mCurrentBudget.getTotalExpenses();
-        if (ceiling != -1){
+        if (ceiling != -1) {
             budgetSum.setText(String.valueOf(sum) + " / " + String.valueOf(ceiling));
-            float percentage = (float)(sum/ceiling);
+            float percentage = (float) (sum / ceiling);
             progressBar.setProgress(percentage < 1 ? percentage * 100 : 100);
-            if (percentage<0.6){
+            if (percentage < 0.6) {
                 progressBar.setProgressColor(Color.parseColor("#888bc34a"));
             } else if (percentage <= 1) {
                 progressBar.setProgressColor(Color.parseColor("#88ffc000"));
@@ -144,7 +146,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
             mView.findViewById(R.id.review_bottom_layout).setVisibility(View.GONE);
             mView.findViewById(R.id.explaining_text3).setVisibility(View.VISIBLE);
             mView.findViewById(R.id.crying_logo).setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mView.findViewById(R.id.review_top_layout).setVisibility(View.VISIBLE);
             mView.findViewById(R.id.categories_expenses).setVisibility(View.VISIBLE);
             mView.findViewById(R.id.review_bottom_layout).setVisibility(View.VISIBLE);

@@ -13,17 +13,13 @@ import com.github.mikephil.charting.charts.PieChart;
 
 public class GraphFragment extends Fragment {
     private View mView;
-
     private PieChart mPieChart;
     private BarChart mBarChart;
     private LineChart mLineChart;
     private LineChartMonths mLineChartMonths;
     private PieChartCategories mPieChartCategories;
     private BarChartUsers mBarChartUsers;
-
     private GraphInterface mGraph;
-
-    private BudgetViewActivity mActivity;
 
     public void setupPieChart(GraphInterface graph, PieChart pieChart, PieChartCategories pieChartCategories) {
         this.mGraph = graph;
@@ -44,7 +40,7 @@ public class GraphFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mActivity = (BudgetViewActivity) getActivity();
+
         if (mGraph.getGraphKind().equals(GraphEnum.PIE_CHART)) {
             mView = inflater.inflate(R.layout.pie_chart_view, null);
         } else if (mGraph.getGraphKind().equals(GraphEnum.LINE_CHART)) {

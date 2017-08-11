@@ -30,8 +30,6 @@ public class LineChartMonths implements GraphInterface {
     private String mInfoValue;
     private Budget mBudget;
     private GraphEnum mGraphKind = GraphEnum.LINE_CHART;
-    private int mMonth;
-    private int mYear;
 
     public LineChartMonths(Budget budget) {
         mLineChart = null;
@@ -76,7 +74,7 @@ public class LineChartMonths implements GraphInterface {
     public void calculateDataSet() {
         List<Entry> entries = new ArrayList<>();
         List<Entry> entries2 = new ArrayList<>();
-        ArrayList<Expense> expenses_by_months = new ArrayList<>();
+        ArrayList<Expense> expenses_by_months;
         Calendar c = Calendar.getInstance();
         Date startDate;
         Date endDate;

@@ -7,7 +7,7 @@ import java.math.BigInteger;
  */
 
 public class UserIdentifier extends Identifier {
-    public UserIdentifier(BigInteger id) {
+    protected UserIdentifier(BigInteger id) {
         super(id);
     }
 

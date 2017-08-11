@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:layoutDirection="rtl"
-    android:background="@drawable/background"
     tools:context="money.mezu.mezu.LoginActivity">
 
     <ImageView
@@ -28,27 +28,27 @@
         android:id="@+id/welcome_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textAlignment="center"
+        android:layout_weight="12"
         android:padding="10dp"
-        android:textSize="22sp"
         android:text="@string/welcome_message"
-        android:layout_weight="12" />
+        android:textAlignment="center"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/second_welcome_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textAlignment="center"
-        android:padding="10dp"
-        android:textSize="18sp"
         android:layout_weight="10"
-        android:text="@string/second_welcome_message" />
+        android:padding="10dp"
+        android:text="@string/second_welcome_message"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
 
     <FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="20">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -57,7 +57,6 @@
             android:layout_gravity="center" />
 
     </FrameLayout>
-
 
 
 </LinearLayout>

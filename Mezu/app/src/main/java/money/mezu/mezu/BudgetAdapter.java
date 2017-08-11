@@ -1,16 +1,12 @@
 package money.mezu.mezu;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -19,10 +15,8 @@ import java.util.ArrayList;
  */
 
 public class BudgetAdapter extends ArrayAdapter<Budget> {
-    //    Context context;
     public BudgetAdapter(Context context, ArrayList<Budget> budgets) {
         super(context, 0, budgets);
-//        this.context = context;
     }
 
     @Override
@@ -39,15 +33,16 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
         budgetRow.setTag(budget);
 
         // Populate the data into the template view using the data object
-        budgetName.setText(budget.toString());
-
+        if (budget != null) {
+            budgetName.setText(budget.toString());
+        }
         budgetRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Access user from within the tag
                 Budget budget = (Budget) view.getTag();
-                BudgetViewActivity.goToBudgetView(getContext(), budget, ((BaseNavDrawerActivity)getContext()).mSessionManager);
-                ((BaseNavDrawerActivity)getContext()).mDrawerLayout.closeDrawers();
+                BudgetViewActivity.goToBudgetView(getContext(), budget, ((BaseNavDrawerActivity) getContext()).mSessionManager);
+                ((BaseNavDrawerActivity) getContext()).mDrawerLayout.closeDrawers();
             }
         });
 

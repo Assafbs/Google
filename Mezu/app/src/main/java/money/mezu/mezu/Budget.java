@@ -25,12 +25,9 @@ public class Budget {
         this.mName = name;
         this.mExpenses = new ArrayList<>();
         this.mInitialBalance = initialBalance;
-        if (emails != null)
-        {
+        if (emails != null) {
             this.mEmails = emails;
-        }
-        else
-        {
+        } else {
             this.mEmails = new ArrayList<>();
         }
         this.mCategoryCeilings = new HashMap<>();
@@ -45,41 +42,35 @@ public class Budget {
         Log.d("", String.format("Budget:Budget creating budget from serialized budget: %s", serializedBudget.toString()));
         this.mId = (String) serializedBudget.get("mId");
         this.mName = (String) serializedBudget.get("mName");
-        if(serializedBudget.containsKey("mOwner"))
-        {
-            this.mOwner = (String)serializedBudget.get("mOwner");
-        }
-        else
-        {
+        if (serializedBudget.containsKey("mOwner")) {
+            this.mOwner = (String) serializedBudget.get("mOwner");
+        } else {
             this.mOwner = "";
         }
         this.mPending = new HashMap<>();
-        if(serializedBudget.containsKey("mPending"))
-        {
+        if (serializedBudget.containsKey("mPending")) {
             addNewPendingAndDecode((HashMap<String, String>) serializedBudget.get("mPending"));
         }
 
         ArrayList<Expense> expenses = new ArrayList<>();
-        try{
-        if (serializedBudget.containsKey("mExpenses")) {
-            HashMap<String, HashMap<String, Object>> serializedExpenses = (HashMap<String, HashMap<String, Object>>) serializedBudget.get("mExpenses");
-            for (HashMap<String, Object> expense : serializedExpenses.values()) {
-                expenses.add(new Expense(expense));
+        try {
+            if (serializedBudget.containsKey("mExpenses")) {
+                HashMap<String, HashMap<String, Object>> serializedExpenses = (HashMap<String, HashMap<String, Object>>) serializedBudget.get("mExpenses");
+                for (HashMap<String, Object> expense : serializedExpenses.values()) {
+                    expenses.add(new Expense(expense));
+                }
+                this.mExpenses = expenses;
+            } else {
+                this.mExpenses = new ArrayList<>();
             }
-            this.mExpenses = expenses;
-        } else {
-            this.mExpenses = new ArrayList<>();
-        }}
-        catch(ClassCastException e){
+        } catch (ClassCastException e) {
             Log.d("", String.format("Budget:expenses array is corrupted in budget: %s", serializedBudget.toString()));
             this.mExpenses = new ArrayList<>();
         }
         this.mCategoryCeilings = new HashMap<>();
-        if (serializedBudget.containsKey("mCategoryCeilings"))
-        {
-            HashMap<String, Double> serializedCategory = (HashMap<String, Double>)serializedBudget.get("mCategoryCeilings");
-            for (String key : serializedCategory.keySet())
-            {
+        if (serializedBudget.containsKey("mCategoryCeilings")) {
+            HashMap<String, Double> serializedCategory = (HashMap<String, Double>) serializedBudget.get("mCategoryCeilings");
+            for (String key : serializedCategory.keySet()) {
                 this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
             }
         }
@@ -89,101 +80,84 @@ public class Budget {
         } else {
             this.mInitialBalance = 0;
         }
-        this.mEmails = (ArrayList<String>)serializedBudget.get("mEmails");
+        this.mEmails = (ArrayList<String>) serializedBudget.get("mEmails");
     }
 
     //************************************************************************************************************************************************
-    public void addNewPendingAndDecode(HashMap<String, String> pendingToDecode)
-    {
-        for (String pending : pendingToDecode.keySet())
-        {
-            this.mPending.put(new String(Base64.decode(pending.getBytes(),Base64.NO_WRAP)), pendingToDecode.get(pending));
+    public void addNewPendingAndDecode(HashMap<String, String> pendingToDecode) {
+        for (String pending : pendingToDecode.keySet()) {
+            this.mPending.put(new String(Base64.decode(pending.getBytes(), Base64.NO_WRAP)), pendingToDecode.get(pending));
         }
     }
 
     //************************************************************************************************************************************************
-    public HashMap<String, String> getEncodedPending()
-    {
+    public HashMap<String, String> getEncodedPending() {
         HashMap<String, String> encodedPending = new HashMap<>();
-        for(String pending: this.mPending.keySet())
-        {
-            encodedPending.put(Base64.encodeToString(pending.getBytes(),Base64.NO_WRAP), pending);
+        for (String pending : this.mPending.keySet()) {
+            encodedPending.put(Base64.encodeToString(pending.getBytes(), Base64.NO_WRAP), pending);
         }
         return encodedPending;
     }
 
     //************************************************************************************************************************************************
-    public void addNewPending(ArrayList<String> newPending)
-    {
-        for (String pending : newPending)
-        {
+    public void addNewPending(ArrayList<String> newPending) {
+        for (String pending : newPending) {
             this.mPending.put(pending, pending);
         }
     }
 
     //************************************************************************************************************************************************
-    public void setCeilingForCategory(Category category, Double ceiling)
-    {
+    public void setCeilingForCategory(Category category, Double ceiling) {
         this.mCategoryCeilings.put(category, ceiling);
     }
 
     //************************************************************************************************************************************************
-    private HashMap<Category, Double> getCategoryCeilings()
-    {
+    private HashMap<Category, Double> getCategoryCeilings() {
         return this.mCategoryCeilings;
     }
 
     //************************************************************************************************************************************************
-    public String getId()
-    {
+    public String getId() {
         return this.mId;
     }
 
     //************************************************************************************************************************************************
-    public ArrayList<String> getEmails()
-    {
+    public ArrayList<String> getEmails() {
         return this.mEmails;
     }
 
     //************************************************************************************************************************************************
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.mId = id;
     }
 
     //************************************************************************************************************************************************
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.mName = name;
     }
 
     //************************************************************************************************************************************************
-    public void setInitialBalance(double balance)
-    {
+    public void setInitialBalance(double balance) {
         this.mInitialBalance = balance;
     }
 
     //************************************************************************************************************************************************
-    public ArrayList<Expense> getExpenses()
-    {
+    public ArrayList<Expense> getExpenses() {
         return mExpenses;
     }
 
     //************************************************************************************************************************************************
-    private String getOwner()
-    {
+    private String getOwner() {
         return this.mOwner;
     }
 
     //************************************************************************************************************************************************
-    public HashMap<String, String> getPending()
-    {
+    public HashMap<String, String> getPending() {
         return this.mPending;
     }
 
     //************************************************************************************************************************************************
-    public void setExpenses(ArrayList<Expense> newExpenses)
-    {
+    public void setExpenses(ArrayList<Expense> newExpenses) {
         this.mExpenses = newExpenses;
     }
 
@@ -196,10 +170,9 @@ public class Budget {
         serialized.put("mEmails", mEmails);
         serialized.put("mOwner", mOwner);
         serialized.put("mPending", this.getEncodedPending());
-        Log.d("", String.format("Budget:serializeNoExpenses this is the pending list: %s", ((HashMap<String,String>)serialized.get("mPending")).keySet().toString()));
+        Log.d("", String.format("Budget:serializeNoExpenses this is the pending list: %s", ((HashMap<String, String>) serialized.get("mPending")).keySet().toString()));
         HashMap<String, Double> translatedCategoryCeilings = new HashMap<>();
-        for (Category key : this.mCategoryCeilings.keySet())
-        {
+        for (Category key : this.mCategoryCeilings.keySet()) {
             translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key));
         }
         serialized.put("mCategoryCeilings", translatedCategoryCeilings);
@@ -207,16 +180,13 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public HashMap<String, Object> serialize()
-    {
+    public HashMap<String, Object> serialize() {
         HashMap<String, Object> serialized = this.serializeNoExpenses();
-        if (this.mExpenses.isEmpty())
-        {
+        if (this.mExpenses.isEmpty()) {
             return serialized;
         }
-        HashMap<String, HashMap<String, Object>>  expenses = new HashMap<String, HashMap<String, Object>>();
-        for (Expense expense: mExpenses)
-        {
+        HashMap<String, HashMap<String, Object>> expenses = new HashMap<String, HashMap<String, Object>>();
+        for (Expense expense : mExpenses) {
             expenses.put(expense.getId(), expense.serialize());
         }
         serialized.put("mExpenses", expenses);
@@ -235,20 +205,17 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getInitialBalance()
-    {
+    public double getInitialBalance() {
         return this.mInitialBalance;
     }
 
     //************************************************************************************************************************************************
-    public double getCurrentBalance()
-    {
+    public double getCurrentBalance() {
         return getInitialBalance() + getTotalIncomes() - getTotalExpenses();
     }
 
     //************************************************************************************************************************************************
-    public double getTotalExpenses()
-    {
+    public double getTotalExpenses() {
         double acc = 0;
         for (Expense expense : mExpenses) {
             if (expense.getIsExpense()) {
@@ -270,8 +237,7 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public Category getMostExpensiveCategory()
-    {
+    public Category getMostExpensiveCategory() {
         Category maxCategory = Category.OTHER;
         double categoryArray[] = new double[Category.values().length];
         for (int i = 0; i < Category.values().length; i++) {
@@ -294,8 +260,7 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getTotalExpensesPerCategory(Category category)
-    {
+    public double getTotalExpensesPerCategory(Category category) {
         double acc = 0;
         for (Expense expense : mExpenses) {
             if (expense.getIsExpense() && expense.getCategory().equals(category)) {
@@ -306,14 +271,12 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getTotalExpenseOrIncomePerCategoryby(Category category , boolean isExpense)
-    {
+    public double getTotalExpenseOrIncomePerCategoryby(Category category, boolean isExpense) {
         return isExpense ? getTotalExpensesPerCategory(category) : getTotalIncomesPerCategory(category);
     }
 
     //************************************************************************************************************************************************
-    public double getTotalIncomesPerCategory(Category category)
-    {
+    public double getTotalIncomesPerCategory(Category category) {
         double acc = 0;
         for (Expense expense : mExpenses) {
             if (!expense.getIsExpense() && expense.getCategory().equals(category)) {
@@ -332,20 +295,17 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public String getName()
-    {
+    public String getName() {
         return this.mName;
     }
 
     //************************************************************************************************************************************************
-    public String toString()
-    {
+    public String toString() {
         return mName;
     }
 
     //************************************************************************************************************************************************
-    public int getMostExpensiveMonthPerYear(int year)
-    {
+    public int getMostExpensiveMonthPerYear(int year) {
         int maxMonth = 1;
         double monthArray[] = new double[12];
         for (int i = 0; i < 12; i++) {
@@ -368,8 +328,7 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public ArrayList<String> getArrayOfUserNamesExpensesOnly()
-    {
+    public ArrayList<String> getArrayOfUserNamesExpensesOnly() {
         ArrayList<String> users = new ArrayList<>();
         boolean exists = false;
 
@@ -390,8 +349,7 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getAmountPerUserName(String user)
-    {
+    public double getAmountPerUserName(String user) {
         double acc = 0;
         for (Expense expense : mExpenses) {
             if (expense.getIsExpense() && expense.getUserName().equals(user)) {
@@ -402,10 +360,9 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public String getMostExpensiveUser()
-    {
+    public String getMostExpensiveUser() {
         ArrayList<String> users = getArrayOfUserNamesExpensesOnly();
-        if (users.isEmpty()){
+        if (users.isEmpty()) {
             return "";
         }
         String maxUser = users.get(0);
@@ -413,9 +370,9 @@ public class Budget {
         double maxAmount = getAmountPerUserName(users.get(0));
         int i = 0;
 
-        for (String user: users){
+        for (String user : users) {
             userAmount = getAmountPerUserName((users.get(i)));
-            if (userAmount > maxAmount){
+            if (userAmount > maxAmount) {
                 maxAmount = userAmount;
                 maxUser = user;
             }
@@ -425,58 +382,48 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public boolean isEstimatedToOverSpendThisMonth()
-    {
+    public boolean isEstimatedToOverSpendThisMonth() {
         double monthExpensesTotal = 0;
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
-        for(Expense expense : this.mExpenses)
-        {
-            if(expense.getMonth() == currentMonth)
-            {
+        for (Expense expense : this.mExpenses) {
+            if (expense.getMonth() == currentMonth) {
                 monthExpensesTotal += expense.getAmount();
             }
         }
 
-        monthExpensesTotal -= mInitialBalance/2;
-        double relativeBudgetLeft = mInitialBalance*(currentDay + 1)/(2*(daysInMonth + 1));
+        monthExpensesTotal -= mInitialBalance / 2;
+        double relativeBudgetLeft = mInitialBalance * (currentDay + 1) / (2 * (daysInMonth + 1));
         return monthExpensesTotal >= relativeBudgetLeft;
     }
 
     //************************************************************************************************************************************************
-    public double tryGetCategoryCeiling (Category category)
-    {
+    public double tryGetCategoryCeiling(Category category) {
         HashMap<Category, Double> categoryCeilings = this.getCategoryCeilings();
         if (categoryCeilings == null) {
             return -1;
         }
         Double ceiling = categoryCeilings.get(category) == null ?
                 null :
-                ((Number) categoryCeilings.get(category)).doubleValue();
+                categoryCeilings.get(category);
         return ceiling == null ? -1 : ceiling;
     }
 
     //************************************************************************************************************************************************
-    public boolean expensesDiffer(Budget budgetToCompare)
-    {
-        for (Expense myExpense: this.getExpenses())
-        {
+    public boolean expensesDiffer(Budget budgetToCompare) {
+        for (Expense myExpense : this.getExpenses()) {
             boolean foundMatch = false;
-            for (Expense theirExpense: budgetToCompare.getExpenses())
-            {
-                if(myExpense.getId().equals(theirExpense.getId()))
-                {
+            for (Expense theirExpense : budgetToCompare.getExpenses()) {
+                if (myExpense.getId().equals(theirExpense.getId())) {
                     foundMatch = true;
-                    if(myExpense.expenseDiffers(theirExpense))
-                    {
+                    if (myExpense.expenseDiffers(theirExpense)) {
                         return true;
                     }
                     break;
                 }
             }
-            if(!foundMatch)
-            {
+            if (!foundMatch) {
                 return true;
             }
         }

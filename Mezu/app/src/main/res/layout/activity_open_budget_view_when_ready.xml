@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/DrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:elevation="7dp"
     android:background="@drawable/background"
+    android:elevation="7dp"
     tools:context="money.mezu.mezu.OpenBudgetViewWhenReadyActivity">
 
     <android.support.design.widget.CoordinatorLayout
@@ -31,10 +30,10 @@
         </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:paddingTop="55dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="55dp">
 
             <ProgressBar
                 android:id="@+id/loading_spinner"
@@ -48,9 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:text="@string/loading_budgets"/>
-
+                android:text="@string/loading_budgets"
+                android:textSize="20sp" />
 
 
         </LinearLayout>
@@ -59,12 +57,12 @@
 
     <ViewStub
         android:id="@+id/nav_drawer_stub"
-        android:inflatedId="@+id/navigation_drawer"
-        android:layout="@layout/nav_drawer_layout"
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:inflatedId="@+id/navigation_drawer"
+        android:layout="@layout/nav_drawer_layout">
 
     </ViewStub>
 

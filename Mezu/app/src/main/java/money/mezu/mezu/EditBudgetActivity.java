@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.method.ScrollingMovementMethod;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,18 +22,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.robertlevonyan.views.chip.Chip;
 import com.robertlevonyan.views.chip.OnCloseClickListener;
 
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static money.mezu.mezu.R.color.expense_red;
 
 public class EditBudgetActivity extends BaseNavDrawerActivity {
 
@@ -54,39 +53,39 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         String json = getIntent().getStringExtra("budget");
         mCurrentBudget = gson.fromJson(json, Budget.class);
 
-        EditText budgetNameEditText = (EditText)findViewById(R.id.budget_name);
+        EditText budgetNameEditText = (EditText) findViewById(R.id.budget_name);
         budgetNameEditText.setText(mCurrentBudget.getName());
 
         double curBalance = mCurrentBudget.getInitialBalance();
-        if (curBalance != 0){
-            EditText initialBalanceEditText = (EditText)findViewById(R.id.starting_balance);
+        if (curBalance != 0) {
+            EditText initialBalanceEditText = (EditText) findViewById(R.id.starting_balance);
             initialBalanceEditText.setText(String.valueOf(curBalance));
         }
 
         partnersEmails = new ArrayList<>();
-        partnersChipsContainer = (FlowLayout)findViewById(R.id.partners_chips_container);
-        addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
+        partnersChipsContainer = (FlowLayout) findViewById(R.id.partners_chips_container);
+        addPartnerEmailTextView = (AutoCompleteTextView) findViewById(R.id.partner_email);
 
-        for (String partnerEmail : mCurrentBudget.getEmails()){
-            if (partnerEmail.equals(mSessionManager.getUserEmail())){
+        for (String partnerEmail : mCurrentBudget.getEmails()) {
+            if (partnerEmail.equals(mSessionManager.getUserEmail())) {
                 continue; // don't show the user himself on the list
             }
             Chip chip = new Chip(EditBudgetActivity.this);
             chip.setChipText(partnerEmail);
             partnersChipsContainer.addView(chip);
         }
-        for (String pendingPartnerEmail : mCurrentBudget.getPending().values()){
+        for (String pendingPartnerEmail : mCurrentBudget.getPending().values()) {
             Chip chip = new Chip(EditBudgetActivity.this);
             chip.setChipText(pendingPartnerEmail);
-            chip.setTextColor(getResources().getColor(R.color.expense_red));
+            chip.setTextColor(ContextCompat.getColor(StaticContext.mContext, expense_red));
             chip.setHasIcon(true);
-            chip.setChipIcon(getResources().getDrawable(R.drawable.mail));
+            chip.setChipIcon(ContextCompat.getDrawable(StaticContext.mContext, R.drawable.mail));
             chip.setClickable(true);
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent sendEmailIntent = new Intent(Intent.ACTION_SEND);
-                    sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{((Chip)view).getChipText()});
+                    sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{((Chip) view).getChipText()});
                     sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, "Join our budget - " + mCurrentBudget.getName());
                     sendEmailIntent.putExtra(Intent.EXTRA_TEXT, mSessionManager.getUserName() +
                             " would like you to join the budget \"" + mCurrentBudget.getName() + "\",\n" +
@@ -97,8 +96,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     sendEmailIntent.setType("message/rfc822");
                     try {
                         startActivity(sendEmailIntent);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(EditBudgetActivity.this, R.string.failed_to_send_email, Toast.LENGTH_SHORT).show();
                     }
 
@@ -139,13 +137,13 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         addPartnerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText partnerEmailView = (EditText)findViewById(R.id.partner_email);
+                EditText partnerEmailView = (EditText) findViewById(R.id.partner_email);
                 String partnerEmail = partnerEmailView.getText().toString().toLowerCase();
                 if (partnerEmail.equals("")) {
                     Toast.makeText(EditBudgetActivity.this, R.string.partner_email_is_empty, Toast.LENGTH_SHORT).show();
-                } else if (!isValidEmail(partnerEmail)){
+                } else if (!isValidEmail(partnerEmail)) {
                     Toast.makeText(EditBudgetActivity.this, R.string.email_not_valid, Toast.LENGTH_SHORT).show();
-                } else if (partnersEmails.contains(partnerEmail) || mCurrentBudget.getEmails().contains(partnerEmail)){
+                } else if (partnersEmails.contains(partnerEmail) || mCurrentBudget.getEmails().contains(partnerEmail)) {
                     Toast.makeText(EditBudgetActivity.this, R.string.email_already_in_list, Toast.LENGTH_SHORT).show();
                 } else { // email is valid
                     partnersEmails.add(partnerEmail);
@@ -182,12 +180,11 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         getMenuInflater().inflate(R.menu.budget_edit_menu, menu);
         return true;
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_delete)
-        {
+        if (id == R.id.action_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirm_delete);
             builder.setMessage(R.string.delete_confirmation_budget);
@@ -203,21 +200,21 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
     private class DeleteDialogListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            if(i==DialogInterface.BUTTON_POSITIVE) {
+            if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId(), mSessionManager.getUserEmail().toLowerCase());
                 Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(EditBudgetActivity.this.getPackageName() );
+                        .getLaunchIntentForPackage(EditBudgetActivity.this.getPackageName());
                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                mSessionManager.setLastBudget((String)null);
+                mSessionManager.setLastBudget((String) null);
                 startActivity(restartIntent);
             }
         }
     }
 
-    private boolean isValidEmail(String email){
+    private boolean isValidEmail(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
@@ -236,8 +233,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 new InitContactEmailsTask().execute(this);
-            } else {
-                //Toast.makeText(this, "Until you grant the permission, there will be no autocomplete for emails", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -255,6 +250,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
             contactEmails = new ArrayList<>();
             ContentResolver cr = getContentResolver();
             Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+            assert cursor != null;
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 Cursor emailCur = cr.query(
@@ -262,6 +258,7 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                         null,
                         ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
                         new String[]{id}, null);
+                assert emailCur != null;
                 while (emailCur.moveToNext()) {
                     String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                     contactEmails.add(email);

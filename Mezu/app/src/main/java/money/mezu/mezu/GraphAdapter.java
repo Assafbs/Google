@@ -3,6 +3,7 @@ package money.mezu.mezu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +34,12 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mActivity = (BudgetViewActivity) context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         GraphInterface graph = getItem(position);
+        assert graph != null;
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_graph, parent, false);
@@ -44,12 +47,12 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
 
         // Lookup view for data population
         TextView title = (TextView) convertView.findViewById(R.id.graphTitle);
-        TextView info1 = (TextView) convertView.findViewById(R.id.graphInfo1);
         TextView info2 = (TextView) convertView.findViewById(R.id.graphInfo2);
         TextView info3 = (TextView) convertView.findViewById(R.id.graphInfo3);
         mPieChart = (PieChart) convertView.findViewById(R.id.pie_chart_small);
         mBarChart = (BarChart) convertView.findViewById(R.id.bar_chart_small);
         mLineChart = (LineChart) convertView.findViewById(R.id.line_chart_small);
+
         info2.setText(graph.getInfoLine());
         info3.setText(graph.getInfoValue());
         if (LanguageUtils.isRTL() &&
@@ -89,7 +92,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         return convertView;
     }
 
-    void handlePieChart(View convertView, GraphInterface graph) {
+    private void handlePieChart(View convertView, GraphInterface graph) {
         ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
         ViewGroup.LayoutParams lineParams = mLineChart.getLayoutParams();
         barParams.width = 0;
@@ -101,7 +104,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mPieChartCategories.GenerateGraph(convertView, false);
     }
 
-    void handleLineChart(View convertView, GraphInterface graph) {
+    private void handleLineChart(View convertView, GraphInterface graph) {
         ViewGroup.LayoutParams barParams = mBarChart.getLayoutParams();
         ViewGroup.LayoutParams pieParams = mPieChart.getLayoutParams();
         barParams.width = 0;
@@ -113,7 +116,7 @@ public class GraphAdapter extends ArrayAdapter<GraphInterface> {
         mLineChartMonths.GenerateGraph(convertView, false);
     }
 
-    void handleBarChart(View convertView, GraphInterface graph) {
+    private void handleBarChart(View convertView, GraphInterface graph) {
         ViewGroup.LayoutParams lineParams = mLineChart.getLayoutParams();
         ViewGroup.LayoutParams pieParams = mPieChart.getLayoutParams();
         lineParams.width = 0;

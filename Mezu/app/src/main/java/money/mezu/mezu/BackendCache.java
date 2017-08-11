@@ -9,50 +9,43 @@ import java.util.HashMap;
  */
 
 public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListener {
-    private static BackendCache mCache= null;
-    private HashMap<String, Budget> budgets = new HashMap<> ();
+    private static BackendCache mCache = null;
+    private HashMap<String, Budget> budgets = new HashMap<>();
 
     //************************************************************************************************************************************************
-    public static BackendCache getInstatnce()
-    {
-        if (null == mCache)
-        {
+    public static BackendCache getInstance() {
+        if (null == mCache) {
             mCache = new BackendCache();
         }
         return mCache;
     }
 
     //************************************************************************************************************************************************
-    private BackendCache()
-    {
+    private BackendCache() {
         FirebaseBackend.getInstance().startListeningForAllUserBudgetUpdates((new SessionManager(StaticContext.mContext)).getUserId());
         EventDispatcher.getInstance().registerBudgetUpdateListener(this);
         EventDispatcher.getInstance().registerUserLeftBudgetListener(this);
     }
 
     //************************************************************************************************************************************************
-    public void clearCache()
-    {
+    public void clearCache() {
         mCache = null;
     }
 
     //************************************************************************************************************************************************
-    public void budgetUpdatedCallback(Budget newBudget)
-    {
-        Log.d("",String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));
+    public void budgetUpdatedCallback(Budget newBudget) {
+        Log.d("", String.format("BackendCache:budgetUpdatedCallback: invoked with budget: %s", newBudget.toString()));
         budgets.put(newBudget.getId(), newBudget);
     }
 
     //************************************************************************************************************************************************
-    public void userLeftBudgetCallback(String bid)
-    {
-        Log.d("",String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
+    public void userLeftBudgetCallback(String bid) {
+        Log.d("", String.format("BackendCache:userLeftBudgetCallback: invoked with bid: %s", bid));
         budgets.remove(bid);
     }
 
     //************************************************************************************************************************************************
-    public HashMap<String, Budget> getBudgets()
-    {
+    public HashMap<String, Budget> getBudgets() {
         return budgets;
     }
 }

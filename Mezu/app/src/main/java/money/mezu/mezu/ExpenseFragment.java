@@ -36,7 +36,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.Locale;
 
 public class ExpenseFragment extends Fragment {
     private CategoryPredictor predictor;
@@ -56,25 +56,19 @@ public class ExpenseFragment extends Fragment {
     Button mEditButton;
     EditText mEditTextAddedBy;
     ImageView mRepeatAction;
-    TextView mReapatText;
+    TextView mRepeatText;
     int mRepeatChoice;
     android.support.design.widget.TextInputLayout mAddedByLayout;
-
-
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Calendar c;
-
     private boolean incomeSelected = false;
     private Category incomeCat = Category.CATEGORY;
     private Category expenseCat = Category.CATEGORY;
     private ArrayAdapter<String> incomeAdapter;
     private ArrayAdapter<String> expenseAdapter;
     private DateFormat mDateFormat;
-
     private Expense expenseToShow = null;
-
     public boolean isAdd;
-
     private BudgetViewActivity mActivity;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,22 +88,15 @@ public class ExpenseFragment extends Fragment {
         mEditTextAddedBy = (EditText) mView.findViewById(R.id.added_by_edit_text);
         mEditButton = (Button) mView.findViewById(R.id.edit_action_btn);
         mRepeatAction = (ImageView) mView.findViewById(R.id.repeat_action);
-        mReapatText = (TextView) mView.findViewById(R.id.ratio_text);
+        mRepeatText = (TextView) mView.findViewById(R.id.ratio_text);
         mAddedByLayout = (android.support.design.widget.TextInputLayout) mView.findViewById(R.id.added_by_layout);
         mRepeatChoice = 0;
-
-        if (LanguageUtils.isRTL()) {
-            mDateFormat = new SimpleDateFormat("HH:mm");
-        } else {
-            mDateFormat = new SimpleDateFormat("h:mm a");
-        }
-
+        mDateFormat = LanguageUtils.isRTL() ? new SimpleDateFormat("HH:mm", Locale.getDefault()) : new SimpleDateFormat("h:mm a", Locale.getDefault());
         if (isAdd) {
             setupAddExpense();
         } else {
             setupShowExpense();
         }
-
         return mView;
     }
 
@@ -147,7 +134,7 @@ public class ExpenseFragment extends Fragment {
         if (expenseToShow.getAmount() == 0.0) {
             mEditTextAmount.setText("0.0");
         } else {
-            mEditTextAmount.setText("" + expenseToShow.getAmount());
+            mEditTextAmount.setText(String.format("%s", expenseToShow.getAmount()));
         }
 
         ArrayList<String> categories = new ArrayList<>();
@@ -325,7 +312,7 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.radio_income & !incomeSelected) {
-                    if (isAdd){
+                    if (isAdd) {
                         predictor.disable();
                     }
                     expenseCat = Category.getCategoryFromString(mCategorySpinner.getSelectedItem().toString());
@@ -434,8 +421,6 @@ public class ExpenseFragment extends Fragment {
                 }
                 break;
         }
-
-
         mActivity.tryReleaseTabs();
     }
 
@@ -484,11 +469,11 @@ public class ExpenseFragment extends Fragment {
                         break;
                 }
                 if (mRepeatChoice == 0) {
-                    mReapatText.setVisibility(View.GONE);
+                    mRepeatText.setVisibility(View.GONE);
                 }
                 if (mRepeatChoice != 0) {
-                    mReapatText.setVisibility(View.VISIBLE);
-                    mReapatText.setText(item.getTitle());
+                    mRepeatText.setVisibility(View.VISIBLE);
+                    mRepeatText.setText(item.getTitle());
                 }
                 return true;
             }
@@ -500,11 +485,10 @@ public class ExpenseFragment extends Fragment {
                 if (mRepeatChoice == 0) {
                     mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.accent_dark));
                     mRepeatAction.setBackgroundColor(Color.TRANSPARENT);
-                    mReapatText.setVisibility(View.GONE);
+                    mRepeatText.setVisibility(View.GONE);
                 }
             }
         });
-
         popup.show();//showing popup menu
     }
 

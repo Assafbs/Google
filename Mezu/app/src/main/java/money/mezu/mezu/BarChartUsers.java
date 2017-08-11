@@ -80,7 +80,7 @@ public class BarChartUsers implements GraphInterface {
         legend.setEnabled(false);
     }
 
-    public void customizeAxis() {
+    private void customizeAxis() {
         YAxis yAxisRight = mBarChart.getAxisRight();
         YAxis yAxisLeft = mBarChart.getAxisLeft();
         XAxis xAxis = mBarChart.getXAxis();
@@ -99,7 +99,7 @@ public class BarChartUsers implements GraphInterface {
         });
     }
 
-    public String getFirstName(String name) {
+    private String getFirstName(String name) {
         String[] l = name.split(" ");
         if (l.length > 1) {
             return l[0] + " " + l[1].charAt(0);
@@ -142,7 +142,7 @@ public class BarChartUsers implements GraphInterface {
 
         double totalExpenses = mBudget.getTotalExpenses();
         if (totalExpenses == 0) {
-        mBarChart.setVisibility(View.INVISIBLE);
+            mBarChart.setVisibility(View.INVISIBLE);
         }
         mBarChart.setNoDataText(resources.getString(R.string.no_data_chart));
         mBarChart.getDescription().setEnabled(false);
@@ -159,7 +159,7 @@ public class BarChartUsers implements GraphInterface {
         mBarChart.invalidate(); // refresh
     }
 
-    public void setSmallChart(BarData data) {
+    private void setSmallChart(BarData data) {
         data.setValueTextSize(0);
         mBarChart.setNoDataText("");
         mBarChart.getLegend().setEnabled(false);
@@ -173,7 +173,7 @@ public class BarChartUsers implements GraphInterface {
     }
 
 
-    public int getColor(int color) {
+    private int getColor(int color) {
         return ContextCompat.getColor(StaticContext.mContext, color);
     }
 }

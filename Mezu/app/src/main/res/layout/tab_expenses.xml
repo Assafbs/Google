@@ -30,14 +30,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/crying_logo"
             android:gravity="center"
+            android:text="@string/no_expenses_message1"
             android:textSize="20sp"
-            android:text = "@string/no_expenses_message1"
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/months_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/months_layout"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
             android:weightSum="15">

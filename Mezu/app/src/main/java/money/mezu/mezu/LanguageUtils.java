@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class LanguageUtils {
 
-    public static void setLanguage(String languageCode, Context context){
+    public static void setLanguage(String languageCode, Context context) {
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
@@ -24,44 +24,40 @@ public class LanguageUtils {
         res.updateConfiguration(conf, dm);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPref.edit().putString("language", getValueFromLanguageCode(languageCode)).apply();
-
     }
 
-    public static String getDefaultLanguage(Context context){
+    public static String getDefaultLanguage(Context context) {
         return getLanguageFromValue(getISO3CurrentLanguageCode(), context);
     }
 
-    public static String getISO3CurrentLanguageCode(){
+    public static String getISO3CurrentLanguageCode() {
         return Locale.getDefault().getISO3Language();
     }
 
-    public static boolean languageValueIsValid(String val){
+    public static boolean languageValueIsValid(String val) {
         return (val.equals("heb") || val.equals("eng"));
     }
 
-    public static String getLanguageFromValue(String lang, Context context){
-        if (lang.equals("heb")){
+    public static String getLanguageFromValue(String lang, Context context) {
+        if (lang.equals("heb")) {
             return context.getString(R.string.hebrew);
-        }
-        else {
+        } else {
             return context.getString(R.string.english);
         }
     }
 
-    public static String getLanguageCodeFromValue(String lang){
-        if (lang.equals("heb")){
+    public static String getLanguageCodeFromValue(String lang) {
+        if (lang.equals("heb")) {
             return "he";
-        }
-        else {
+        } else {
             return "en";
         }
     }
 
-    public static String getValueFromLanguageCode(String lang){
-        if (lang.equals("he")){
+    public static String getValueFromLanguageCode(String lang) {
+        if (lang.equals("he")) {
             return "heb";
-        }
-        else {
+        } else {
             return "eng";
         }
     }
@@ -76,7 +72,7 @@ public class LanguageUtils {
                 directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
     }
 
-    public String getEmojiByUnicode(int unicode){
+    public String getEmojiByUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
 }

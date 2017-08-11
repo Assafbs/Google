@@ -34,7 +34,7 @@ public enum Category {
     private boolean isExpense;
     private boolean isIncome;
 
-    private Category(int value, boolean isExpense, boolean isIncome) {
+    Category(int value, boolean isExpense, boolean isIncome) {
         this.value = value;
         this.isExpense = isExpense;
         this.isIncome = isIncome;
@@ -83,7 +83,7 @@ public enum Category {
         return CATEGORY;
     }
 
-    public String toString(){
+    public String toString() {
         return name();
     }
 
@@ -229,16 +229,4 @@ public enum Category {
         return expenseCats;
     }
 
-    public static ArrayList<Category> getIncomeCategoriesList() {
-        if (incomeCats == null) {
-            incomeCats = new ArrayList<>();
-
-            for (Category cat : Category.values()) {
-                if (cat.isIncome && cat.getValue() > 0) {
-                    incomeCats.add(cat);
-                }
-            }
-        }
-        return incomeCats;
-    }
 }
