@@ -421,17 +421,8 @@ public class Budget {
         {
             return -1;
         }
-        else
-        {
-            Log.d("", String.format("Budget:tryGetCategoryCeiling: category is: %s", category.toNiceString()));
-            Log.d("", String.format("Budget:tryGetCategoryCeiling: ceiling is: %s", categoryCeilings.get(category)));
-            Log.d("", String.format("Budget:tryGetCategoryCeiling: class  is: %s", categoryCeilings.get(category)).getClass().toString());
-            return categoryCeilings.get(category);
-        }
-//        Double ceiling = categoryCeilings.get(category) == null ?
-//                null :
-//                (categoryCeilings.get(category)).doubleValue();
-//        return ceiling == null ? -1 : ceiling;
+        
+        return categoryCeilings.get(category);
     }
 
     //************************************************************************************************************************************************
