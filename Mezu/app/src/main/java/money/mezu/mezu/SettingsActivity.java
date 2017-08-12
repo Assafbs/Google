@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(settingsIntent);
                     ExpensesTabFragment.sDefaultDate = true;
-                    return false;
+                    return true;
                 }
             });
 
@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
                     else{
                         findPreference("minimum_amount").setEnabled(false);
                     }
-                    return false;
+                    return true;
                 }
             });
 
@@ -101,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
                     FirebaseBackend.getInstance().setMinimalTransactionNotificationValue(Integer.parseInt((String)o), sessionManager.getUserId());
-                    return false;
+                    return true;
                 }
             });
 
@@ -112,7 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
                     boolean isChecked = o.equals(true);
                     FirebaseBackend.getInstance().setShouldNotifyWhenAddedToBudget(isChecked, sessionManager.getUserId());
-                    return false;
+                    return true;
                 }
             });
             SwitchPreference enableNotificationsOnDeviation = (SwitchPreference)findPreference("enable_notifications_on_deviation");
@@ -122,7 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
                     boolean isChecked = o.equals(true);
                     FirebaseBackend.getInstance().setShouldNotifyBudgetExceededThreshold(isChecked, sessionManager.getUserId());
-                    return false;
+                    return true;
                 }
             });
             
