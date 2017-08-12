@@ -115,6 +115,16 @@ public class SettingsActivity extends AppCompatActivity {
                     return false;
                 }
             });
+            SwitchPreference enableNotificationsOnDeviation = (SwitchPreference)findPreference("enable_notifications_on_deviation");
+            enableNotificationsOnDeviation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SessionManager sessionManager = new SessionManager(StaticContext.mContext);
+                    boolean isChecked = o.equals(true);
+                    FirebaseBackend.getInstance().setShouldNotifyBudgetExceededThreshold(isChecked, sessionManager.getUserId());
+                    return false;
+                }
+            });
             
         }
     }

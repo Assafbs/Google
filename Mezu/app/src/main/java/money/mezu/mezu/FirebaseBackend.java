@@ -243,6 +243,7 @@ public class FirebaseBackend {
                     mDatabase.child("users").child(uidToAdd).child("username").setValue(usernameToAdd);
                     mDatabase.child("users").child(uidToAdd).child("email").setValue(emailToAdd);
                     mDatabase.child("mails").child(Base64.encodeToString(emailToAdd.getBytes(), Base64.NO_WRAP)).child("uid").setValue(uidToAdd);
+                    setShouldNotifyBudgetExceededThreshold(true, lUid);
                     setShouldNotifyOnTransaction(true, lUid);
                     setMinimalTransactionNotificationValue(0, lUid);
                     setShouldNotifyWhenAddedToBudget(true, lUid);
@@ -280,9 +281,8 @@ public class FirebaseBackend {
     }
 
     //************************************************************************************************************************************************
-    public void setShouldNotifyBudgetExceededThreshold(String bid, int threshold, boolean shouldNotify, UserIdentifier uid) {
-        mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("shouldNotify").setValue(shouldNotify);
-        mDatabase.child("users").child(uid.getId().toString()).child("settings").child(bid).child("thresholdSettings").child("threshold").setValue(threshold);
+    public void setShouldNotifyBudgetExceededThreshold(boolean shouldNotify, UserIdentifier uid) {
+        mDatabase.child("users").child(uid.getId().toString()).child("settings").child("nofityBudgetExceeded").setValue(shouldNotify);
     }
 
     //************************************************************************************************************************************************

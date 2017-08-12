@@ -69,9 +69,21 @@ public class Budget {
         }
         this.mCategoryCeilings = new HashMap<>();
         if (serializedBudget.containsKey("mCategoryCeilings")) {
-            HashMap<String, Double> serializedCategory = (HashMap<String, Double>) serializedBudget.get("mCategoryCeilings");
-            for (String key : serializedCategory.keySet()) {
-                this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
+            try
+            {
+                HashMap<String, String> serializedCategory = (HashMap<String, String>) serializedBudget.get("mCategoryCeilings");
+                for (String key : serializedCategory.keySet())
+                {
+                    this.mCategoryCeilings.put(Category.valueOf(key), Double.parseDouble(serializedCategory.get(key)));
+                }
+            }
+            catch(Exception e)
+            {
+                HashMap<String, Double> serializedCategory = (HashMap<String, Double>) serializedBudget.get("mCategoryCeilings");
+                for (String key : serializedCategory.keySet())
+                {
+                    this.mCategoryCeilings.put(Category.valueOf(key), serializedCategory.get(key));
+                }
             }
         }
 
@@ -171,9 +183,9 @@ public class Budget {
         serialized.put("mOwner", mOwner);
         serialized.put("mPending", this.getEncodedPending());
         Log.d("", String.format("Budget:serializeNoExpenses this is the pending list: %s", ((HashMap<String, String>) serialized.get("mPending")).keySet().toString()));
-        HashMap<String, Double> translatedCategoryCeilings = new HashMap<>();
+        HashMap<String, String> translatedCategoryCeilings = new HashMap<>();
         for (Category key : this.mCategoryCeilings.keySet()) {
-            translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key));
+            translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key).toString());
         }
         serialized.put("mCategoryCeilings", translatedCategoryCeilings);
         return serialized;
@@ -401,13 +413,25 @@ public class Budget {
     //************************************************************************************************************************************************
     public double tryGetCategoryCeiling(Category category) {
         HashMap<Category, Double> categoryCeilings = this.getCategoryCeilings();
-        if (categoryCeilings == null) {
+        if (categoryCeilings == null)
+        {
             return -1;
         }
-        Double ceiling = categoryCeilings.get(category) == null ?
-                null :
-                categoryCeilings.get(category);
-        return ceiling == null ? -1 : ceiling;
+        if (null == categoryCeilings.get(category))
+        {
+            return -1;
+        }
+        else
+        {
+            Log.d("", String.format("Budget:tryGetCategoryCeiling: category is: %s", category.toNiceString()));
+            Log.d("", String.format("Budget:tryGetCategoryCeiling: ceiling is: %s", categoryCeilings.get(category)));
+            Log.d("", String.format("Budget:tryGetCategoryCeiling: class  is: %s", categoryCeilings.get(category)).getClass().toString());
+            return categoryCeilings.get(category);
+        }
+//        Double ceiling = categoryCeilings.get(category) == null ?
+//                null :
+//                (categoryCeilings.get(category)).doubleValue();
+//        return ceiling == null ? -1 : ceiling;
     }
 
     //************************************************************************************************************************************************
