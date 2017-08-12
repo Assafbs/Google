@@ -105,6 +105,19 @@ public class Expense implements Comparable<Expense> {
         this.mPeriodic = period;
     }
     //************************************************************************************************************************************************
+    public double getAlmostUniqueId()
+    {
+        if (null == this.mPeriodic)
+        {
+            return -1;
+        }
+        if (!this.mPeriodic.containsKey("almostUniqueId"))
+        {
+            return -1;
+        }
+        return (double)this.mPeriodic.get("almostUniqueId");
+    }
+    //************************************************************************************************************************************************
 
     public String getId() {
         return mId;

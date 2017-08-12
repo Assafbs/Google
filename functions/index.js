@@ -240,6 +240,15 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 		const isExpense = snapshot.child("budget").child("mExpenses").child(eid).child("mIsExpense").val();
 		const expenses = snapshot.child("budget").child("mExpenses").val();
 		const newExpenseAddedBy = snapshot.child("budget").child("mExpenses").child(eid).child("mUserID").val();
+		const mPeriod = snapshot.child("budget").child("mExpenses").child(eid).child("mPeriodic").val();
+		if (null != mPeriod)
+		{
+			if(false == mPeriod["isFirst"])
+			{
+				return;
+			}
+				
+		}
 		var totalBudgetExpenses = 0;
 		const currentExpenseDate = new Date(expenses[eid]["mTime"]);
 		for (var curreid in expenses)
@@ -260,13 +269,18 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 
 		var messageTitle = "";
 		var messageBody = "By: " + userName + "\nFor: " + expenseAmount;
+		var periodString = "";
+		if (null != mPeriod)
+		{
+			periodString = " " + mPeriod["recurrenceTime"];
+		}
 		if (isExpense) 
 		{			
-			messageTitle = "New expense was added to budget: " + budgetName;
+			messageTitle = "New"+ periodString + " expense was added to budget: " + budgetName;
 		}
 		else
 		{
-			messageTitle = "New income was added to budget: " + budgetName;
+			messageTitle = "New"+ periodString + " income was added to budget: " + budgetName;
 		}
 
 		for (var uid in users)

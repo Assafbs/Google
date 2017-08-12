@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Random;
 
 public class ExpenseFragment extends Fragment {
     private CategoryPredictor predictor;
@@ -385,6 +386,7 @@ public class ExpenseFragment extends Fragment {
             return;
         }
         HashMap<String,Object> period = new HashMap<>();
+        period.put("almostUniqueId", (new Random()).nextDouble());
         period.put("isFirst", true);
         switch (mRepeatChoice) {
             case 1: //every day
@@ -403,7 +405,10 @@ public class ExpenseFragment extends Fragment {
                 period.put("recurrenceTime", "bimonthly");
                 break;
         }
-        newExpense.setRecurrence(period);
+        if (0 != mRepeatChoice)
+        {
+            newExpense.setRecurrence(period);
+        }
         FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
         period.put("isFirst", false);
         switch (mRepeatChoice) {
@@ -568,14 +573,18 @@ public class ExpenseFragment extends Fragment {
     public void deleteExpense() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.confirm_delete);
-        builder.setMessage(R.string.delete_confirmation_expense);
+        if (expenseToShow.isRecurrent())
+        {
+            builder.setMessage(R.string.delete_confirmation_expense_recurrent);
+            builder.setNeutralButton(R.string.delete_recurring, new ExpenseFragment.DeleteDialogListener());
+        }
+        else
+        {
+            builder.setMessage(R.string.delete_confirmation_expense);
+        }
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.yes, new ExpenseFragment.DeleteDialogListener());
         builder.setNegativeButton(R.string.no, new ExpenseFragment.DeleteDialogListener());
-        if (expenseToShow.isRecurrent())
-        {
-            builder.setNeutralButton(R.string.delete_recurring, new ExpenseFragment.DeleteDialogListener());
-        }
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -608,7 +617,8 @@ public class ExpenseFragment extends Fragment {
                     }
                     long diffSeconds = diff / 1000 % 60;
                     long diffMinutes = diff / (60 * 1000) % 60;
-                    if(diffSeconds == 0 && diffMinutes == 0 && currentExpense.getTitle().equals(expenseToShow.getTitle()))
+                    boolean auidEq = (currentExpense.getAlmostUniqueId() == expenseToShow.getAlmostUniqueId());
+                    if(diffSeconds == 0 && diffMinutes == 0 && currentExpense.getTitle().equals(expenseToShow.getTitle()) && auidEq)
                     {
                         idsToDelete.add(currentExpense.getId());
                         Log.d("", String.format("adding %s", currentExpense.getId()));
