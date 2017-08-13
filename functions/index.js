@@ -220,7 +220,7 @@ exports.connectNewUserToPendingBudgets = functions.database.ref('/users/{uid}').
 	});
 });
 //******************************************************************************************************************************************************
-exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/mExpenses/{eid}').onWrite(event => {
+exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/mExpenses/{eid}').onCreate(event => {
 	const eid = event.params.eid;
 	const bid = event.params.bid;
 	// If un-follow we exit the function.
