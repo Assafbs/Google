@@ -126,7 +126,7 @@
         <item>eng</item>
     </string-array>
 
-    <string name="pref_description_allow_notifications_expenses">"\n        A notification will appear every time an action is added to one of your budgets\n    "</string>
+    <string name="pref_description_allow_notifications_expenses">"A notification will appear every time an action is added to one of your budgets"</string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
 
 
