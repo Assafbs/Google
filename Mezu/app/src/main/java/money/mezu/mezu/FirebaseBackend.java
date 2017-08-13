@@ -117,13 +117,17 @@ public class FirebaseBackend {
                 mDatabase.child("users").child(uidToUpdate).child("budgets").child(bidToLeave).removeValue();
                 mDatabase.child("budgets").child(bidToLeave).child("users").child(uidToUpdate).removeValue();
                 // second condition verifies that we were a member of the budget to begin with.
-                if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate)) {
+                if (1 == uidDict.size() && uidDict.containsKey(uidToUpdate))
+                {
                     Log.d("", "FirebaseBackend::leaveBudget: user is the last one in budget, deleting budget");
                     mDatabase.child("budgets").child(bidToLeave).removeValue();
                     // remove pending references
-                    for (String pendingBase64 : pendingUsers.keySet()) {
-                        Log.d("", String.format("FirebaseBackend::leaveBudget: removing pending user: %s from budget %s ", pendingBase64, bidToLeave));
-                        mDatabase.child("mails").child(pendingBase64).child("pendingBudgets").child(bidToLeave).removeValue();
+                    if(null != pendingUsers)
+                    {
+                        for (String pendingBase64 : pendingUsers.keySet()) {
+                            Log.d("", String.format("FirebaseBackend::leaveBudget: removing pending user: %s from budget %s ", pendingBase64, bidToLeave));
+                            mDatabase.child("mails").child(pendingBase64).child("pendingBudgets").child(bidToLeave).removeValue();
+                        }
                     }
                 }
                 // This line appears twice to handle a very unlikely race condition (which wasn't witnessed) that can occur if the first invocation

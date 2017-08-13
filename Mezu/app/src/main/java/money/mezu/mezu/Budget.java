@@ -421,7 +421,7 @@ public class Budget {
         {
             return -1;
         }
-        
+
         return categoryCeilings.get(category);
     }
 
