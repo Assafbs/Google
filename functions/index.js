@@ -235,7 +235,7 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 
 		const users = snapshot.child("users").val();
 		const budgetName = snapshot.child("budget").child("mName").val();
-		const budgetThreshold = Number(snapshot.child("budget").child("mCategoryCeilings").child("CATEGORY").val());
+		const budgetThreshold = snapshot.child("budget").child("mCategoryCeilings").child("CATEGORY").val();
 		const userName = snapshot.child("budget").child("mExpenses").child(eid).child("mUserName").val();
 		const expenseAmount = snapshot.child("budget").child("mExpenses").child(eid).child("mAmount").val();
 		const isExpense = snapshot.child("budget").child("mExpenses").child(eid).child("mIsExpense").val();
@@ -305,12 +305,13 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 				if (snapshot2.hasChild("nofityBudgetExceeded"))
 				{
 					const thresholdSettingEnabled = snapshot2.child("nofityBudgetExceeded").val();
-					if (thresholdSettingEnabled && null != budgetThreshold && -1 != budgetThreshold)
+					var budgetThresholdNumber = Number(budgetThreshold);
+					if (thresholdSettingEnabled && null != budgetThreshold && -1 != budgetThresholdNumber)
 					{
-						if (totalBudgetExpenses >= budgetThreshold)
+						if (totalBudgetExpenses >= budgetThresholdNumber)
 						{
 						 	var messageTitle2 = "Budget " + budgetName + " has gone over threshold";
-						 	var messageBody2 = "Threshold is: " + budgetThreshold + " while the budget's sum of expenses is: " + totalBudgetExpenses  + " for: " + (currentExpenseDate.getMonth() + 1) + "/"+(currentExpenseDate.getYear() - 100);
+						 	var messageBody2 = "Threshold is: " + budgetThresholdNumber + " while the budget's sum of expenses is: " + totalBudgetExpenses  + " for: " + (currentExpenseDate.getMonth() + 1) + "/"+(currentExpenseDate.getYear() - 100);
 						 	sendNotification(luid, messageTitle2, messageBody2, bid);
 						}
 					}	
