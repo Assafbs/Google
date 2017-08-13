@@ -86,15 +86,6 @@ public class Expense implements Comparable<Expense> {
         return serialized;
     }
     //************************************************************************************************************************************************
-    public String getExpensePeriod()
-    {
-        if (null == this.mPeriodic)
-        {
-            return null;
-        }
-        return (String)this.mPeriodic.get("recurrenceTime");
-    }
-    //************************************************************************************************************************************************
     public boolean isRecurrent()
     {
         return (this.mPeriodic != null);
