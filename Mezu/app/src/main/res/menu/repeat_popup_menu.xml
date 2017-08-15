@@ -2,27 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/no_repeat_opt"
-        android:title="@string/no_repeat"/>
-
-    <item
-        android:id="@+id/every_day_opt"
-        android:title="@string/every_day"/>
+        android:title="@string/no_repeat" />
 
     <item
         android:id="@+id/every_week_opt"
-        android:title="@string/every_week"/>
+        android:title="@string/every_week" />
 
     <item
         android:id="@+id/every_two_weeks_opt"
-        android:title="@string/every_two_weeks"/>
+        android:title="@string/every_two_weeks" />
 
     <item
         android:id="@+id/every_month_opt"
-        android:title="@string/every_month"/>
+        android:title="@string/every_month" />
 
     <item
         android:id="@+id/every_two_months_opt"
-        android:title="@string/every_two_months"/>
+        android:title="@string/every_two_months" />
 
 
 </menu>

@@ -36,7 +36,6 @@
 
     <string-array name="repeat_list">
         <item>@string/no_repeat</item>
-        <item>@string/every_day</item>
         <item>@string/every_week</item>
         <item>@string/every_two_weeks</item>
         <item>@string/every_month</item>

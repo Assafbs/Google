@@ -159,7 +159,7 @@
     <string name="expense_deleted">Action Deleted</string>
     <string name="delete_confirmation_budget">Are you sure you want to delete this budget?</string>
     <string name="delete_confirmation_expense">Are you sure you want to delete this action?</string>
-    <string name="delete_confirmation_expense_recurrent">Are you sure you want to delete this action (choosing \"ALL\" will also delete future occurrenses)?</string>
+    <string name="delete_confirmation_expense_recurrent">Are you sure you want to delete this action (choosing \"ALL\" will also delete future occurrences)?</string>
     <string name="delete_recurring">All</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

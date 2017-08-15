@@ -381,6 +381,8 @@ public class ExpenseFragment extends Fragment {
 
     public void addExpense() {
         int originalDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        int currentDay;
+        int maxDayOfMonth;
         Expense newExpense = createExpenseFromFields();
         int i;
         if (newExpense == null) {
@@ -390,9 +392,6 @@ public class ExpenseFragment extends Fragment {
         period.put("almostUniqueId", (new Random()).nextDouble());
         period.put("isFirst", true);
         switch (mRepeatChoice) {
-            case 1: //every day
-                period.put("recurrenceTime", "daily");
-                break;
             case 2: //every week
                 period.put("recurrenceTime", "weekly");
                 break;
@@ -413,14 +412,6 @@ public class ExpenseFragment extends Fragment {
         FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
         period.put("isFirst", false);
         switch (mRepeatChoice) {
-            case 1: //every day
-                for (i = 0; i < 364; i++) {
-                    c.add(Calendar.DATE, 1);
-                    newExpense.setTime(c.getTime());
-                    newExpense.setRecurrence(period);
-                    FirebaseBackend.getInstance().addExpenseToBudget(mActivity.mCurrentBudget, newExpense);
-                }
-                break;
             case 2: //every week
                 for (i = 0; i < 51; i++) {
                     c.add(Calendar.WEEK_OF_YEAR, 1);
@@ -440,10 +431,10 @@ public class ExpenseFragment extends Fragment {
             case 4: //every month
                 for (i = 0; i < 11; i++) {
                     c.add(Calendar.MONTH, 1);
-                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
-                    int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    if (max > currentDay && originalDayOfMonth > currentDay) {
-                        currentDay = max > originalDayOfMonth ? originalDayOfMonth : max;
+                    currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    maxDayOfMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    if (maxDayOfMonth > currentDay && originalDayOfMonth > currentDay) {
+                        currentDay = maxDayOfMonth > originalDayOfMonth ? originalDayOfMonth : maxDayOfMonth;
                         c.set(Calendar.DAY_OF_MONTH, currentDay);
                     }
                     newExpense.setTime(c.getTime());
@@ -454,10 +445,10 @@ public class ExpenseFragment extends Fragment {
             case 5: //every two months
                 for (i = 0; i < 5; i++) {
                     c.add(Calendar.MONTH, 2);
-                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
-                    int max = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    if (max > currentDay && originalDayOfMonth > currentDay) {
-                        currentDay = max > originalDayOfMonth ? originalDayOfMonth : max;
+                    currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    maxDayOfMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+                    if (maxDayOfMonth > currentDay && originalDayOfMonth > currentDay) {
+                        currentDay = maxDayOfMonth > originalDayOfMonth ? originalDayOfMonth : maxDayOfMonth;
                         c.set(Calendar.DAY_OF_MONTH, currentDay);
                     }
                     newExpense.setTime(c.getTime());
@@ -496,9 +487,6 @@ public class ExpenseFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.no_repeat_opt:
                         mRepeatChoice = 0;
-                        break;
-                    case R.id.every_day_opt:
-                        mRepeatChoice = 1;
                         break;
                     case R.id.every_week_opt:
                         mRepeatChoice = 2;
