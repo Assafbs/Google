@@ -47,6 +47,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
             Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
         }
         setNoExpensesIndication();
+        mExpenseAdapter.sort(new DateAndTimeComparator());
         filterExpenses(mMonth, mYear);
     }
 
