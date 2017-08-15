@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListener, BudgetUpdatedListener {
@@ -51,6 +52,7 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
     @Override
     public void budgetUpdatedCallback(Budget newBudget) {
+        mExpenseAdapter.sort(new DateAndTimeComparator());
         mExpenseAdapter.notifyDataSetChanged();
         setNoExpensesIndication();
     }
@@ -110,10 +112,10 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
         ArrayList<Expense> expenses = Filter.filterExpensesByDate(mActivity.mCurrentBudget.getExpenses(), startDate, endDate);
         Collections.sort(expenses);
         mExpenseAdapter = new ExpenseAdapter(mActivity, expenses);
+        mExpenseAdapter.sort(new DateAndTimeComparator());
         listView.setAdapter(mExpenseAdapter);
         listView.invalidate();
     }
-
 
     private long getEpoch(int month, int year) { // milliseconds since January 1, 1970
         Calendar calendar = Calendar.getInstance();
