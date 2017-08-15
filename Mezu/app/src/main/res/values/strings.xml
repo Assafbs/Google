@@ -129,7 +129,7 @@
 
     <string name="pref_description_allow_notifications_expenses">"A notification will appear every time an action is added to one of your budgets"</string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
-    <string name="pref_estimated_to_over_spend_color">Color my budgets names red if to your estimate I will over spend this month.</string>
+    <string name="pref_estimated_to_over_spend_color">Color my budgets names red if to your estimate my expenses will be greater than my incomes this month.</string>
     <string name="pref_title_estimated_to_over_spend_color">Notify when about to over spend</string>
 
     <!--Graphs Tab Fragment-->

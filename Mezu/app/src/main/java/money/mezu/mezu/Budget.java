@@ -418,7 +418,7 @@ public class Budget {
 
         monthExpensesTotal -= incomeThisMonth  / 2;
         double relativeBudgetLeft = incomeThisMonth * (currentDay + 1) / (2 * (daysInMonth + 1));
-        return monthExpensesTotal >= relativeBudgetLeft;
+        return monthExpensesTotal > relativeBudgetLeft;
     }
 
     //************************************************************************************************************************************************

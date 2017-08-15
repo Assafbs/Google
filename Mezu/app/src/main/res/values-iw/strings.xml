@@ -113,7 +113,7 @@
 
     <string name="pref_description_allow_notifications_expenses">התראה תופיע בכל פעם שפעולה מתווספת לאחד התקציבים שלך</string>
     <string name="pref_title_allow_notifications">אפשר התראות</string>
-    <string name="pref_estimated_to_over_spend_color">צבע את שם התקציב שלי באדום אם להערכתך אחרוג ממנו החודש</string>
+    <string name="pref_estimated_to_over_spend_color">צבע את שם התקציב שלי באדום אם להערכתך הוצאותי יעלו על הכנסותי החודש</string>
     <string name="pref_title_estimated_to_over_spend_color">הודע כשלדעתך אחרוג</string>
 
 
