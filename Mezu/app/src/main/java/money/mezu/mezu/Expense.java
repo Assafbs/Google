@@ -163,7 +163,7 @@ public class Expense implements Comparable<Expense> {
     public int getHour() {
         Calendar c = Calendar.getInstance();
         c.setTime(mTime);
-        return c.get(Calendar.HOUR);
+        return c.get(Calendar.HOUR_OF_DAY);
     }
 
     public int getDay() {

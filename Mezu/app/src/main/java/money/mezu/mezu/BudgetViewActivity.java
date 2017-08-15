@@ -225,7 +225,8 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     }
 
     //************************************************************************************************************************************************
-    private void showBalanceInToolbar() {
+    private void showBalanceInToolbar()
+    {
         double balance = mCurrentBudget.getCurrentBalance();
         String balanceString = String.valueOf(Math.abs(balance));
         if (balance > 0) {

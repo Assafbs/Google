@@ -465,7 +465,6 @@ public class ExpenseFragment extends Fragment {
         if (newExpense == null) {
             return;
         }
-
         newExpense.setId(expenseToShow.getId());
         FirebaseBackend.getInstance().editExpense(mActivity.mCurrentBudget.getId(), newExpense);
 

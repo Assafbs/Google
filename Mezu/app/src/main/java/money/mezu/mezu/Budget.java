@@ -396,17 +396,28 @@ public class Budget {
     //************************************************************************************************************************************************
     public boolean isEstimatedToOverSpendThisMonth() {
         double monthExpensesTotal = 0;
+        double incomeThisMonth = 0;
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int daysInMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         for (Expense expense : this.mExpenses) {
-            if (expense.getMonth() == currentMonth) {
-                monthExpensesTotal += expense.getAmount();
+            if (expense.getMonth() == currentMonth && expense.getYear() == currentYear)
+            {
+                if (expense.getIsExpense())
+                {
+                    monthExpensesTotal += expense.getAmount();
+                }
+                else
+                {
+                    incomeThisMonth += expense.getAmount();
+                }
             }
+
         }
 
-        monthExpensesTotal -= mInitialBalance / 2;
-        double relativeBudgetLeft = mInitialBalance * (currentDay + 1) / (2 * (daysInMonth + 1));
+        monthExpensesTotal -= incomeThisMonth  / 2;
+        double relativeBudgetLeft = incomeThisMonth * (currentDay + 1) / (2 * (daysInMonth + 1));
         return monthExpensesTotal >= relativeBudgetLeft;
     }
 
