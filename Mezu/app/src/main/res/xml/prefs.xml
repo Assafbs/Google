@@ -28,6 +28,11 @@
             android:key="enable_notifications_on_deviation"
             android:summary="@string/pref_description_allow_notifications_deviation"
             android:title="@string/pref_title_allow_notifications_deviation" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enable_estimated_to_over_spend_color"
+            android:summary="@string/pref_estimated_to_over_spend_color"
+            android:title="@string/pref_title_estimated_to_over_spend_color" />
 
     </PreferenceCategory>
 

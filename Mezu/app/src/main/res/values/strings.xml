@@ -113,6 +113,7 @@
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 
+
     <string name="pref_title_language">Language</string>
     <string name="hebrew">Hebrew</string>
     <string name="english">English</string>
@@ -128,7 +129,8 @@
 
     <string name="pref_description_allow_notifications_expenses">"A notification will appear every time an action is added to one of your budgets"</string>
     <string name="pref_title_allow_notifications">Allow notifications</string>
-
+    <string name="pref_estimated_to_over_spend_color">Color my budgets names red if to your estimate I will over spend this month.</string>
+    <string name="pref_title_estimated_to_over_spend_color">Notify when about to over spend</string>
 
     <!--Graphs Tab Fragment-->
     <string name="graphs_tab_title">Graphs</string>
@@ -175,7 +177,7 @@
     <string name="partner_email_is_empty">Partner\'s email is empty!</string>
     <string name="email_not_valid">Email is not valid!</string>
     <string name="email_already_in_list">Email is already in the list!</string>
-    <string name="pref_title_allow_notifications_expenses">Allow notifications on expenses</string>
+    <string name="pref_title_allow_notifications_expenses">Allow notifications on actions</string>
     <string name="minimum_amount_to_notify">Minimum amount to notify</string>
     <string name="pref_description_minimum_amount">Get notifications only for expenses that exceed the given threshold</string>
     <string name="account">Account</string>

@@ -2,9 +2,12 @@ package money.mezu.mezu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -13,8 +16,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
+
+import static money.mezu.mezu.R.color.expense_red;
+import static money.mezu.mezu.R.color.pie_red;
+import static money.mezu.mezu.R.color.white;
 
 public class BudgetViewActivity extends BaseNavDrawerActivity implements ExpenseUpdatedListener {
 
@@ -34,12 +42,14 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     public boolean expenseShown = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setupCurrentBudget();
         this.setTitle(mCurrentBudget.getName());
 
         setContentView(R.layout.activity_budget_view);
+        setBudgetNameColorIfRequired();
         showBalanceInToolbar();
         EventDispatcher.getInstance().registerExpenseUpdateListener(this);
 
@@ -63,9 +73,26 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     //************************************************************************************************************************************************
     public void expenseUpdatedCallback() {
         Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
+        setBudgetNameColorIfRequired();
         showBalanceInToolbar();
     }
+    //************************************************************************************************************************************************
+    private void setBudgetNameColorIfRequired()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StaticContext.mContext);
+        boolean shouldColor = prefs.getBoolean("show_estimated_to_over_spend_color", false);
+        Log.d("", String.format("BudgetViewActivity:setBudgetNameColorIfRequired: will overspend is %b", this.mCurrentBudget.isEstimatedToOverSpendThisMonth()));
+        Log.d("", String.format("BudgetViewActivity:setBudgetNameColorIfRequired: should color is %b", shouldColor));
+        if (this.mCurrentBudget.isEstimatedToOverSpendThisMonth() && shouldColor)
+        {
+            this.mToolbar.setTitleTextColor(ContextCompat.getColor(StaticContext.mContext, pie_red));
+        }
+        else
+        {
+            this.mToolbar.setTitleTextColor(ContextCompat.getColor(StaticContext.mContext, white));
+        }
 
+    }
     //************************************************************************************************************************************************
     private void setupCurrentBudget() {
         Intent intent = getIntent();
@@ -79,8 +106,10 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
         Log.d("", String.format("BudgetViewActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
 
         super.budgetUpdatedCallback(budget);
-        if (mCurrentBudget.getId().equals(budget.getId())) {
+        if (mCurrentBudget.getId().equals(budget.getId()))
+        {
             mCurrentBudget = budget;
+            setBudgetNameColorIfRequired();
             showBalanceInToolbar();
             mExpensesTabFragment.filterExpenses();
             mSessionManager.setLastBudget(budget);

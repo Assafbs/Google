@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
             displayNamePref.setText(sessionManager.getUserName());
             displayNamePref.setSummary(sessionManager.getUserName());
 
-            Context context = getActivity();
+            final Context context = getActivity();
             ListPreference languagePref = (ListPreference)findPreference("language");
             String curLanguage = languagePref.getValue();
             if (!LanguageUtils.languageValueIsValid(curLanguage)){
@@ -122,6 +122,26 @@ public class SettingsActivity extends AppCompatActivity {
                     SessionManager sessionManager = new SessionManager(StaticContext.mContext);
                     boolean isChecked = o.equals(true);
                     FirebaseBackend.getInstance().setShouldNotifyBudgetExceededThreshold(isChecked, sessionManager.getUserId());
+                    return true;
+                }
+            });
+            SwitchPreference enableEstimatedToOverSpendColor = (SwitchPreference)findPreference("enable_estimated_to_over_spend_color");
+            enableEstimatedToOverSpendColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    boolean isChecked = o.equals(true);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(StaticContext.mContext);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    if (isChecked)
+                    {
+                        editor.putBoolean("show_estimated_to_over_spend_color", true);
+                    }
+                    else
+                    {
+                        editor.putBoolean("show_estimated_to_over_spend_color", false);
+                    }
+                    editor.commit();
+                    EventDispatcher.getInstance().notifyExpenseUpdatedListeners();
                     return true;
                 }
             });

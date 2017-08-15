@@ -113,6 +113,8 @@
 
     <string name="pref_description_allow_notifications_expenses">התראה תופיע בכל פעם שפעולה מתווספת לאחד התקציבים שלך</string>
     <string name="pref_title_allow_notifications">אפשר התראות</string>
+    <string name="pref_estimated_to_over_spend_color">צבע את שם התקציב שלי באדום אם להערכתך אחרוג ממנו החודש</string>
+    <string name="pref_title_estimated_to_over_spend_color">הודע כשלדעתך אחרוג</string>
 
 
     <!--Graphs Tab Fragment-->
@@ -166,7 +168,7 @@
     <string name="pref_description_minimum_amount">קבל התראות רק על הוצאות בסכום הגבוה מהסף שבחרת</string>
     <string name="pref_title_allow_notifications_budgets">אפשר התראות על תקציבים</string>
     <string name="pref_title_allow_notifications_deviation">אפשר התראות על חריגה</string>
-    <string name="pref_title_allow_notifications_expenses">אפשר התראות על הוצאות</string>
+    <string name="pref_title_allow_notifications_expenses">אפשר התראות על פעולות</string>
     <string name="got_it">הבנתי</string>
     <string name="contacts_permissions_explanation">עם גישה לאנשי הקשר שלך, נוכל לבצע השלמה אוטומטית של כתובות האימייל של שותפיך</string>
     <string name="review_incomes">הכנסות:</string>
