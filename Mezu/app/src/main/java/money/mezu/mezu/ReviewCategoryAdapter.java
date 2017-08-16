@@ -47,7 +47,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         categoryName.setText(category.toNiceString());
 
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(category);
-        double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
+        double categorySum = budget.getTotalExpensesPerCategoryThisMonth(category);
         if (ceiling != -1) {
             handleCategoryWithCeiling(categorySum, ceiling, categoryRow);
         } else {
@@ -103,7 +103,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         Budget budget = mActivity.mCurrentBudget;
         budget.setCeilingForCategory(category, ceiling);
         FirebaseBackend.getInstance().editBudget(budget);
-        double categorySum = budget.getTotalExpenseOrIncomePerCategoryby(category, true);
+        double categorySum = budget.getTotalExpensesPerCategoryThisMonth(category);
         if (ceiling != -1) {
             handleCategoryWithCeiling(categorySum, ceiling, view);
         } else {

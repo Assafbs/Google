@@ -238,6 +238,19 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
+    public double getTotalExpensesThisMonth() {
+        double acc = 0;
+        Calendar c = Calendar.getInstance();
+        int thisMonth = c.get(Calendar.MONTH);
+        for (Expense expense : mExpenses) {
+            if (expense.getIsExpense() && expense.getMonth() == thisMonth) {
+                acc += expense.getAmount();
+            }
+        }
+        return acc;
+    }
+
+    //************************************************************************************************************************************************
     public double getTotalIncomes() {
         double acc = 0;
         for (Expense expense : mExpenses) {
@@ -276,6 +289,20 @@ public class Budget {
         double acc = 0;
         for (Expense expense : mExpenses) {
             if (expense.getIsExpense() && expense.getCategory().equals(category)) {
+                acc += expense.getAmount();
+            }
+        }
+        return acc;
+    }
+
+    //************************************************************************************************************************************************
+    public double getTotalExpensesPerCategoryThisMonth(Category category) {
+        double acc = 0;
+        Calendar c = Calendar.getInstance();
+        int thisMonth = c.get(Calendar.MONTH);
+        for (Expense expense : mExpenses) {
+            if (expense.getIsExpense() && expense.getCategory().equals(category)
+                    && expense.getMonth() == thisMonth) {
                 acc += expense.getAmount();
             }
         }

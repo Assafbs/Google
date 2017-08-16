@@ -115,7 +115,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
             progressBar.setReverse(false);
         }
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(Category.CATEGORY);
-        double sum = mActivity.mCurrentBudget.getTotalExpenses();
+        double sum = mActivity.mCurrentBudget.getTotalExpensesThisMonth();
         if (ceiling != -1) {
             budgetSum.setText(String.valueOf(sum) + " / " + String.valueOf(ceiling));
             float percentage = (float) (sum / ceiling);
