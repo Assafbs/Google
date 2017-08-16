@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -124,9 +123,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
                     mCurrentBudget.setName(budgetName);
                     mCurrentBudget.setInitialBalance(startingBalance);
                     mCurrentBudget.addNewPending(partnersEmails);
-                    for (String mail : partnersEmails) {
-                        Log.d("", String.format("EditBudgetActivity:onCreate: current mail is :%s", mail));
-                    }
                     FirebaseBackend.getInstance().editBudget(mCurrentBudget);
                 }
                 BudgetViewActivity.goToBudgetView(EditBudgetActivity.this, mCurrentBudget, mSessionManager);
@@ -202,7 +198,6 @@ public class EditBudgetActivity extends BaseNavDrawerActivity {
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == DialogInterface.BUTTON_POSITIVE) {
                 FirebaseBackend.getInstance().leaveBudget(mCurrentBudget.getId(), mSessionManager.getUserId(), mSessionManager.getUserEmail().toLowerCase());
-                Log.d("", "EditBudgetActivity: deleting budget");
                 Toast.makeText(EditBudgetActivity.this, "Budget deleted", Toast.LENGTH_SHORT).show();
                 // restart app, so won't go back to the deleted budget
                 Intent restartIntent = EditBudgetActivity.this.getBaseContext().getPackageManager()

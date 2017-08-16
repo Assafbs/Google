@@ -3,7 +3,6 @@ package money.mezu.mezu;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +41,6 @@ public class ExpensesTabFragment extends Fragment implements ExpenseUpdatedListe
 
 
     public void expenseUpdatedCallback() {
-        Log.d("", "ExpensesTabFragment:expenseUpdatedCallback: invoked");
-        for (Expense expense : mActivity.mCurrentBudget.getExpenses()) {
-            Log.d("", String.format("ExpensesTabFragment:expenseUpdatedCallback: has expense: %s", expense.getTitle()));
-        }
         setNoExpensesIndication();
         mExpenseAdapter.sort(new DateAndTimeComparator());
         filterExpenses(mMonth, mYear);

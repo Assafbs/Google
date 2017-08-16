@@ -1,6 +1,6 @@
 {
   "project_info": {
-    "project_number": "55599344099",
+    "project_number": "1049912020423",
     "firebase_url": "https://mezu-10fc6.firebaseio.com",
     "project_id": "mezu-10fc6",
     "storage_bucket": "mezu-10fc6.appspot.com"
@@ -8,20 +8,32 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:55599344099:android:3fa01c622b9d1556",
+        "mobilesdk_app_id": "1:1049912020423:android:3fa01c622b9d1556",
         "android_client_info": {
           "package_name": "money.mezu.mezu"
         }
       },
       "oauth_client": [
         {
-          "client_id": "55599344099-1cukam95t6r6j3udoerchn27ea82dvd5.apps.googleusercontent.com",
+          "client_id": "1049912020423-0vq61g85v3pumqkrhspvoh7njulgqk76.apps.googleusercontent.com",
           "client_type": 3
+		},
+        {
+          "client_id": "1049912020423-il1l41231c8v6grb57vfkh01pk6eciur.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1049912020423-8qca5u5ho20jrueok050uhkarea1ai8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "money.mezu.mezu",
+            "certificate_hash": "22896d0560747761b02c4abc5159b37e65e418fe"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAn8aQOwqaBPyhfXQgrcagmfltB4Y0NhPs"
+          "current_key": "AIzaSyDpXd24ALDWaIQoKll8jGOKrh1Ogd3YGpA"
         }
       ],
       "services": {
@@ -33,7 +45,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 2
+          "status": 1
         }
       }
     }

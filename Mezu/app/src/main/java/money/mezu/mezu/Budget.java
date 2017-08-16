@@ -1,7 +1,6 @@
 package money.mezu.mezu;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +38,6 @@ public class Budget {
     //************************************************************************************************************************************************
     public Budget(HashMap<String, Object> serializedBudget) {
         super();
-        Log.d("", String.format("Budget:Budget creating budget from serialized budget: %s", serializedBudget.toString()));
         this.mId = (String) serializedBudget.get("mId");
         this.mName = (String) serializedBudget.get("mName");
         if (serializedBudget.containsKey("mOwner")) {
@@ -64,7 +62,6 @@ public class Budget {
                 this.mExpenses = new ArrayList<>();
             }
         } catch (ClassCastException e) {
-            Log.d("", String.format("Budget:expenses array is corrupted in budget: %s", serializedBudget.toString()));
             this.mExpenses = new ArrayList<>();
         }
         this.mCategoryCeilings = new HashMap<>();
@@ -182,7 +179,6 @@ public class Budget {
         serialized.put("mEmails", mEmails);
         serialized.put("mOwner", mOwner);
         serialized.put("mPending", this.getEncodedPending());
-        Log.d("", String.format("Budget:serializeNoExpenses this is the pending list: %s", ((HashMap<String, String>) serialized.get("mPending")).keySet().toString()));
         HashMap<String, String> translatedCategoryCeilings = new HashMap<>();
         for (Category key : this.mCategoryCeilings.keySet()) {
             translatedCategoryCeilings.put(key.toString(), this.mCategoryCeilings.get(key).toString());

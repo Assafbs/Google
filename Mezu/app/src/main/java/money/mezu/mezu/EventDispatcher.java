@@ -1,7 +1,5 @@
 package money.mezu.mezu;
 
-import android.util.Log;
-
 import java.util.HashSet;
 
 /**
@@ -32,9 +30,6 @@ public class EventDispatcher {
 
     //************************************************************************************************************************************************
     public void registerBudgetUpdateListener(BudgetUpdatedListener newListener) {
-        if (mBudgetUpdatedListeners.contains(newListener)) {
-            Log.d("", "EventDispatcher::registerBudgetUpdateListener: registering already registered listener");
-        }
         mBudgetUpdatedListeners.add(newListener);
     }
 
@@ -77,11 +72,6 @@ public class EventDispatcher {
 
     //************************************************************************************************************************************************
     public void notifyExpenseUpdatedListeners() {
-        Log.d("", "EventDispatcher::notifyExpenseUpdatedListeners dispatching");
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            Log.d("", String.format("EventDispatcher::notifyExpenseUpdatedListeners: %s", ste));
-        }
-
         for (ExpenseUpdatedListener listener : mExpenseUpdatedListeners) {
             listener.expenseUpdatedCallback();
         }

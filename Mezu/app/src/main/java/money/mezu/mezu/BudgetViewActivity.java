@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,7 +71,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
 
     //************************************************************************************************************************************************
     public void expenseUpdatedCallback() {
-        Log.d("", "BudgetViewActivity:expenseUpdatedCallback: invoked");
         setBudgetNameColorIfRequired();
         showBalanceInToolbar();
     }
@@ -81,8 +79,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(StaticContext.mContext);
         boolean shouldColor = prefs.getBoolean("show_estimated_to_over_spend_color", false);
-        Log.d("", String.format("BudgetViewActivity:setBudgetNameColorIfRequired: will overspend is %b", this.mCurrentBudget.isEstimatedToOverSpendThisMonth()));
-        Log.d("", String.format("BudgetViewActivity:setBudgetNameColorIfRequired: should color is %b", shouldColor));
         if (this.mCurrentBudget.isEstimatedToOverSpendThisMonth() && shouldColor)
         {
             this.mToolbar.setTitleTextColor(ContextCompat.getColor(StaticContext.mContext, pie_red));
@@ -103,8 +99,6 @@ public class BudgetViewActivity extends BaseNavDrawerActivity implements Expense
 
     //************************************************************************************************************************************************
     public void budgetUpdatedCallback(Budget budget) {
-        Log.d("", String.format("BudgetViewActivity:budgetUpdatedCallback: invoked with budget: %s", budget.toString()));
-
         super.budgetUpdatedCallback(budget);
         if (mCurrentBudget.getId().equals(budget.getId()))
         {
