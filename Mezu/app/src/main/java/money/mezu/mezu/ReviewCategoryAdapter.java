@@ -16,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
     private Context mContext;
@@ -47,7 +48,8 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         categoryName.setText(category.toNiceString());
 
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(category);
-        double categorySum = budget.getTotalExpensesPerCategoryThisMonth(category);
+        double categorySum = budget.getTotalExpensesPerCategoryAndMonth(category,
+                Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
         if (ceiling != -1) {
             handleCategoryWithCeiling(categorySum, ceiling, categoryRow);
         } else {
@@ -103,7 +105,8 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
         Budget budget = mActivity.mCurrentBudget;
         budget.setCeilingForCategory(category, ceiling);
         FirebaseBackend.getInstance().editBudget(budget);
-        double categorySum = budget.getTotalExpensesPerCategoryThisMonth(category);
+        double categorySum = budget.getTotalExpensesPerCategoryAndMonth(category,
+                Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
         if (ceiling != -1) {
             handleCategoryWithCeiling(categorySum, ceiling, view);
         } else {

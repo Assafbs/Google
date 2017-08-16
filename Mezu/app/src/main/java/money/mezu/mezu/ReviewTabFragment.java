@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener {
 
@@ -115,7 +116,7 @@ public class ReviewTabFragment extends Fragment implements BudgetUpdatedListener
             progressBar.setReverse(false);
         }
         double ceiling = mActivity.mCurrentBudget.tryGetCategoryCeiling(Category.CATEGORY);
-        double sum = mActivity.mCurrentBudget.getTotalExpensesThisMonth();
+        double sum = mActivity.mCurrentBudget.getTotalExpensesPerMonth(Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.YEAR));
         if (ceiling != -1) {
             budgetSum.setText(String.valueOf(sum) + " / " + String.valueOf(ceiling));
             float percentage = (float) (sum / ceiling);

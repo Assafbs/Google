@@ -191,13 +191,13 @@
     <string name="got_it">Got It</string>
     <string name="review_incomes">Incomes:</string>
     <string name="review_expenses">Expenses:</string>
-    <string name="enter_new_ceiling">Enter a new ceiling</string>
+    <string name="enter_new_ceiling">Enter a new monthly ceiling</string>
     <string name="empty"></string>
-    <string name="number_formating_failed">The ceiling is too high</string>
+    <string name="number_formating_failed">The monthly ceiling is too high</string>
     <string name="signning_in">Signing in...</string>
-    <string name="review_info">Click on a category to define its ceiling</string>
+    <string name="review_info">Click on a category to define its monthly ceiling</string>
     <string name="overall_expenses">Overall Expenses</string>
-    <string name="no_ceiling_wanted">Leave empty to remove ceiling</string>
+    <string name="no_ceiling_wanted">Leave empty to remove monthly ceiling</string>
     <string name="not_a_valid_number">Please enter a valid number</string>
     <string name="export">Export</string>
     <string name="failed_to_create_file">Failed to create file.</string>

@@ -174,12 +174,12 @@
     <string name="review_incomes">הכנסות:</string>
     <string name="review_expenses">הוצאות:</string>
     <string name="contacts_permissions">מדוע ביקשנו הרשאות לאנשי הקשר?</string>
-    <string name="enter_new_ceiling">הכנס תקרה חדשה</string>
-    <string name="number_formating_failed">התקרה גבוהה מדי</string>
+    <string name="enter_new_ceiling">הכנס תקרה חודשית חדשה</string>
+    <string name="number_formating_failed">התקרה החודשית גבוהה מדי</string>
     <string name="signning_in">מתחבר...</string>
-    <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה</string>
+    <string name="review_info">לחץ על קטגוריה על מנת להגדיר עבורה תקרה חודשית</string>
     <string name="overall_expenses">סה\"כ הוצאות</string>
-    <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה</string>
+    <string name="no_ceiling_wanted">השאר ריק על מנת להסיר את התקרה החודשית</string>
     <string name="not_a_valid_number">אנא הכנס מספר תקין</string>
     <string name="export">יצא</string>
     <string name="failed_to_create_file">יצירת קובץ נכשלה.</string>

@@ -238,12 +238,12 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getTotalExpensesThisMonth() {
+    public double getTotalExpensesPerMonth(int month, int year) {
         double acc = 0;
         Calendar c = Calendar.getInstance();
-        int thisMonth = c.get(Calendar.MONTH);
         for (Expense expense : mExpenses) {
-            if (expense.getIsExpense() && expense.getMonth() == thisMonth) {
+            if (expense.getIsExpense() && expense.getMonth() == month && expense.getYear() == year)
+            {
                 acc += expense.getAmount();
             }
         }
@@ -296,41 +296,16 @@ public class Budget {
     }
 
     //************************************************************************************************************************************************
-    public double getTotalExpensesPerCategoryThisMonth(Category category) {
+    public double getTotalExpensesPerCategoryAndMonth(Category category,int month, int year) {
         double acc = 0;
         Calendar c = Calendar.getInstance();
-        int thisMonth = c.get(Calendar.MONTH);
         for (Expense expense : mExpenses) {
             if (expense.getIsExpense() && expense.getCategory().equals(category)
-                    && expense.getMonth() == thisMonth) {
+                    && expense.getMonth() == month && expense.getYear() == year) {
                 acc += expense.getAmount();
             }
         }
         return acc;
-    }
-
-    //************************************************************************************************************************************************
-    public double getTotalExpenseOrIncomePerCategoryby(Category category, boolean isExpense) {
-        return isExpense ? getTotalExpensesPerCategory(category) : getTotalIncomesPerCategory(category);
-    }
-
-    //************************************************************************************************************************************************
-    public double getTotalIncomesPerCategory(Category category) {
-        double acc = 0;
-        for (Expense expense : mExpenses) {
-            if (!expense.getIsExpense() && expense.getCategory().equals(category)) {
-                acc += expense.getAmount();
-            }
-        }
-        return acc;
-    }
-
-    //************************************************************************************************************************************************
-    public double getPercentagePerCategory(Category category) {
-        if (getTotalExpenses() != 0) {
-            return getPercentagePerCategory(category) / getTotalExpenses();
-        }
-        return 0;
     }
 
     //************************************************************************************************************************************************
