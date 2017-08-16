@@ -254,15 +254,12 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 		const currentExpenseDate = new Date(expenses[eid]["mTime"]);
 		for (var curreid in expenses)
 		{
-			if ((new Date(expenses[curreid]["mTime"])).getMonth() == currentExpenseDate.getMonth())
+			if ((new Date(expenses[curreid]["mTime"])).getMonth() == currentExpenseDate.getMonth()
+				&& (new Date(expenses[curreid]["mTime"])).getYear() == currentExpenseDate.getYear())
 			{
 				if (expenses[curreid]["mIsExpense"]) 
 				{
 					totalBudgetExpenses += expenses[curreid]["mAmount"];
-				}
-				else
-				{	
-					totalBudgetExpenses -= expenses[curreid]["mAmount"];	
 				}
 			}
 		}
@@ -302,7 +299,7 @@ exports.sendExpenseNotification = functions.database.ref('/budgets/{bid}/budget/
 					}	
 				}
 				
-				if (snapshot2.hasChild("nofityBudgetExceeded"))
+				if (snapshot2.hasChild("nofityBudgetExceeded") && isExpense)
 				{
 					const thresholdSettingEnabled = snapshot2.child("nofityBudgetExceeded").val();
 					var budgetThresholdNumber = Number(budgetThreshold);
