@@ -3,13 +3,9 @@ package money.mezu.mezu;
 import java.math.BigInteger;
 import java.util.Objects;
 
-/**
- * Created by asafb on 4/15/2017.
- */
-
-// an abstract class for all identifiers
+// An abstract class for all identifiers
 public abstract class Identifier {
-    private BigInteger id; // for now; can be replaced with something else.
+    private BigInteger id;
 
     public Identifier(BigInteger id) {
         super();

@@ -10,10 +10,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by davidled on 21/04/2017.
- */
-
 public class BudgetAdapter extends ArrayAdapter<Budget> {
     public BudgetAdapter(Context context, ArrayList<Budget> budgets) {
         super(context, 0, budgets);
@@ -46,7 +42,7 @@ public class BudgetAdapter extends ArrayAdapter<Budget> {
             }
         });
 
-        // Return the completed view to render on screen
+        // Return the complete view to render on screen
         return convertView;
     }
 }

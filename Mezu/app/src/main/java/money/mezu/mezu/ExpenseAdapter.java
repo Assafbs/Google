@@ -23,9 +23,8 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
     }
 
     @Override
-    public
     @NonNull
-    View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         Expense expense = getItem(position);
         assert expense != null;
@@ -72,7 +71,7 @@ public class ExpenseAdapter extends ArrayAdapter<Expense> {
             }
         });
 
-        // Return the completed view to render on screen
+        // Return the complete view to render on screen
         return convertView;
     }
 

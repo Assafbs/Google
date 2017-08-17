@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class TabsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private boolean mIsRtl;
-    private /*ExpensesTabFragment*/ Fragment mExpensesTabFragment;
-    private /*GraphsTabFragment*/ Fragment mGraphsTabFragment;
+    private Fragment mExpensesTabFragment;
+    private Fragment mGraphsTabFragment;
     private FragmentManager mFragmentManager;
 
     public TabsViewPagerAdapter(FragmentManager fm) {

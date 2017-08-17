@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-/**
- * Created by JB on 7/31/17.
- */
-
 public class OpenBudgetViewWhenReadyActivity extends Activity implements LocalCacheReadyListener {
     boolean launchedBudgetView = false;
     String mBid = null;

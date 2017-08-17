@@ -4,17 +4,13 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-/**
- * Created by JB on 5/23/17.
- */
-
 public class BackendCache implements BudgetUpdatedListener, UserLeftBudgetListener {
     private static BackendCache mCache = null;
     private HashMap<String, Budget> budgets = new HashMap<>();
 
     //************************************************************************************************************************************************
     public static BackendCache getInstance() {
-        if (null == mCache) {
+        if (mCache == null) { // we don't have cache yet
             mCache = new BackendCache();
         }
         return mCache;

@@ -392,16 +392,16 @@ public class ExpenseFragment extends Fragment {
         period.put("almostUniqueId", (new Random()).nextDouble());
         period.put("isFirst", true);
         switch (mRepeatChoice) {
-            case 2: //every week
+            case 2: // every week
                 period.put("recurrenceTime", "weekly");
                 break;
-            case 3: //every two weeks
+            case 3: // every two weeks
                 period.put("recurrenceTime", "biweekly");
                 break;
-            case 4: //every month
+            case 4: // every month
                 period.put("recurrenceTime", "monthly");
                 break;
-            case 5: //every two months
+            case 5: // every two months
                 period.put("recurrenceTime", "bimonthly");
                 break;
         }
@@ -475,12 +475,12 @@ public class ExpenseFragment extends Fragment {
         mRepeatAction.setColorFilter(ContextCompat.getColor(getContext(), R.color.white));
         mRepeatAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent_dark));
 
-        //Creating the instance of PopupMenu
+        // Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(getActivity(), mRepeatAction);
-        //Inflating the Popup using xml file
+        // Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.repeat_popup_menu, popup.getMenu());
 
-        //registering popup with OnMenuItemClickListener
+        // registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
@@ -521,7 +521,7 @@ public class ExpenseFragment extends Fragment {
                 }
             }
         });
-        popup.show();//showing popup menu
+        popup.show(); // Showing popup menu
     }
 
     private Expense createExpenseFromFields() {
@@ -596,7 +596,7 @@ public class ExpenseFragment extends Fragment {
                 FirebaseBackend.getInstance().deleteExpense(mActivity.mCurrentBudget.getId(), expenseToShow.getId());
                 Log.d("", "ExpenseFragment: deleting expense");
                 Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
-                // restart app, so won't go back to the deleted expense
+                // Restart app, so won't go back to the deleted expense
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(mActivity.getPackageName());
                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -632,7 +632,7 @@ public class ExpenseFragment extends Fragment {
 
                 Log.d("", "ExpenseFragment: deleting expense");
                 Toast.makeText(mActivity, getResources().getString(R.string.expense_deleted), Toast.LENGTH_SHORT).show();
-                // restart app, so won't go back to the deleted expense
+                // Restart app, so won't go back to the deleted expense
                 Intent restartIntent = mActivity.getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(mActivity.getPackageName());
                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

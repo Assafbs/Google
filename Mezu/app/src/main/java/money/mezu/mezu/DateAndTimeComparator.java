@@ -2,10 +2,6 @@ package money.mezu.mezu;
 
 import java.util.Comparator;
 
-/**
- * Created by David on 15/8/2017.
- */
-
 public class DateAndTimeComparator implements Comparator<Expense> {
 
     @Override

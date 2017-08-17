@@ -105,10 +105,14 @@ public class PieChartCategories implements GraphInterface {
     public void GenerateGraph(View view, boolean large) {
         calculateDataSet();
 
-        final int[] MY_COLORS = {getColor(R.color.pie_red), getColor(R.color.pie_orange), getColor(R.color.pie_yellow), getColor(R.color.pie_green),
-                getColor(R.color.pie_turquoise), getColor(R.color.pie_sky_blue), getColor(R.color.pie_blue), getColor(R.color.pie_dark_blue),
-                getColor(R.color.pie_purple), getColor(R.color.pie_pink), getColor(R.color.pie_fuchsia), getColor(R.color.pie_dark_red),
-                getColor(R.color.pie_beige), getColor(R.color.pie_dark_green), getColor(R.color.pie_brown), getColor(R.color.pie_light_green)};
+        final int[] MY_COLORS = {getColor(R.color.pie_red), getColor(R.color.pie_orange),
+                getColor(R.color.pie_yellow), getColor(R.color.pie_green),
+                getColor(R.color.pie_turquoise), getColor(R.color.pie_sky_blue),
+                getColor(R.color.pie_blue), getColor(R.color.pie_dark_blue),
+                getColor(R.color.pie_purple), getColor(R.color.pie_pink),
+                getColor(R.color.pie_fuchsia), getColor(R.color.pie_dark_red),
+                getColor(R.color.pie_beige), getColor(R.color.pie_dark_green),
+                getColor(R.color.pie_brown), getColor(R.color.pie_light_green)};
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int c : MY_COLORS) colors.add(c);

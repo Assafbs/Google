@@ -81,7 +81,7 @@ public class ReviewCategoryAdapter extends ArrayAdapter<Category> {
                         try {
                             switch (number) {
                                 case "":
-                                    ceiling = -1; //remove ceiling
+                                    ceiling = -1; // remove ceiling
                                     break;
                                 case ".":
                                     Toast.makeText(mActivity, mActivity.getString(R.string.not_a_valid_number), Toast.LENGTH_SHORT)

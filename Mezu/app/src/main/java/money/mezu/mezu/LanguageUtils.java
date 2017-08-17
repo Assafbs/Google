@@ -8,10 +8,6 @@ import android.util.DisplayMetrics;
 
 import java.util.Locale;
 
-/**
- * Created by asafb on 5/12/2017.
- */
-
 public class LanguageUtils {
 
     public static void setLanguage(String languageCode, Context context) {

@@ -19,6 +19,9 @@ import java.util.List;
 
 
 public class BarChartUsers implements GraphInterface {
+    private static final int VALUE_TEXT_SIZE = 10;
+    private static final float BAR_WIDTH = 0.9f;
+
     private BarChart mBarChart;
     private BarDataSet mBarDataSet;
     private ArrayList<String> mUsers;
@@ -127,15 +130,18 @@ public class BarChartUsers implements GraphInterface {
     public void GenerateGraph(View view, boolean large) {
         calculateDataSet();
 
-        final int[] MY_COLORS = {getColor(R.color.pie_turquoise), getColor(R.color.pie_sky_blue), getColor(R.color.pie_blue), getColor(R.color.pie_dark_blue)};
+        final int[] MY_COLORS = {getColor(R.color.pie_turquoise),
+                getColor(R.color.pie_sky_blue),
+                getColor(R.color.pie_blue),
+                getColor(R.color.pie_dark_blue)};
 
         ArrayList<Integer> colors = new ArrayList<>();
         for (int c : MY_COLORS) colors.add(c);
         mBarDataSet.setColors(colors);
 
         BarData data = new BarData(mBarDataSet);
-        data.setValueTextSize(10);
-        data.setBarWidth(0.9f);
+        data.setValueTextSize(VALUE_TEXT_SIZE);
+        data.setBarWidth(BAR_WIDTH);
 
         mBarChart.setData(data);
         mBarChart.setFitBars(true);
@@ -155,7 +161,6 @@ public class BarChartUsers implements GraphInterface {
             mBarChart.getLegend().setEnabled(false);
             setSmallChart(data);
         }
-
         mBarChart.invalidate(); // refresh
     }
 
@@ -166,12 +171,10 @@ public class BarChartUsers implements GraphInterface {
         mBarChart.setClickable(false);
         mBarChart.setTouchEnabled(false);
         mBarChart.setLogEnabled(false);
-
         mBarChart.getAxisLeft().setEnabled(false);
         mBarChart.getAxisRight().setEnabled(false);
         mBarChart.getXAxis().setEnabled(false);
     }
-
 
     private int getColor(int color) {
         return ContextCompat.getColor(StaticContext.mContext, color);

@@ -130,8 +130,8 @@ public class FirebaseBackend {
                         }
                     }
                 }
-                // This line appears twice to handle a very unlikely race condition (which wasn't witnessed) that can occur if the first invocation
-                // occurs before the path is added to the hashmap.
+                // This line appears twice to handle a very unlikely race condition (which wasn't witnessed)
+                // that can occur if the first invocation occurs before the path is added to the hashmap.
                 stopListeningOnPath("budgets/" + bidToLeave);
             }
 

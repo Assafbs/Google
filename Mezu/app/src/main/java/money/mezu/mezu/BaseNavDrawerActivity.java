@@ -57,12 +57,12 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         mDrawerEmail = mSessionManager.getUserEmail();
         mDrawerImage = mSessionManager.getUserImage();
 
-        /* Assinging the toolbar object ot the view and setting the the Action bar to our toolbar*/
+        // Assigning the toolbar object to the view and setting the Action bar to our toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         // Following code is to make sure labels are aligned with language chosen
-        String label = null;
+        String label = "";
         try {
             label = getResources().getString(
                     getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
@@ -81,18 +81,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.DrawerLayout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.openDrawer, R.string.closeDrawer){
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                // code here will execute once the drawer is opened
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                // Code here will execute once drawer is closed
-            }
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -127,8 +115,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
         CircleImageView image = (CircleImageView) mDrawerView.findViewById(R.id.circleView);
         TextView name = (TextView) mDrawerView.findViewById(R.id.name);
         TextView email = (TextView) mDrawerView.findViewById(R.id.email);
-
-
         if (mDrawerImage != null) {
             Picasso.with(StaticContext.mContext).load(mDrawerImage).into(image);
         }
@@ -180,13 +166,6 @@ public abstract class BaseNavDrawerActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-    //************************************************************************************************************************************************
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Currently no option items
-        return super.onOptionsItemSelected(item);
     }
     //************************************************************************************************************************************************
     protected void logout()

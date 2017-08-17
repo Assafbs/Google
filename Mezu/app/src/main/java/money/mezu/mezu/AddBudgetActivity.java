@@ -44,8 +44,8 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
         setContentView(R.layout.activity_add_budget);
 
         partnersEmails = new ArrayList<>();
-        partnersChipsContainer = (FlowLayout) findViewById(R.id.partners_chips_container);
-        addPartnerEmailTextView = (AutoCompleteTextView) findViewById(R.id.partner_email);
+        partnersChipsContainer = (FlowLayout)findViewById(R.id.partners_chips_container);
+        addPartnerEmailTextView = (AutoCompleteTextView)findViewById(R.id.partner_email);
 
         tryInitializingContactEmails();
 
@@ -61,7 +61,6 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
                 } else {
                     startingBalance = Double.parseDouble(startingBalanceString);
                 }
-
                 if (BudgetName.equals("")) {
                     Toast.makeText(AddBudgetActivity.this, R.string.must_provide_budget_name, Toast.LENGTH_SHORT).show();
                 } else {
@@ -124,10 +123,11 @@ public class AddBudgetActivity extends BaseNavDrawerActivity {
     }
 
     public void tryInitializingContactEmails() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             if (show_permissions_dialog) {
-                showPermissionsDialog();
-                show_permissions_dialog = false;
+                showPermissionsDialog(); // explain why we ask for the permissions
+                show_permissions_dialog = false; // but do it only once
             }
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {

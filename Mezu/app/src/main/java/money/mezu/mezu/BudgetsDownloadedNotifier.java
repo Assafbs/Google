@@ -4,10 +4,6 @@ import android.util.Log;
 
 import java.util.Set;
 
-/**
- * Created by JB on 6/10/17.
- */
-
 public class BudgetsDownloadedNotifier implements BudgetUpdatedListener {
     private Set<String> bidsToListen;
     private static boolean firstExecution = true;
